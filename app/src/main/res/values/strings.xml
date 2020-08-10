@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Expenses Manager</string>
+    <string name="previous_month_description">View previous month</string>
+    <string name="next_month_description">View next month</string>
+    <string name="expenses_title">Expenses</string>
+    <string name="monthly_expenses_title">Monthly Expenses</string>
+
+    <!-- Errors -->
+    <string name="error_empty_value">Value is empty</string>
+    <string name="error_number_illegal">Illegal number</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="add_expense_dialog_title">Add Expense</string>
+    <string name="add_expense_dialog_name">Expense Name</string>
+    <string name="add_expense_dialog_cost">Expense Cost</string>
+    <string name="add_expense_dialog_add">Add</string>
+    <string name="delete_expense_dialog_title">Delete Expense</string>
+    <string name="delete_expense_dialog_confirmation_text">Are you sure you want to delete the expense?</string>
+    <string name="delete_expense_dialog_delete">Delete</string>
+    <string name="choose_income_dialog_title">Choose Monthly Income</string>
+    <string name="choose_income_dialog_description">Please choose your monthly income, which will be used as a base for the expenses calculation</string>
+    <string name="choose_income_dialog_hint">Monthly Income</string>
+    <string name="choose_income_dialog_ok">Choose</string>
+
+    <!-- Hints -->
+    <string name="hint_long_press_to_edit_income">Long press to edit monthly income</string>
+    <string name="hint_long_press_to_delete_expense">Long press to delete expense</string>
+</resources>

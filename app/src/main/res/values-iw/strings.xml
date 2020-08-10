@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">מנהל ההוצאות</string>
+    <string name="previous_month_description">הצג את החודש הקודם</string>
+    <string name="next_month_description">הצג את החודש הבא</string>
+    <string name="expenses_title">הוצאות</string>
+    <string name="monthly_expenses_title">הוצאות חודשיות</string>
+
+    <!-- Errors -->
+    <string name="error_empty_value">השדה ריק</string>
+    <string name="error_number_illegal">מספר לא חוקי</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_cancel">ביטול</string>
+    <string name="add_expense_dialog_title">הוספת הוצאה</string>
+    <string name="add_expense_dialog_name">שם ההוצאה</string>
+    <string name="add_expense_dialog_cost">עלות ההוצאה</string>
+    <string name="add_expense_dialog_add">הוספה</string>
+    <string name="delete_expense_dialog_title">מחיקת הוצאה</string>
+    <string name="delete_expense_dialog_confirmation_text">האם אתם בטוחים שאתם רוצים למחוק את ההוצאה?</string>
+    <string name="delete_expense_dialog_delete">מחיקה</string>
+    <string name="choose_income_dialog_title">בחירת הכנסה חודשית</string>
+    <string name="choose_income_dialog_description">אנא הזינו את ההכנסה החודשית שלכם שתשומש לחישוב הוצאות</string>
+    <string name="choose_income_dialog_hint">הכנסה חודשית</string>
+    <string name="choose_income_dialog_ok">בחירה</string>
+
+    <!-- Hints -->
+    <string name="hint_long_press_to_edit_income">לחצו לחיצה ארוכה כדי לערוך הכנסה חודשית</string>
+    <string name="hint_long_press_to_delete_expense">לחצו לחיצה ארוכה כדי למחוק הוצאה</string>
+</resources>

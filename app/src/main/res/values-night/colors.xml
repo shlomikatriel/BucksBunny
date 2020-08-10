@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="default_dot">#6d6d6d</color>
+    <color name="selected_dot">#424242</color>
+
+    <color name="green">#00600f</color>
+    <color name="red">#9a0007</color>
+
+    <color name="launcher_background">@color/colorPrimaryDark</color>
+    <color name="launcher_foreground">@android:color/black</color>
+</resources>

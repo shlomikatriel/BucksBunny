@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0288d1</color>
+    <color name="colorPrimaryDark">#005b9f</color>
+    <color name="colorAccent">#5eb8ff</color>
+
+    <color name="default_dot">#616161</color>
+    <color name="selected_dot">#8e8e8e</color>
+
+    <color name="green">#388e3c</color>
+    <color name="red">#d32f2f</color>
+
+    <color name="launcher_background">@color/colorPrimary</color>
+    <color name="launcher_foreground">@android:color/white</color>
+</resources>
