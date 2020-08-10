@@ -26,5 +26,5 @@
 
     <!-- Hints -->
     <string name="hint_long_press_to_edit_income">לחצו לחיצה ארוכה כדי לערוך הכנסה חודשית</string>
-    <string name="hint_long_press_to_delete_expense">לחצו לחיצה ארוכה כדי למחוק הוצאה</string>
+    <string name="hint_long_press_to_delete_expense">לחצו לחיצה ארוכה על הוצאה כדי למחוק אותה</string>
 </resources>
