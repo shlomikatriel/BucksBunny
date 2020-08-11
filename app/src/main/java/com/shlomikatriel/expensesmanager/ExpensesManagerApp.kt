@@ -22,4 +22,14 @@ class ExpensesManagerApp: Application() {
             .contextModule(ContextModule(this))
             .build()
     }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        Logger.i("Low memory")
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        Logger.i("App terminated")
+    }
 }
