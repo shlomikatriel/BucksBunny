@@ -8,3 +8,4 @@ This pure Kotlin app uses the latest technology stack and architecture.
 4. UI Binding - Jetpack Data Binding
 5. Navigation - Jetpack Navigation
 6. Kotlin extension functions
+7. Material Design
