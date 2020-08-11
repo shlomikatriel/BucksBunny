@@ -9,15 +9,15 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.shlomikatriel.expensemanager"
+        applicationId "com.shlomikatriel.expensesmanager"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode rootProject.ext.versions.versionCode
-        versionName rootProject.ext.versions.versionName
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
 
         resConfigs "en", "iw"
 
-        buildConfigField "String", "LOG_TAG", "\"ExpenseManager\""
+        buildConfigField "String", "LOG_TAG", "\"ExpensesManager\""
         buildConfigField "int", "MAX_MONTHS_OFFSET", "${rootProject.ext.maxMonthsOffset}"
         buildConfigField "int", "MONTHS_COUNT", "${rootProject.ext.maxMonthsOffset * 2 + 1}"
         buildConfigField "String", "SHARED_PREFERNCES_FILE_NAME", "\"shared_preferences\""
@@ -25,10 +25,25 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            properties.load(rootProject.file('local.properties').newDataInputStream())
+            storeFile file(properties.getProperty("storeFilePath"))
+            storePassword properties.getProperty("storePassword")
+            keyAlias properties.getProperty("keyAlias")
+            keyPassword properties.getProperty("keyPassword")
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            versionNameSuffix '-debug'
         }
     }
 
