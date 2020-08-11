@@ -26,5 +26,5 @@
 
     <!-- Hints -->
     <string name="hint_long_press_to_edit_income">Long press to edit monthly income</string>
-    <string name="hint_long_press_to_delete_expense">Long press to delete expense</string>
+    <string name="hint_long_press_to_delete_expense">Long press on an expense to delete it</string>
 </resources>
