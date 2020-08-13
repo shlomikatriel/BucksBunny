@@ -67,8 +67,6 @@ class ExpensesPageFragment : Fragment() {
 
         configureRecyclers()
 
-        initializeViewEvents()
-
         return binding.root
     }
 
@@ -118,11 +116,5 @@ class ExpensesPageFragment : Fragment() {
                 args.year
             )
         )
-    }
-
-    private fun initializeViewEvents() = binding.balance.setOnLongClickListener {
-        Logger.i("Balance long clicked [arguments=$args]")
-        findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog())
-        true
     }
 }

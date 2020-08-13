@@ -22,23 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/app_bar"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:title="@string/app_name" />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/previous_month"
             android:layout_width="wrap_content"
@@ -46,9 +29,9 @@
             android:layout_marginStart="32dp"
             android:contentDescription="@string/previous_month_description"
             android:onClick="@{fragment::onPreviousMonthClicked}"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintBottom_toBottomOf="@id/date"
             app:layout_constraintEnd_toStartOf="@id/date"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/date"
             app:srcCompat="@drawable/previous" />
@@ -57,24 +40,24 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="18dp"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/next_month"
             app:layout_constraintStart_toEndOf="@id/previous_month"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-            tools:text="July 2020" />
+            app:layout_constraintEnd_toStartOf="@id/next_month"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="5 / 2020" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/next_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
-            android:contentDescription="@string/previous_month_description"
+            android:contentDescription="@string/next_month_description"
             android:onClick="@{fragment::onNextMonthClicked}"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintBottom_toBottomOf="@id/date"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@id/date"
             app:layout_constraintTop_toTopOf="@id/date"
             app:srcCompat="@drawable/next" />
@@ -91,11 +74,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            tools:background="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@id/dots"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_barrier"
-            tools:background="@android:color/darker_gray" />
+            app:layout_constraintTop_toBottomOf="@id/top_barrier" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dots"

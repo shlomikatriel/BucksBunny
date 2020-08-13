@@ -25,6 +25,20 @@
     <string name="choose_income_dialog_ok">Choose</string>
 
     <!-- Hints -->
-    <string name="hint_long_press_to_edit_income">Long press to edit monthly income</string>
+    <string name="hint_income_can_be_changed_in_settings">Monthly income can be changed later in settings</string>
     <string name="hint_long_press_to_delete_expense">Long press on an expense to delete it</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_dark_mode_title">Dark/Light mode</string>
+    <string name="settings_dark_mode_entry_system_default">System default</string>
+    <string name="settings_dark_mode_entry_dark">Dark mode</string>
+    <string name="settings_dark_mode_entry_light">Light mode</string>
+    <string name="settings_graphics_title">Graphics</string>
+    <string name="settings_functionality_title">Functionality</string>
+    <string name="settings_general_title">General</string>
+    <string name="settings_monthly_income">Monthly Income</string>
+    <string name="settings_send_mail">Send Feedback</string>
+    <string name="settings_send_mail_subject">Feedback</string>
+    <string name="settings_send_mail_content">This is my feedback for the app:\n</string>
 </resources>
