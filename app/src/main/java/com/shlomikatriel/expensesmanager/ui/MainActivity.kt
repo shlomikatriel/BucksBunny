@@ -1,12 +1,10 @@
 package com.shlomikatriel.expensesmanager.ui
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
