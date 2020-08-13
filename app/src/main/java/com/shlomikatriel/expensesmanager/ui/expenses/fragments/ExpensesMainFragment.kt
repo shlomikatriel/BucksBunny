@@ -2,9 +2,7 @@ package com.shlomikatriel.expensesmanager.ui.expenses.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,6 +18,7 @@ import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
+import com.shlomikatriel.expensesmanager.ui.configureToolbar
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesEvent
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewState
@@ -67,10 +66,22 @@ class ExpensesMainFragment : Fragment() {
 
         if (!sharedPreferences.getBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN)) {
             sharedPreferences.putBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN, true)
-            findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog())
+            findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog(fromOnBoarding = true))
         }
 
+        configureToolbar(R.string.app_name)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+        inflater.inflate(R.menu.expenses_main_menu, menu)
+
+    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.settings) {
+        findNavController().safeNavigate(ExpensesMainFragmentDirections.openSettingsFragment())
+        true
+    } else {
+        false
     }
 
     private fun configureViewPager() = binding.pager.apply {
@@ -89,11 +100,13 @@ class ExpensesMainFragment : Fragment() {
     }
 
     fun onPreviousMonthClicked(view: View?) {
+        Logger.d("Previous month clicked")
         view?.startAnimation(animationFactory.createPopAnimation())
         model.postEvent(ExpensesEvent.MonthChangeEvent(binding.pager.currentItem - 1))
     }
 
     fun onNextMonthClicked(view: View?) {
+        Logger.d("Next month clicked")
         view?.startAnimation(animationFactory.createPopAnimation())
         model.postEvent(ExpensesEvent.MonthChangeEvent(binding.pager.currentItem + 1))
     }

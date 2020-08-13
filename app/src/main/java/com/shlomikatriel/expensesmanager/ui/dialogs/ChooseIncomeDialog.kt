@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ChooseIncomeDialogBinding
@@ -30,6 +31,8 @@ class ChooseIncomeDialog : BaseDialog() {
 
     private lateinit var binding: ChooseIncomeDialogBinding
 
+    private val args: ChooseIncomeDialogArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,9 +46,13 @@ class ChooseIncomeDialog : BaseDialog() {
             container,
             false
         ).apply {
+            fromOnBoarding = args.fromOnBoarding
             dialog = this@ChooseIncomeDialog
             incomeLayout.prefixText = Currency.getInstance(Locale.getDefault()).symbol
-            income.setText(sharedPreferences.getFloat(FloatKey.INCOME).toString(), TextView.BufferType.NORMAL)
+            income.setText(
+                sharedPreferences.getFloat(FloatKey.INCOME).toString(),
+                TextView.BufferType.NORMAL
+            )
         }
 
         return binding.root
@@ -58,7 +65,10 @@ class ChooseIncomeDialog : BaseDialog() {
         Logger.d("Trying to add expense [income=$income, incomeAsFloat=$incomeAsFloat]")
         when {
             incomeBlank -> binding.incomeLayout.showError(appContext, R.string.error_empty_value)
-            incomeAsFloat == null -> binding.incomeLayout.showError(appContext, R.string.error_number_illegal)
+            incomeAsFloat == null -> binding.incomeLayout.showError(
+                appContext,
+                R.string.error_number_illegal
+            )
             else -> {
                 sharedPreferences.putFloat(FloatKey.INCOME, incomeAsFloat)
                 findNavController().popBackStack()

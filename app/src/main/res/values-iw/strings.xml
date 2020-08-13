@@ -25,6 +25,20 @@
     <string name="choose_income_dialog_ok">בחירה</string>
 
     <!-- Hints -->
-    <string name="hint_long_press_to_edit_income">לחצו לחיצה ארוכה כדי לערוך הכנסה חודשית</string>
+    <string name="hint_income_can_be_changed_in_settings">ניתן לשנות את ההכנסה החודשית לאחר מכן בהגדרות</string>
     <string name="hint_long_press_to_delete_expense">לחצו לחיצה ארוכה על הוצאה כדי למחוק אותה</string>
+
+    <!-- Settings -->
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_dark_mode_title">מצב כהה</string>
+    <string name="settings_dark_mode_entry_system_default">ברירת מחדל</string>
+    <string name="settings_dark_mode_entry_dark">מצב כהה</string>
+    <string name="settings_dark_mode_entry_light">מצב בהיר</string>
+    <string name="settings_graphics_title">גרפיקה</string>
+    <string name="settings_functionality_title">פונקציונליות</string>
+    <string name="settings_general_title">כללי</string>
+    <string name="settings_monthly_income">הכנסה חודשית</string>
+    <string name="settings_send_mail">שליחת משוב</string>
+    <string name="settings_send_mail_subject">משוב עבור</string>
+    <string name="settings_send_mail_content">זה המשוב שלי עבור האפליקציה:\n</string>
 </resources>

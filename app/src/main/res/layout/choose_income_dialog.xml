@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog" />
+
+        <variable
+            name="from_on_boarding"
+            type="boolean" />
 
         <variable
             name="dialog"
@@ -32,13 +39,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
+        <TextView
+            android:id="@+id/hint"
+            style="@style/HintTextView"
+            android:text="@string/hint_income_can_be_changed_in_settings"
+            android:visibility="@{from_on_boarding ? View.VISIBLE : View.GONE, default=gone}"
+            app:drawableStartCompat="@drawable/info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description"
+            tools:visibility="visible" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/income_layout"
             style="@style/DialogInput"
             android:hint="@string/choose_income_dialog_hint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description">
+            app:layout_constraintTop_toBottomOf="@id/hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/income"
@@ -54,8 +72,8 @@
             android:layout_marginTop="24dp"
             android:onClick="@{() -> dialog.chooseClicked()}"
             android:text="@string/choose_income_dialog_ok"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toRightOf="@id/cancel"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/income_layout" />
 
 

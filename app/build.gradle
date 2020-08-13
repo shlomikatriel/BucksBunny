@@ -86,4 +86,7 @@ dependencies {
     // Dagger
     implementation "com.google.dagger:dagger:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+
+    // Preferences
+    implementation 'androidx.preference:preference:1.1.1'
 }
