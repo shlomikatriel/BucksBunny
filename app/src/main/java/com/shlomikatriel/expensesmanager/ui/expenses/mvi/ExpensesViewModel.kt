@@ -44,23 +44,27 @@ class ExpensesViewModel : ViewModel() {
 
     private fun resultToViewState(expensesResult: ExpensesResult) {
         Logger.i("Processing result $expensesResult")
-
         viewState = when (expensesResult) {
             ExpensesResult.InitializeResult -> {
+                val position = viewState.selectedPage ?: BuildConfig.MAX_MONTHS_OFFSET
                 viewState.copy(
-                    time = System.currentTimeMillis(),
-                    selectedPage = BuildConfig.MAX_MONTHS_OFFSET
+                    time = transformPositionToMonthMillis(position),
+                    selectedPage = position
                 )
             }
             is ExpensesResult.MonthChangeResult -> {
-                val calendar = Calendar.getInstance()
-                calendar.add(Calendar.MONTH, expensesResult.newPosition - BuildConfig.MAX_MONTHS_OFFSET)
                 viewState.copy(
-                    time = calendar.timeInMillis,
+                    time = transformPositionToMonthMillis(expensesResult.newPosition),
                     selectedPage = expensesResult.newPosition
                 )
             }
         }
+    }
+
+    private fun transformPositionToMonthMillis(position: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.MONTH, position - BuildConfig.MAX_MONTHS_OFFSET)
+        return calendar.timeInMillis
     }
 
     override fun onCleared() {
