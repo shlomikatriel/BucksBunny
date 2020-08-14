@@ -87,7 +87,7 @@ class ExpensesMainFragment : Fragment() {
     private fun configureViewPager() = binding.pager.apply {
         adapter = ExpensesPagePagerAdapter(this@ExpensesMainFragment)
         TabLayoutMediator(binding.dots, binding.pager) { _, position ->
-            binding.pager.setCurrentItem(position, true)
+            binding.pager.setCurrentItem(position, false)
         }.attach()
 
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
