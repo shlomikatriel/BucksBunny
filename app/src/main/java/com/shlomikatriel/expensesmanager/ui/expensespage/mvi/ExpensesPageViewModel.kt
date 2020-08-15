@@ -30,11 +30,9 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
 
     private val expenseItemsLiveData: LiveData<List<Expense>>
 
-    private val expenseItemsLiveDataObserver: Observer<List<Expense>> = Observer { items ->
+    private val expenseItemsLiveDataObserver: Observer<List<Expense>> = Observer {
         Logger.i("Expenses list changed")
-        val expenses = items.filter { !it.isMonthly }
-        val monthlyExpenses = items.filter { it.isMonthly }
-        resultToViewState(ExpensesPageResult.ExpenseListChangedResult(expenses, monthlyExpenses))
+        resultToViewState(ExpensesPageResult.ExpenseListChangedResult(it))
     }
 
     private val onSharedPreferencesChangeListener : SharedPreferences.OnSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, key: String ->
@@ -56,18 +54,13 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
         Logger.i("Processing event $expensesPageEvent")
         when (expensesPageEvent) {
             is ExpensesPageEvent.InitializeEvent -> handleInitialize()
-            is ExpensesPageEvent.AddExpenseEvent -> handleAddExpense(expensesPageEvent.isMonthly, expensesPageEvent.offset)
+            is ExpensesPageEvent.SelectedChipsChangedEvent -> resultToViewState(ExpensesPageResult.SelectedChipsChangedResult(expensesPageEvent.chips))
         }
     }
 
     private fun handleInitialize() {
-        Logger.d("Handling initialize event")
         expenseItemsLiveData.observeForever(expenseItemsLiveDataObserver)
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferencesChangeListener)
-    }
-
-    private fun handleAddExpense(isMonthly: Boolean, offset: Int) {
-        Logger.d("Handling add expense event [isMonthly=$isMonthly, offset=$offset")
     }
 
     private fun resultToViewState(result: ExpensesPageResult) {
@@ -75,8 +68,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
         viewState = when (result) {
             is ExpensesPageResult.IncomeChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)
-                viewState.expenses?.forEach { balance -= it.amount }
-                viewState.monthlyExpenses?.forEach { balance -= it.amount }
+                viewState.expenses.forEach { balance -= it.amount }
                 viewState.copy(
                     balance = balance
                 )
@@ -84,20 +76,19 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
             is ExpensesPageResult.ExpenseListChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)
                 result.expenses.forEach { balance -= it.amount }
-                result.monthlyExpenses.forEach { balance -= it.amount }
                 viewState.copy(
                     balance = balance,
-                    expenses = transformExpensesToRecyclerItems(result.expenses),
-                    monthlyExpenses = transformExpensesToRecyclerItems(result.monthlyExpenses)
+                    expenses = transformToArrayList(result.expenses)
                 )
+            }
+            is ExpensesPageResult.SelectedChipsChangedResult -> {
+                viewState.copy(selectedChips = result.chips)
             }
         }
 
     }
 
-    private fun transformExpensesToRecyclerItems(expenses: List<Expense>) = expenses.filter { it.id != null }
-        .map { ExpenseRecyclerItem(it.id!!, it.timeStamp, it.name, it.amount) }
-        .let { arrayListOf(*(it.toTypedArray())) }
+    private fun transformToArrayList(expenses: List<Expense>) = arrayListOf(*(expenses.toTypedArray()))
         .apply { sortBy { it.timeStamp } }
 
     override fun onCleared() {

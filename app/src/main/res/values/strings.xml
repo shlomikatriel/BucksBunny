@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- General -->
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="one_time_expense">One Time</string>
+    <string name="monthly_expense">Monthly</string>
+    <string name="expense_name">Expense Name</string>
+    <string name="expense_amount">Expense Cost</string>
+
+    <!-- Fragments -->
     <string name="app_name">Expenses Manager</string>
     <string name="previous_month_description">View previous month</string>
     <string name="next_month_description">View next month</string>
-    <string name="expenses_title">Expenses</string>
-    <string name="monthly_expenses_title">Monthly Expenses</string>
+    <string name="expenses_page_chip_one_time">One Time</string>
+    <string name="expenses_page_chip_monthly">Monthly</string>
+    <string name="expenses_page_chip_x_or_more">%s or more</string>
+    <string name="expenses_page_chip_less_then_x">Less Then %s</string>
+    <string name="expenses_page_chip_x_or_more_example">100 $ or more</string>
+    <string name="expenses_page_chip_less_then_x_example">Less Then 100 $</string>
+    <string name="expenses_page_sum">Total: %s</string>
+    <string name="expenses_page_sum_example">Total: 430$</string>
+    <string name="expenses_page_recycler_item_name_example">Restaurant</string>
+    <string name="expenses_page_recycler_item_menu_description">Menu</string>
+    <string name="expenses_page_recycler_item_monthly">%s each month</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -13,12 +31,9 @@
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
     <string name="add_expense_dialog_title">Add Expense</string>
-    <string name="add_expense_dialog_name">Expense Name</string>
-    <string name="add_expense_dialog_cost">Expense Cost</string>
     <string name="add_expense_dialog_add">Add</string>
     <string name="delete_expense_dialog_title">Delete Expense</string>
     <string name="delete_expense_dialog_confirmation_text">Are you sure you want to delete the expense?</string>
-    <string name="delete_expense_dialog_delete">Delete</string>
     <string name="choose_income_dialog_title">Choose Monthly Income</string>
     <string name="choose_income_dialog_description">Please choose your monthly income, which will be used as a base for the expenses calculation</string>
     <string name="choose_income_dialog_hint">Monthly Income</string>
@@ -26,7 +41,6 @@
 
     <!-- Hints -->
     <string name="hint_income_can_be_changed_in_settings">Monthly income can be changed later in settings</string>
-    <string name="hint_long_press_to_delete_expense">Long press on an expense to delete it</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
