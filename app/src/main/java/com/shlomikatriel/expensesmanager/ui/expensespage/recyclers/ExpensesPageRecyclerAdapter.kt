@@ -2,24 +2,25 @@ package com.shlomikatriel.expensesmanager.ui.expensespage.recyclers
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpenseRecyclerItemBinding
 import com.shlomikatriel.expensesmanager.extensions.safeNavigate
 import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpenseRecyclerItem
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModel
-import java.text.DecimalFormat
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openDeleteExpenseDialog
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openEditExpenseDialog
+import java.text.NumberFormat
 
 class ExpensesPageRecyclerAdapter(
-    context: Context,
-    val model: ExpensesPageViewModel,
-    val fragment: Fragment
+    private val context: Context,
+    private val navController: NavController,
+    private val currencyFormat: NumberFormat
 ) : RecyclerView.Adapter<ExpensesPageRecyclerAdapter.ExpenseRecyclerViewHolder>() {
 
     init {
@@ -27,10 +28,10 @@ class ExpensesPageRecyclerAdapter(
     }
 
     private val inflater = LayoutInflater.from(context)
-    private var data = arrayListOf<ExpenseRecyclerItem>()
+    private var data = arrayListOf<Expense>()
 
     override fun getItemId(position: Int): Long {
-        return data[position].id
+        return data[position].id!!
     }
 
     override fun onCreateViewHolder(
@@ -52,17 +53,46 @@ class ExpensesPageRecyclerAdapter(
         val data = data[position]
         holder.binding.apply {
             name.text = data.name
-            amount.text = DecimalFormat.getCurrencyInstance().format(data.amount)
-            holder.binding.root.setOnLongClickListener {
-                Logger.d("handling expense #${data.id} deletion")
-                fragment.findNavController()
-                    .safeNavigate(ExpensesMainFragmentDirections.openDeleteExpenseDialog(data.id))
-                true
+            val amountFormatted = currencyFormat.format(data.amount)
+            amount.text = if (data.isMonthly) {
+                context.getString(R.string.expenses_page_recycler_item_monthly, amountFormatted)
+            } else {
+                amountFormatted
+            }
+            val popupMenu = createPopupMenu(holder.binding.menu, data)
+            holder.binding.menu.setOnClickListener {
+                Logger.d("Showing expense #${data.id} context menu")
+                popupMenu.show()
             }
         }
     }
 
-    fun updateData(data: ArrayList<ExpenseRecyclerItem>) {
+    private fun createPopupMenu(menuIcon: View, item: Expense) =
+        PopupMenu(context, menuIcon).apply {
+            menuInflater.inflate(R.menu.expense_context_menu, menu)
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.edit -> {
+                        Logger.i("Showing item #${item.id} edit dialog")
+                        navController.safeNavigate(
+                            openEditExpenseDialog(
+                                item.id!!,
+                                item.name,
+                                item.amount,
+                                item.isMonthly
+                            )
+                        )
+                    }
+                    R.id.delete -> {
+                        Logger.i("Showing item #${item.id} delete dialog")
+                        navController.safeNavigate(openDeleteExpenseDialog(item.id!!))
+                    }
+                }
+                true
+            }
+        }
+
+    fun updateData(data: ArrayList<Expense>) {
         this.data.clear()
         this.data.addAll(data)
         notifyDataSetChanged()

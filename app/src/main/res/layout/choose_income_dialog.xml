@@ -21,7 +21,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="24dp">
+        android:padding="@dimen/dialog_padding">
 
         <TextView
             android:id="@+id/title"
@@ -34,6 +34,7 @@
         <TextView
             android:id="@+id/description"
             style="@style/DialogText"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
             android:text="@string/choose_income_dialog_description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +43,7 @@
         <TextView
             android:id="@+id/hint"
             style="@style/HintTextView"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
             android:text="@string/hint_income_can_be_changed_in_settings"
             android:visibility="@{from_on_boarding ? View.VISIBLE : View.GONE, default=gone}"
             app:drawableStartCompat="@drawable/info"
@@ -69,7 +71,7 @@
             android:id="@+id/choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
             android:onClick="@{() -> dialog.chooseClicked()}"
             android:text="@string/choose_income_dialog_ok"
             app:layout_constraintLeft_toRightOf="@id/cancel"
@@ -82,7 +84,7 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
             android:onClick="@{() -> dialog.cancelClicked()}"
             android:text="@string/dialog_cancel"
             app:layout_constraintLeft_toLeftOf="parent"

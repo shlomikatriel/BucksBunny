@@ -29,6 +29,9 @@ class ChooseIncomeDialog : BaseDialog() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
+    @Inject
+    lateinit var currency: Currency
+
     private lateinit var binding: ChooseIncomeDialogBinding
 
     private val args: ChooseIncomeDialogArgs by navArgs()
@@ -48,7 +51,7 @@ class ChooseIncomeDialog : BaseDialog() {
         ).apply {
             fromOnBoarding = args.fromOnBoarding
             dialog = this@ChooseIncomeDialog
-            incomeLayout.prefixText = Currency.getInstance(Locale.getDefault()).symbol
+            incomeLayout.prefixText = currency.symbol
             income.setText(
                 sharedPreferences.getFloat(FloatKey.INCOME).toString(),
                 TextView.BufferType.NORMAL

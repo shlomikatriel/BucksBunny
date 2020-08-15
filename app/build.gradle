@@ -21,6 +21,7 @@ android {
         buildConfigField "int", "MAX_MONTHS_OFFSET", "${rootProject.ext.maxMonthsOffset}"
         buildConfigField "int", "MONTHS_COUNT", "${rootProject.ext.maxMonthsOffset * 2 + 1}"
         buildConfigField "String", "SHARED_PREFERNCES_FILE_NAME", "\"shared_preferences\""
+        buildConfigField "int", "CHIP_FILTER_THRESHOLD", "200"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

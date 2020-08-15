@@ -7,6 +7,7 @@ import com.shlomikatriel.expensesmanager.ui.MainActivity
 import com.shlomikatriel.expensesmanager.ui.dialogs.AddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog
 import com.shlomikatriel.expensesmanager.ui.dialogs.DeleteExpenseDialog
+import com.shlomikatriel.expensesmanager.ui.dialogs.EditExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment
 import com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModel
@@ -33,4 +34,6 @@ interface AppComponent {
     fun inject(settingsFragment: SettingsFragment)
 
     fun inject(mainActivity: MainActivity)
+
+    fun inject(editExpenseDialog: EditExpenseDialog)
 }
