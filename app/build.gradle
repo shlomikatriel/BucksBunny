@@ -24,6 +24,10 @@ android {
         buildConfigField "int", "CHIP_FILTER_THRESHOLD", "200"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions.annotationProcessorOptions {
+            arguments += ["room.incremental":"true"]
+        }
     }
 
     signingConfigs {
