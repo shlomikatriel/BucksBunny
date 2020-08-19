@@ -1,6 +1,7 @@
 package com.shlomikatriel.expensesmanager.ui
 
 import android.content.SharedPreferences
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
@@ -36,8 +37,19 @@ class MainActivity : AppCompatActivity() {
 
         attachDestinationChangedListener()
 
-        configureDarkMode()
+        applyConfigurations()
+    }
 
+    private fun applyConfigurations() {
+        toggleOrientationLock()
+        configureDarkMode()
+    }
+
+    private fun toggleOrientationLock() {
+        if (!resources.getBoolean(R.bool.is_tablet)) {
+            Logger.d("Locking orientation")
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        }
     }
 
     private fun attachDestinationChangedListener() = findNavController(R.id.nav_host_fragment)

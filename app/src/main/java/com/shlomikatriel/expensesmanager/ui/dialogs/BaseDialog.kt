@@ -5,7 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.shlomikatriel.expensesmanager.R
 
-abstract class BaseDialog: DialogFragment() {
+abstract class BaseDialog : DialogFragment() {
 
     /**
      * Using nav graph animations doesn't work on dialogs.
@@ -20,6 +20,12 @@ abstract class BaseDialog: DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(getWidthDimension(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+    }
+
+    private fun getWidthDimension() = if (resources.getBoolean(R.bool.is_tablet)) {
+        resources.getDimensionPixelSize(R.dimen.fragment_width)
+    } else {
+        ConstraintLayout.LayoutParams.MATCH_PARENT
     }
 }
