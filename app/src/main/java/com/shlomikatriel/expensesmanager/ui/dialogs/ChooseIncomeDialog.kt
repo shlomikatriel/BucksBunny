@@ -3,9 +3,7 @@ package com.shlomikatriel.expensesmanager.ui.dialogs
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
@@ -36,19 +34,15 @@ class ChooseIncomeDialog : BaseDialog() {
 
     private val args: ChooseIncomeDialogArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+    }
 
-        binding = DataBindingUtil.inflate<ChooseIncomeDialogBinding>(
-            inflater,
-            R.layout.choose_income_dialog,
-            container,
-            false
-        ).apply {
+    override fun layout() = R.layout.choose_income_dialog
+
+    override fun bind(view: View) {
+        binding = DataBindingUtil.bind<ChooseIncomeDialogBinding>(view)!!.apply {
             fromOnBoarding = args.fromOnBoarding
             dialog = this@ChooseIncomeDialog
             incomeLayout.prefixText = currency.symbol
@@ -57,8 +51,6 @@ class ChooseIncomeDialog : BaseDialog() {
                 TextView.BufferType.NORMAL
             )
         }
-
-        return binding.root
     }
 
     fun chooseClicked() {

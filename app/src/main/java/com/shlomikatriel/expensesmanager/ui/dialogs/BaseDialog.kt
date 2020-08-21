@@ -1,8 +1,11 @@
 package com.shlomikatriel.expensesmanager.ui.dialogs
 
+import android.app.Dialog
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.shlomikatriel.expensesmanager.R
 
 abstract class BaseDialog : DialogFragment() {
@@ -18,14 +21,17 @@ abstract class BaseDialog : DialogFragment() {
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(getWidthDimension(), ConstraintLayout.LayoutParams.WRAP_CONTENT)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val view = layoutInflater.inflate(layout(), null)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(view)
+            .create()
+        bind(view)
+        return dialog
     }
+    
+    @LayoutRes
+    abstract fun layout(): Int
 
-    private fun getWidthDimension() = if (resources.getBoolean(R.bool.is_tablet)) {
-        resources.getDimensionPixelSize(R.dimen.fragment_width)
-    } else {
-        ConstraintLayout.LayoutParams.MATCH_PARENT
-    }
+    abstract fun bind(view: View)
 }
