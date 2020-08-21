@@ -2,9 +2,7 @@ package com.shlomikatriel.expensesmanager.ui.dialogs
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -33,27 +31,21 @@ class EditExpenseDialog : BaseDialog() {
 
     private val args: EditExpenseDialogArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+    }
 
-        binding = DataBindingUtil.inflate<EditExpenseDialogBinding>(
-            inflater,
-            R.layout.edit_expense_dialog,
-            container,
-            false
-        ).apply {
+    override fun layout() = R.layout.edit_expense_dialog
+
+    override fun bind(view: View) {
+        binding = DataBindingUtil.bind<EditExpenseDialogBinding>(view)!!.apply {
             dialog = this@EditExpenseDialog
             inputsLayout.costLayout.prefixText = currency.symbol
             inputsLayout.oneTimeMonthlyButtons.check(if (args.isMonthly) R.id.monthly_expense else R.id.one_time_expense)
             inputsLayout.cost.setText(args.amount.toString())
             inputsLayout.name.setText(args.name)
         }
-
-        return binding.root
     }
 
     fun editClicked() {
