@@ -32,7 +32,7 @@ class ExpensesMainFragment : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    private val dateFormat = SimpleDateFormat("MMMM YYYY", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
 
     private lateinit var binding: ExpensesMainFragmentBinding
 
