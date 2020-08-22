@@ -9,7 +9,6 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,7 +22,6 @@ import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
 import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
-import com.shlomikatriel.expensesmanager.utils.AnimationFactory
 import java.text.NumberFormat
 import javax.inject.Inject
 import javax.inject.Named
@@ -32,9 +30,6 @@ class ExpensesPageFragment : Fragment() {
 
     @Inject
     lateinit var appContext: Context
-
-    @Inject
-    lateinit var animationFactory: AnimationFactory
 
     @Inject
     lateinit var currencyFormat: NumberFormat
@@ -98,7 +93,7 @@ class ExpensesPageFragment : Fragment() {
         ).get(args.pagePosition.toString(), ExpensesPageViewModel::class.java)
             .apply {
                 postEvent(ExpensesPageEvent.InitializeEvent)
-                getViewState().observe(viewLifecycleOwner, Observer { render(it) })
+                getViewState().observe(viewLifecycleOwner, { render(it) })
             }
     }
 
@@ -128,9 +123,8 @@ class ExpensesPageFragment : Fragment() {
         .toList()
 
 
-    fun addExpenseClicked(view: View) {
+    fun addExpenseClicked() {
         Logger.i("Add expense button clicked")
-        view.startAnimation(animationFactory.createPopAnimation())
         findNavController().safeNavigate(
             ExpensesMainFragmentDirections.openAddExpenseDialog(args.month, args.year)
         )

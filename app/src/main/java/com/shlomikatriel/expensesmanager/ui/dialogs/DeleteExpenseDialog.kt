@@ -1,9 +1,7 @@
 package com.shlomikatriel.expensesmanager.ui.dialogs
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -24,23 +22,17 @@ class DeleteExpenseDialog : BaseDialog() {
 
     private val args: DeleteExpenseDialogArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+    }
 
-        binding = DataBindingUtil.inflate<DeleteExpenseDialogBinding>(
-            inflater,
-            R.layout.delete_expense_dialog,
-            container,
-            false
-        ).apply {
+    override fun layout() = R.layout.delete_expense_dialog
+
+    override fun bind(view: View) {
+        binding = DataBindingUtil.bind<DeleteExpenseDialogBinding>(view)!!.apply {
             dialog = this@DeleteExpenseDialog
         }
-
-        return binding.root
     }
 
     fun cancelClicked() {

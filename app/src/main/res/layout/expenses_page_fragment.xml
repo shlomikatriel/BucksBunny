@@ -26,7 +26,7 @@
             type="java.lang.String" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -37,7 +37,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -119,19 +123,18 @@
                     app:layout_constraintTop_toBottomOf="@id/expenses_recycler"
                     tools:text="@string/expenses_page_sum_example" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/add_expense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/fragment_vertical_spacing"
-                    android:onClick="@{(v) -> fragment.addExpenseClicked(v)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/sum_view"
-                    app:srcCompat="@drawable/add" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:onClick="@{() -> fragment.addExpenseClicked()}"
+            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/add" />
 
         <TextView
             android:id="@+id/balance"
@@ -141,7 +144,10 @@
             android:layout_marginBottom="@dimen/fragment_vertical_spacing"
             android:textSize="36sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="4362₪"
             tools:textColor="@color/green" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

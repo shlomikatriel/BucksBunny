@@ -2,9 +2,7 @@ package com.shlomikatriel.expensesmanager.ui.dialogs
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -34,24 +32,18 @@ class AddExpenseDialog : BaseDialog() {
 
     private val args: AddExpenseDialogArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+    }
 
-        binding = DataBindingUtil.inflate<AddExpenseDialogBinding>(
-            inflater,
-            R.layout.add_expense_dialog,
-            container,
-            false
-        ).apply {
+    override fun layout() = R.layout.add_expense_dialog
+
+    override fun bind(view: View) {
+        binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
             dialog = this@AddExpenseDialog
             inputsLayout.costLayout.prefixText = currency.symbol
         }
-
-        return binding.root
     }
 
     fun addClicked() {
