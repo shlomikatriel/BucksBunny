@@ -56,4 +56,5 @@
     <string name="settings_send_mail">שליחת משוב</string>
     <string name="settings_send_mail_subject">משוב עבור</string>
     <string name="settings_send_mail_content">זה המשוב שלי עבור האפליקציה:\n</string>
+    <string name="settings_application_info">פרטי יישום</string>
 </resources>

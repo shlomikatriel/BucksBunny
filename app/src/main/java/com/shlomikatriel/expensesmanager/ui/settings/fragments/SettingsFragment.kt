@@ -2,13 +2,17 @@ package com.shlomikatriel.expensesmanager.ui.settings.fragments
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.extensions.safeNavigate
@@ -23,12 +27,14 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 
 
-class SettingsFragment: SharedPreferences.OnSharedPreferenceChangeListener, PreferenceFragmentCompat() {
+class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
+    PreferenceFragmentCompat() {
 
     companion object {
         const val KEY_DARK_MODE = "dark_mode"
         const val MONTHLY_INCOME_KEY = "monthly_income"
-        const val OPEN_SOURCE_LICENSES_KEYS = "open_source_licenses"
+        const val OPEN_SOURCE_LICENSES_KEY = "open_source_licenses"
+        const val APPLICATION_INFO_KEY = "application_info"
         const val SEND_MAIL_KEY = "send_mail"
         const val MAIL_ADDRESS = "shlomikatriel@gmail.com"
     }
@@ -67,15 +73,23 @@ class SettingsFragment: SharedPreferences.OnSharedPreferenceChangeListener, Pref
     }
 
     private fun updateMonthlyIncomeSummary() {
-        preferenceManager.findPreference<Preference>(MONTHLY_INCOME_KEY)?.summary = DecimalFormat.getCurrencyInstance().format(sharedPreferences.getFloat(FloatKey.INCOME))
+        preferenceManager.findPreference<Preference>(MONTHLY_INCOME_KEY)?.summary =
+            DecimalFormat.getCurrencyInstance().format(sharedPreferences.getFloat(FloatKey.INCOME))
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         Logger.i("Preference ${preference?.key} clicked")
         when (preference?.key) {
-            MONTHLY_INCOME_KEY -> findNavController().safeNavigate(openChooseIncomeDialog(fromOnBoarding = false))
+            MONTHLY_INCOME_KEY -> findNavController().safeNavigate(
+                openChooseIncomeDialog(
+                    fromOnBoarding = false
+                )
+            )
             SEND_MAIL_KEY -> handleSendMailClick()
-            OPEN_SOURCE_LICENSES_KEYS -> findNavController().safeNavigate(openOpenSourceLicensesActivity())
+            OPEN_SOURCE_LICENSES_KEY -> findNavController().safeNavigate(
+                openOpenSourceLicensesActivity()
+            )
+            APPLICATION_INFO_KEY -> handleApplicationInfoClicked()
             else -> return super.onPreferenceTreeClick(preference)
         }
         return true
@@ -99,5 +113,15 @@ class SettingsFragment: SharedPreferences.OnSharedPreferenceChangeListener, Pref
             putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_send_mail_content))
         }
         startActivity(Intent.createChooser(intent, getString(R.string.settings_send_mail)))
+    }
+
+    private fun handleApplicationInfoClicked() = try {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.settings_open_source_licenses))
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+        }
+        startActivity(intent)
+    } catch (e: Exception) {
+        Logger.e("Failed to open application info", e)
     }
 }

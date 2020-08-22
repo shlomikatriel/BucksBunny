@@ -56,4 +56,5 @@
     <string name="settings_send_mail">Send Feedback</string>
     <string name="settings_send_mail_subject">Feedback</string>
     <string name="settings_send_mail_content">This is my feedback for the app:\n</string>
+    <string name="settings_application_info">App Info</string>
 </resources>
