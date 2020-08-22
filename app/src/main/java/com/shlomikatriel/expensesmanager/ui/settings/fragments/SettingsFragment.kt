@@ -17,6 +17,8 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.ui.configureToolbar
 import com.shlomikatriel.expensesmanager.ui.settings.AppDataStore
+import com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -26,6 +28,7 @@ class SettingsFragment: SharedPreferences.OnSharedPreferenceChangeListener, Pref
     companion object {
         const val KEY_DARK_MODE = "dark_mode"
         const val MONTHLY_INCOME_KEY = "monthly_income"
+        const val OPEN_SOURCE_LICENSES_KEYS = "open_source_licenses"
         const val SEND_MAIL_KEY = "send_mail"
         const val MAIL_ADDRESS = "shlomikatriel@gmail.com"
     }
@@ -70,8 +73,9 @@ class SettingsFragment: SharedPreferences.OnSharedPreferenceChangeListener, Pref
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
         Logger.i("Preference ${preference?.key} clicked")
         when (preference?.key) {
-            MONTHLY_INCOME_KEY -> findNavController().safeNavigate(SettingsFragmentDirections.openChooseIncomeDialog(fromOnBoarding = false))
+            MONTHLY_INCOME_KEY -> findNavController().safeNavigate(openChooseIncomeDialog(fromOnBoarding = false))
             SEND_MAIL_KEY -> handleSendMailClick()
+            OPEN_SOURCE_LICENSES_KEYS -> findNavController().safeNavigate(openOpenSourceLicensesActivity())
             else -> return super.onPreferenceTreeClick(preference)
         }
         return true

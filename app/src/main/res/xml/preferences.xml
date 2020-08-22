@@ -21,6 +21,9 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_general_title">
         <Preference
+            android:key="open_source_licenses"
+            android:title="@string/settings_open_source_licenses" />
+        <Preference
             android:key="send_mail"
             android:title="@string/settings_send_mail" />
     </PreferenceCategory>

@@ -52,6 +52,14 @@
         <action
             android:id="@+id/open_choose_income_dialog"
             app:destination="@id/choose_income_dialog" />
+
+        <action
+            android:id="@+id/open_open_source_licenses_activity"
+            app:destination="@id/open_source_licenses_activity"
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_pop_enter"
+            app:popExitAnim="@anim/fragment_pop_exit" />
     </fragment>
 
     <dialog
@@ -105,4 +113,10 @@
             android:name="from_on_boarding"
             app:argType="boolean" />
     </dialog>
+
+    <activity
+        android:id="@+id/open_source_licenses_activity"
+        android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+        android:label="open_source_licenses_activity"
+        tools:layout="@layout/license_menu_activity_no_licenses" />
 </navigation>
