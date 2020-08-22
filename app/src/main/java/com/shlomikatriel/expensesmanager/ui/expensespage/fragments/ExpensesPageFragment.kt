@@ -9,25 +9,22 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
 import com.shlomikatriel.expensesmanager.extensions.safeNavigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageEvent
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModel
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModelFactory
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewState
+import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
 import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
-import com.shlomikatriel.expensesmanager.utils.AnimationFactory
-import java.text.DecimalFormat
+import java.text.NumberFormat
 import javax.inject.Inject
+import javax.inject.Named
 
 class ExpensesPageFragment : Fragment() {
 
@@ -35,7 +32,11 @@ class ExpensesPageFragment : Fragment() {
     lateinit var appContext: Context
 
     @Inject
-    lateinit var animationFactory: AnimationFactory
+    lateinit var currencyFormat: NumberFormat
+
+    @Inject
+    @Named("integer")
+    lateinit var currencyIntegerFormat: NumberFormat
 
     private val args: ExpensesPageFragmentArgs by navArgs()
 
@@ -44,8 +45,6 @@ class ExpensesPageFragment : Fragment() {
     private lateinit var model: ExpensesPageViewModel
 
     private lateinit var expensesRecyclerAdapter: ExpensesPageRecyclerAdapter
-
-    private lateinit var monthlyExpensesRecyclerAdapter: ExpensesPageRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,15 +60,30 @@ class ExpensesPageFragment : Fragment() {
             false
         ).apply {
             fragment = this@ExpensesPageFragment
+            currencyFormat = currencyIntegerFormat
         }
 
         initializeViewModel()
 
-        configureRecyclers()
-
-        initializeViewEvents()
+        configureRecycler()
 
         return binding.root
+    }
+
+    private fun configureRecycler() = binding.expensesRecycler.apply {
+        layoutManager = LinearLayoutManager(requireContext())
+        expensesRecyclerAdapter = ExpensesPageRecyclerAdapter(
+            requireContext(),
+            findNavController(),
+            currencyFormat
+        )
+        adapter = expensesRecyclerAdapter
+    }
+
+    fun onCheckedChanged() {
+        val selectedChips = getSelectedChips()
+        Logger.i("Selected chips changed [selectedChips=$selectedChips]")
+        model.postEvent(ExpensesPageEvent.SelectedChipsChangedEvent(selectedChips))
     }
 
     private fun initializeViewModel() {
@@ -79,50 +93,40 @@ class ExpensesPageFragment : Fragment() {
         ).get(args.pagePosition.toString(), ExpensesPageViewModel::class.java)
             .apply {
                 postEvent(ExpensesPageEvent.InitializeEvent)
-                getViewState().observe(viewLifecycleOwner, Observer { render(it) })
+                getViewState().observe(viewLifecycleOwner, { render(it) })
             }
     }
 
-    private fun configureRecyclers() {
-        binding.expensesRecycler.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            expensesRecyclerAdapter =
-                ExpensesPageRecyclerAdapter(requireContext(), model, this@ExpensesPageFragment)
-            adapter = expensesRecyclerAdapter
-        }
-        binding.monthlyExpensesRecycler.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            monthlyExpensesRecyclerAdapter =
-                ExpensesPageRecyclerAdapter(requireContext(), model, this@ExpensesPageFragment)
-            adapter = monthlyExpensesRecyclerAdapter
-        }
-    }
-
     private fun render(viewState: ExpensesPageViewState) {
-        viewState.expenses?.let { expensesRecyclerAdapter.updateData(it) }
-        viewState.monthlyExpenses?.let { monthlyExpensesRecyclerAdapter.updateData(it) }
+        val filteredExpenses = filterExpensesUsingChips(viewState.expenses, viewState.selectedChips)
+        expensesRecyclerAdapter.updateData(filteredExpenses)
+        val sum = filteredExpenses.sumByDouble { it.amount.toDouble() }
+        binding.sum = currencyFormat.format(sum)
+
         viewState.balance?.let {
-            binding.balance.text = DecimalFormat.getCurrencyInstance().format(viewState.balance)
+            binding.balance.text = currencyFormat.format(viewState.balance)
             @ColorRes val color = if (viewState.balance >= 0) R.color.green else R.color.red
             binding.balance.setTextColor(ContextCompat.getColor(appContext, color))
         }
     }
 
-    fun addExpenseClicked(view: View, isMonthly: Boolean) {
-        Logger.i("Add expense button clicked [isMonthly=$isMonthly]")
-        view.startAnimation(animationFactory.createPopAnimation())
-        findNavController().safeNavigate(
-            ExpensesMainFragmentDirections.openAddExpenseDialog(
-                isMonthly,
-                args.month,
-                args.year
-            )
-        )
+    private fun filterExpensesUsingChips(
+        expenses: ArrayList<Expense>,
+        selectedChips: List<Chip>
+    ): ArrayList<Expense> {
+        val newExpenses = expenses.filter { Chip.shouldShow(it, selectedChips) }.toTypedArray()
+        return arrayListOf(*newExpenses)
     }
 
-    private fun initializeViewEvents() = binding.balance.setOnLongClickListener {
-        Logger.i("Balance long clicked [arguments=$args]")
-        findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog())
-        true
+    private fun getSelectedChips() = binding.chipGroup.checkedChipIds
+        .mapNotNull { binding.chipGroup.findViewById<View>(it).tag as Chip? }
+        .toList()
+
+
+    fun addExpenseClicked() {
+        Logger.i("Add expense button clicked")
+        findNavController().safeNavigate(
+            ExpensesMainFragmentDirections.openAddExpenseDialog(args.month, args.year)
+        )
     }
 }

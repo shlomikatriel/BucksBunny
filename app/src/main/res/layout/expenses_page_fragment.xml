@@ -5,14 +5,28 @@
 
     <data>
 
+        <import type="com.shlomikatriel.expensesmanager.ui.expensespage.mvi.Chip" />
+
         <import type="com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment" />
+
+        <import type="com.shlomikatriel.expensesmanager.BuildConfig" />
+
+        <import type="java.text.NumberFormat" />
 
         <variable
             name="fragment"
             type="ExpensesPageFragment" />
+
+        <variable
+            name="currencyFormat"
+            type="NumberFormat" />
+
+        <variable
+            name="sum"
+            type="java.lang.String" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
@@ -23,106 +37,117 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:animateLayoutChanges="true">
 
-                <TextView
-                    android:id="@+id/delete_expense_hint"
-                    style="@style/HintTextView"
-                    android:text="@string/hint_long_press_to_delete_expense"
-                    app:drawableStartCompat="@drawable/info"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fragment_vertical_spacing"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:selectionRequired="true">
 
-                <View
-                    android:id="@+id/vertical_line"
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="24dp"
-                    android:layout_marginBottom="24dp"
-                    android:background="@android:color/darker_gray"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/delete_expense_hint" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_one_time"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.ONE_TIME}"
+                        android:text="@string/expenses_page_chip_one_time" />
 
-                <TextView
-                    android:id="@+id/expenses_title"
-                    style="@style/ColumnsTitle"
-                    android:text="@string/expenses_title"
-                    app:layout_constraintEnd_toStartOf="@id/vertical_line"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/delete_expense_hint"/>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_monthly"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.MONTHLY}"
+                        android:text="@string/expenses_page_chip_monthly" />
 
-                <TextView
-                    android:id="@+id/monthly_expenses_title"
-                    style="@style/ColumnsTitle"
-                    android:text="@string/monthly_expenses_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/vertical_line"
-                    app:layout_constraintTop_toBottomOf="@id/delete_expense_hint" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_x_or_more"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.X_OR_MORE}"
+                        android:text="@{@string/expenses_page_chip_x_or_more(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
+                        tools:text="@string/expenses_page_chip_x_or_more_example" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_less_then_x"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.LESS_THEN_X}"
+                        android:text="@{@string/expenses_page_chip_less_then_x(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
+                        tools:text="@string/expenses_page_chip_less_then_x_example" />
+
+                </com.google.android.material.chip.ChipGroup>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/expenses_recycler"
                     style="@style/Recycler"
-                    app:layout_constraintEnd_toStartOf="@id/vertical_line"
+                    android:layout_marginTop="@dimen/fragment_vertical_spacing"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/expenses_title"
+                    app:layout_constraintTop_toBottomOf="@id/chip_group"
                     tools:itemCount="4"
                     tools:listitem="@layout/expense_recycler_item" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/monthly_expenses_recycler"
-                    style="@style/Recycler"
+                <TextView
+                    android:id="@+id/sum_view"
+                    style="@style/Title"
+                    android:text="@{@string/expenses_page_sum(sum)}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/vertical_line"
-                    app:layout_constraintTop_toBottomOf="@id/monthly_expenses_title"
-                    tools:itemCount="6"
-                    tools:listitem="@layout/expense_recycler_item" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/add_expense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="18dp"
-                    android:onClick="@{(v) -> fragment.addExpenseClicked(v, false)}"
-                    app:layout_constraintEnd_toStartOf="@id/vertical_line"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expenses_recycler"
-                    app:srcCompat="@drawable/add" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/add_monthly_expense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="18dp"
-                    android:onClick="@{(v) -> fragment.addExpenseClicked(v, true)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/vertical_line"
-                    app:layout_constraintTop_toBottomOf="@id/monthly_expenses_recycler"
-                    app:srcCompat="@drawable/add" />
+                    tools:text="@string/expenses_page_sum_example" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+            android:onClick="@{() -> fragment.addExpenseClicked()}"
+            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/add" />
 
         <TextView
             android:id="@+id/balance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="@dimen/fragment_vertical_spacing"
+            android:layout_marginBottom="@dimen/fragment_vertical_spacing"
             android:textSize="36sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="4362₪"
             tools:textColor="@color/green" />
-
-        <TextView
-            style="@style/HintTextView"
-            android:text="@string/hint_long_press_to_edit_income"
-            app:drawableStartCompat="@drawable/info" />
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

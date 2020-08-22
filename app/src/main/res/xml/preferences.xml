@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <PreferenceCategory android:title="@string/settings_graphics_title">
+        <ListPreference
+            android:entries="@array/settings_dark_mode_entries"
+            android:entryValues="@array/settings_dark_mode_entry_values"
+            android:key="dark_mode"
+            android:title="@string/settings_dark_mode_title"
+            app:useSimpleSummaryProvider="true"
+            tools:summary="@string/settings_dark_mode_entry_dark"
+            tools:useSimpleSummaryProvider="false" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_functionality_title">
+        <Preference
+            android:key="monthly_income"
+            android:title="@string/settings_monthly_income"
+            tools:summary="5600$" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_general_title">
+        <Preference
+            android:key="send_mail"
+            android:title="@string/settings_send_mail" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

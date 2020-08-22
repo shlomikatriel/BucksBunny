@@ -2,13 +2,10 @@ package com.shlomikatriel.expensesmanager.ui.expenses.fragments
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,19 +17,17 @@ import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
+import com.shlomikatriel.expensesmanager.ui.configureToolbar
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesEvent
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewState
 import com.shlomikatriel.expensesmanager.ui.expensespage.pager.ExpensesPagePagerAdapter
-import com.shlomikatriel.expensesmanager.utils.AnimationFactory
+import com.shlomikatriel.expensesmanager.ui.startPopAnimation
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 class ExpensesMainFragment : Fragment() {
-
-    @Inject
-    lateinit var animationFactory: AnimationFactory
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -63,20 +58,32 @@ class ExpensesMainFragment : Fragment() {
 
         model.postEvent(ExpensesEvent.InitializeEvent)
 
-        model.getViewState().observe(viewLifecycleOwner, Observer { render(it) })
+        model.getViewState().observe(viewLifecycleOwner, { render(it) })
 
         if (!sharedPreferences.getBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN)) {
             sharedPreferences.putBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN, true)
-            findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog())
+            findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog(fromOnBoarding = true))
         }
 
+        configureToolbar(R.string.app_name)
+
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
+        inflater.inflate(R.menu.expenses_main_menu, menu)
+
+    override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.settings) {
+        findNavController().safeNavigate(ExpensesMainFragmentDirections.openSettingsFragment())
+        true
+    } else {
+        false
     }
 
     private fun configureViewPager() = binding.pager.apply {
         adapter = ExpensesPagePagerAdapter(this@ExpensesMainFragment)
         TabLayoutMediator(binding.dots, binding.pager) { _, position ->
-            binding.pager.setCurrentItem(position, true)
+            binding.pager.setCurrentItem(position, false)
         }.attach()
 
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -89,12 +96,14 @@ class ExpensesMainFragment : Fragment() {
     }
 
     fun onPreviousMonthClicked(view: View?) {
-        view?.startAnimation(animationFactory.createPopAnimation())
+        Logger.d("Previous month clicked")
+        view?.startPopAnimation()
         model.postEvent(ExpensesEvent.MonthChangeEvent(binding.pager.currentItem - 1))
     }
 
     fun onNextMonthClicked(view: View?) {
-        view?.startAnimation(animationFactory.createPopAnimation())
+        Logger.d("Next month clicked")
+        view?.startPopAnimation()
         model.postEvent(ExpensesEvent.MonthChangeEvent(binding.pager.currentItem + 1))
     }
 

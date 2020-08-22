@@ -13,14 +13,22 @@
         <action
             android:id="@+id/open_add_expense_dialog"
             app:destination="@id/add_expense_dialog" />
-
+        <action
+            android:id="@+id/open_edit_expense_dialog"
+            app:destination="@id/edit_expense_dialog" />
         <action
             android:id="@+id/open_delete_expense_dialog"
             app:destination="@id/delete_expense_dialog" />
-
         <action
             android:id="@+id/open_choose_income_dialog"
             app:destination="@id/choose_income_dialog" />
+        <action
+            android:id="@+id/open_settings_fragment"
+            app:destination="@id/settings_fragment"
+            app:enterAnim="@anim/fragment_enter"
+            app:exitAnim="@anim/fragment_exit"
+            app:popEnterAnim="@anim/fragment_pop_enter"
+            app:popExitAnim="@anim/fragment_pop_exit" />
     </fragment>
 
     <fragment
@@ -38,20 +46,44 @@
             app:argType="integer" />
     </fragment>
 
+    <fragment
+        android:id="@+id/settings_fragment"
+        android:name="com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragment">
+        <action
+            android:id="@+id/open_choose_income_dialog"
+            app:destination="@id/choose_income_dialog" />
+    </fragment>
+
     <dialog
         android:id="@+id/add_expense_dialog"
         android:name="com.shlomikatriel.expensesmanager.ui.dialogs.AddExpenseDialog"
         android:label="add_expense_dialog"
         tools:layout="@layout/add_expense_dialog">
         <argument
-            android:name="is_monthly"
-            app:argType="boolean" />
-        <argument
             android:name="month"
             app:argType="integer" />
         <argument
             android:name="year"
             app:argType="integer" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/edit_expense_dialog"
+        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.EditExpenseDialog"
+        android:label="edit_expense_dialog"
+        tools:layout="@layout/edit_expense_dialog">
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="amount"
+            app:argType="float" />
+        <argument
+            android:name="is_monthly"
+            app:argType="boolean" />
     </dialog>
 
     <dialog
@@ -68,5 +100,9 @@
         android:id="@+id/choose_income_dialog"
         android:name="com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog"
         android:label="choose_income_dialog"
-        tools:layout="@layout/choose_income_dialog" />
+        tools:layout="@layout/choose_income_dialog">
+        <argument
+            android:name="from_on_boarding"
+            app:argType="boolean" />
+    </dialog>
 </navigation>

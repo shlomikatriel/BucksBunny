@@ -2,9 +2,7 @@ package com.shlomikatriel.expensesmanager.ui.dialogs
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -27,58 +25,63 @@ class AddExpenseDialog : BaseDialog() {
     @Inject
     lateinit var expenseDao: ExpenseDao
 
+    @Inject
+    lateinit var currency: Currency
+
     lateinit var binding: AddExpenseDialogBinding
 
     private val args: AddExpenseDialogArgs by navArgs()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+    }
 
-        binding = DataBindingUtil.inflate<AddExpenseDialogBinding>(
-            inflater,
-            R.layout.add_expense_dialog,
-            container,
-            false
-        ).apply {
+    override fun layout() = R.layout.add_expense_dialog
+
+    override fun bind(view: View) {
+        binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
             dialog = this@AddExpenseDialog
-            costLayout.prefixText = Currency.getInstance(Locale.getDefault()).symbol
+            inputsLayout.costLayout.prefixText = currency.symbol
         }
-
-        return binding.root
     }
 
     fun addClicked() {
-        val name = binding.name.text.toString()
-        val cost = binding.cost.text.toString()
+        val monthly =
+            binding.inputsLayout.oneTimeMonthlyButtons.checkedButtonId == R.id.monthly_expense
+        val name = binding.inputsLayout.name.text.toString()
+        val cost = binding.inputsLayout.cost.text.toString()
         val costAsFloat = cost.toFloatOrNull()
-        Logger.d("Trying to add expense [name=$name, cost=$cost, costAsFloat=$costAsFloat]")
+        Logger.d("Trying to add expense [name=$name, cost=$cost, costAsFloat=$costAsFloat, monthly=$monthly]")
         val nameBlank = name.isBlank()
         val costBlank = cost.isBlank()
 
         if (nameBlank) {
-            binding.nameLayout.showError(appContext, R.string.error_empty_value)
+            binding.inputsLayout.nameLayout.showError(appContext, R.string.error_empty_value)
         }
 
         when {
-            costBlank -> binding.costLayout.showError(appContext, R.string.error_empty_value)
-            costAsFloat == null -> binding.costLayout.showError(appContext, R.string.error_number_illegal)
+            costBlank -> binding.inputsLayout.costLayout.showError(
+                appContext,
+                R.string.error_empty_value
+            )
+            costAsFloat == null -> binding.inputsLayout.costLayout.showError(
+                appContext,
+                R.string.error_number_illegal
+            )
         }
 
         if (!nameBlank && !costBlank && costAsFloat != null) {
-            addExpense(name, costAsFloat)
+            addExpense(name, costAsFloat, monthly)
         }
     }
 
-    private fun addExpense(name: String, cost: Float) {
+    private fun addExpense(name: String, cost: Float, monthly: Boolean) {
         val expense = Expense(
             timeStamp = System.currentTimeMillis(),
             name = name,
             amount = cost,
-            isMonthly = args.isMonthly,
+            isMonthly = monthly,
             month = args.month,
             year = args.year
         )
