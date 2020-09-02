@@ -6,18 +6,19 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.safeNavigate
+import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
 import com.shlomikatriel.expensesmanager.ui.configureToolbar
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesEvent
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewState
@@ -62,7 +63,7 @@ class ExpensesMainFragment : Fragment() {
 
         if (!sharedPreferences.getBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN)) {
             sharedPreferences.putBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN, true)
-            findNavController().safeNavigate(ExpensesMainFragmentDirections.openChooseIncomeDialog(fromOnBoarding = true))
+            navigate(openChooseIncomeDialog(fromOnBoarding = true))
         }
 
         configureToolbar(R.string.app_name)
@@ -74,7 +75,7 @@ class ExpensesMainFragment : Fragment() {
         inflater.inflate(R.menu.expenses_main_menu, menu)
 
     override fun onOptionsItemSelected(item: MenuItem) = if (item.itemId == R.id.settings) {
-        findNavController().safeNavigate(ExpensesMainFragmentDirections.openSettingsFragment())
+        navigate(openSettingsFragment())
         true
     } else {
         false

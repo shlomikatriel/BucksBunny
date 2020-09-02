@@ -33,7 +33,7 @@ class ExpensesPagePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragme
         calendar.add(Calendar.MONTH, offset)
         val month = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
-        Logger.v("Offset $offset transformed to (month, year)=($month, $year)")
+        Logger.d("Offset $offset transformed to (month, year)=($month, $year)")
         return Pair(month, year)
     }
 }

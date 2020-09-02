@@ -38,7 +38,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
     private val onSharedPreferencesChangeListener : SharedPreferences.OnSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, key: String ->
         if (key == FloatKey.INCOME.getKey()) {
             val income = sharedPreferences.getFloat(FloatKey.INCOME)
-            Logger.i("Income shared preference changed [income=$income]")
+            Logger.i("Income shared preference changed")
             resultToViewState(ExpensesPageResult.IncomeChangedResult(income))
         }
     }
@@ -64,7 +64,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
     }
 
     private fun resultToViewState(result: ExpensesPageResult) {
-        Logger.i("Processing result $result")
+        Logger.d("Processing result $result")
         viewState = when (result) {
             is ExpensesPageResult.IncomeChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)

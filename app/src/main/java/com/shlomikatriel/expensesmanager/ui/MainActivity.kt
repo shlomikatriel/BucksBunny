@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun attachDestinationChangedListener() = findNavController(R.id.nav_host_fragment)
-        .addOnDestinationChangedListener { _, destination, arguments ->
-            Logger.i("User navigated to ${destination.label} with arguments: $arguments")
+        .addOnDestinationChangedListener { _, destination, _ ->
+            Logger.i("User navigated to ${destination.label}")
         }
 
     private fun configureDarkMode() {

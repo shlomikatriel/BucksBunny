@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.NavController
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpenseRecyclerItemBinding
-import com.shlomikatriel.expensesmanager.extensions.safeNavigate
+import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openDeleteExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openEditExpenseDialog
@@ -19,7 +19,7 @@ import java.text.NumberFormat
 
 class ExpensesPageRecyclerAdapter(
     private val context: Context,
-    private val navController: NavController,
+    private val fragment: Fragment,
     private val currencyFormat: NumberFormat
 ) : RecyclerView.Adapter<ExpensesPageRecyclerAdapter.ExpenseRecyclerViewHolder>() {
 
@@ -74,7 +74,7 @@ class ExpensesPageRecyclerAdapter(
                 when (it.itemId) {
                     R.id.edit -> {
                         Logger.i("Showing item #${item.id} edit dialog")
-                        navController.safeNavigate(
+                        fragment.navigate(
                             openEditExpenseDialog(
                                 item.id!!,
                                 item.name,
@@ -85,7 +85,7 @@ class ExpensesPageRecyclerAdapter(
                     }
                     R.id.delete -> {
                         Logger.i("Showing item #${item.id} delete dialog")
-                        navController.safeNavigate(openDeleteExpenseDialog(item.id!!))
+                        fragment.navigate(openDeleteExpenseDialog(item.id!!))
                     }
                 }
                 true

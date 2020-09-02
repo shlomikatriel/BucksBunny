@@ -4,16 +4,22 @@ import android.app.Application
 import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
 import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
+import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.Logger
+import javax.inject.Inject
 
 class ExpensesManagerApp: Application() {
 
     lateinit var appComponent: AppComponent
 
+    @Inject
+    lateinit var logManager: LogManager
+
     override fun onCreate() {
         super.onCreate()
-        Logger.i("Creating application")
         createObjectGraph()
+        appComponent.inject(this)
+        logManager.initializeLogger()
         Logger.i("Application created")
     }
 

@@ -85,7 +85,7 @@ class AddExpenseDialog : BaseDialog() {
             month = args.month,
             year = args.year
         )
-        Logger.v("Inserting expense to database: $expense")
+        Logger.d("Inserting expense to database: $expense")
         thread(name = "AddExpenseThread") {
             expenseDao.insert(expense)
         }

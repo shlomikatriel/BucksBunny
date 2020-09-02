@@ -85,7 +85,7 @@ class EditExpenseDialog : BaseDialog() {
                 amount = cost,
                 isMonthly = monthly
             )
-            Logger.v("Updating expense to database: $expense")
+            Logger.d("Updating expense to database: $expense")
             expenseDao.update(expense)
         }
         findNavController().popBackStack()
