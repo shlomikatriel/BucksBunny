@@ -44,10 +44,10 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
-    <string name="settings_dark_mode_title">Dark/Light mode</string>
+    <string name="settings_dark_mode_title">Dark Mode</string>
     <string name="settings_dark_mode_entry_system_default">System default</string>
-    <string name="settings_dark_mode_entry_dark">Dark mode</string>
-    <string name="settings_dark_mode_entry_light">Light mode</string>
+    <string name="settings_dark_mode_entry_always">Always</string>
+    <string name="settings_dark_mode_entry_never">Never</string>
     <string name="settings_graphics_title">Graphics</string>
     <string name="settings_functionality_title">Functionality</string>
     <string name="settings_general_title">General</string>

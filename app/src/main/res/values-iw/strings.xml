@@ -45,9 +45,9 @@
     <!-- Settings -->
     <string name="settings_title">הגדרות</string>
     <string name="settings_dark_mode_title">מצב כהה</string>
-    <string name="settings_dark_mode_entry_system_default">ברירת מחדל</string>
-    <string name="settings_dark_mode_entry_dark">מצב כהה</string>
-    <string name="settings_dark_mode_entry_light">מצב בהיר</string>
+    <string name="settings_dark_mode_entry_system_default">ברירת המחדל של המערכת</string>
+    <string name="settings_dark_mode_entry_always">תמיד</string>
+    <string name="settings_dark_mode_entry_never">לעולם לא</string>
     <string name="settings_graphics_title">גרפיקה</string>
     <string name="settings_functionality_title">פונקציונליות</string>
     <string name="settings_general_title">כללי</string>
