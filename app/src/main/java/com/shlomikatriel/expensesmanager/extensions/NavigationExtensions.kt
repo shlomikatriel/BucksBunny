@@ -8,5 +8,5 @@ import java.lang.Exception
 fun NavController.safeNavigate(navDirections: NavDirections) = try {
     navigate(navDirections)
 } catch (e: Exception) {
-    Logger.w("Failed to navigate to destination", e)
+    Logger.w("Failed to navigate to destination ${e.message}")
 }

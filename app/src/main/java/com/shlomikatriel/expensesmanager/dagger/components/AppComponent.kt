@@ -1,5 +1,6 @@
 package com.shlomikatriel.expensesmanager.dagger.components
 
+import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.dagger.modules.AppModule
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.dagger.modules.DatabaseModule
@@ -36,4 +37,6 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
 
     fun inject(editExpenseDialog: EditExpenseDialog)
+
+    fun inject(expensesManagerApp: ExpensesManagerApp)
 }

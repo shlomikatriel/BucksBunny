@@ -41,7 +41,7 @@ class DeleteExpenseDialog : BaseDialog() {
     }
 
     fun deleteClicked() {
-        Logger.v("Deleting expense from database: ${args.id}")
+        Logger.d("Deleting expense from database: ${args.id}")
         thread(name = "DeleteExpenseThread") {
             expenseDao.deleteById(args.id)
         }

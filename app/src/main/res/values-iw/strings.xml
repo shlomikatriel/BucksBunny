@@ -53,8 +53,8 @@
     <string name="settings_general_title">כללי</string>
     <string name="settings_monthly_income">הכנסה חודשית</string>
     <string name="settings_open_source_licenses">רשיונות קוד פתוח</string>
-    <string name="settings_send_mail">שליחת משוב</string>
-    <string name="settings_send_mail_subject">משוב עבור</string>
-    <string name="settings_send_mail_content">זה המשוב שלי עבור האפליקציה:\n</string>
+    <string name="settings_bug_report">דיווח על באג</string>
+    <string name="settings_bug_report_subject">דיווח על באג</string>
+    <string name="settings_bug_report_content">תיאור הבאג:\n</string>
     <string name="settings_application_info">פרטי יישום</string>
 </resources>

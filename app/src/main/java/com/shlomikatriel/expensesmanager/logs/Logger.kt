@@ -1,30 +1,24 @@
 package com.shlomikatriel.expensesmanager.logs
 
-import android.util.Log
-import com.shlomikatriel.expensesmanager.BuildConfig
 
-@Suppress("unused")
 class Logger {
     companion object {
-        fun e(message: String, throwable: Throwable? = null) = if (throwable != null) {
-            Log.e(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message), throwable)
-        } else {
-            Log.e(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
-        }
 
-        fun w(message: String, throwable: Throwable? = null) = if (throwable != null) {
-            Log.w(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message), throwable)
-        } else {
-            Log.w(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
-        }
+        private var logger: org.apache.log4j.Logger? = null
 
-        fun i(message: String) = Log.i(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
+        const val LOG_FOLDER = "logs"
 
-        fun d(message: String) = Log.d(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
+        fun d(message: String) = logger!!.debug(addPrefix(message))
 
-        fun v(message: String) = Log.v(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
+        fun i(message: String) = logger!!.info(addPrefix(message))
 
-        private fun appendMessageToCallerDetails(message: String): String {
+        fun w(message: String, throwable: Throwable? = null) =
+            logger!!.warn(addPrefix(message), throwable)
+
+        fun e(message: String, throwable: Throwable? = null) =
+            logger!!.error(addPrefix(message), throwable)
+
+        private fun addPrefix(message: String): String {
             val thread = Thread.currentThread()
             return thread.stackTrace[4].let {
                 val classSimpleName = simplifyFullyQualifiedClassName(it.className)
@@ -32,6 +26,14 @@ class Logger {
             }
         }
 
-        private fun simplifyFullyQualifiedClassName(className: String) = className.substringAfterLast('.')
+        private fun simplifyFullyQualifiedClassName(className: String) =
+            className.substringAfterLast('.')
+
+        fun setLogger(logger: org.apache.log4j.Logger) {
+            if (this.logger != null) {
+                throw IllegalStateException("Logger cannot be initialized twice")
+            }
+            this.logger = logger
+        }
     }
 }

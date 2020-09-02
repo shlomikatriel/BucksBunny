@@ -43,7 +43,7 @@ class ExpensesViewModel : ViewModel() {
     }
 
     private fun resultToViewState(expensesResult: ExpensesResult) {
-        Logger.i("Processing result $expensesResult")
+        Logger.d("Processing result $expensesResult")
         viewState = when (expensesResult) {
             ExpensesResult.InitializeResult -> {
                 val position = viewState.selectedPage ?: BuildConfig.MAX_MONTHS_OFFSET
