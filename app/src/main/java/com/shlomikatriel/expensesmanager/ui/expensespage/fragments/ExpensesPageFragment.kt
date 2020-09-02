@@ -10,16 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.safeNavigate
+import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
 import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
 import java.text.NumberFormat
@@ -74,7 +73,7 @@ class ExpensesPageFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext())
         expensesRecyclerAdapter = ExpensesPageRecyclerAdapter(
             requireContext(),
-            findNavController(),
+            this@ExpensesPageFragment,
             currencyFormat
         )
         adapter = expensesRecyclerAdapter
@@ -125,8 +124,6 @@ class ExpensesPageFragment : Fragment() {
 
     fun addExpenseClicked() {
         Logger.i("Add expense button clicked")
-        findNavController().safeNavigate(
-            ExpensesMainFragmentDirections.openAddExpenseDialog(args.month, args.year)
-        )
+        navigate(openAddExpenseDialog(args.month, args.year))
     }
 }

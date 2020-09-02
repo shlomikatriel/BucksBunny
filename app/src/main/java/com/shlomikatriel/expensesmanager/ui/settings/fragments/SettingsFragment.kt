@@ -10,14 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.extensions.safeNavigate
+import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
@@ -96,15 +95,9 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         Logger.i("Preference ${preference?.key} clicked")
         try {
             when (preference?.key) {
-                MONTHLY_INCOME_KEY -> findNavController().safeNavigate(
-                    openChooseIncomeDialog(
-                        fromOnBoarding = false
-                    )
-                )
+                MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog(fromOnBoarding = false))
                 REPORT_BUG_KEY -> handleReportBugClick()
-                OPEN_SOURCE_LICENSES_KEY -> findNavController().safeNavigate(
-                    openOpenSourceLicensesActivity()
-                )
+                OPEN_SOURCE_LICENSES_KEY -> navigate(openOpenSourceLicensesActivity())
                 APPLICATION_INFO_KEY -> handleApplicationInfoClicked()
                 else -> return super.onPreferenceTreeClick(preference)
             }
