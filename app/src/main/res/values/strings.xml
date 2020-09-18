@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- General -->
     <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
+    <string name="update">Update</string>
     <string name="one_time_expense">One Time</string>
     <string name="monthly_expense">Monthly</string>
+    <string name="payments_expense">Payments</string>
     <string name="expense_name">Expense Name</string>
-    <string name="expense_amount">Expense Cost</string>
+    <string name="expense_cost">Expense Cost</string>
+    <string name="payments_count">Payments Count</string>
 
     <!-- Fragments -->
     <string name="app_name">Expenses Manager</string>
@@ -14,6 +16,7 @@
     <string name="next_month_description">View next month</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
+    <string name="expenses_page_chip_payments">Payments</string>
     <string name="expenses_page_chip_x_or_more">%s or more</string>
     <string name="expenses_page_chip_less_then_x">Less Then %s</string>
     <string name="expenses_page_chip_x_or_more_example">100 $ or more</string>
@@ -23,6 +26,7 @@
     <string name="expenses_page_recycler_item_name_example">Restaurant</string>
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
+    <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -30,6 +34,7 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
+    <string name="update_expense_dialog_title">Update Expense</string>
     <string name="add_expense_dialog_title">Add Expense</string>
     <string name="add_expense_dialog_add">Add</string>
     <string name="delete_expense_dialog_title">Delete Expense</string>

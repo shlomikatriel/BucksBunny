@@ -2,11 +2,13 @@
 <resources>
     <!-- General -->
     <string name="delete">מחיקה</string>
-    <string name="edit">עריכה</string>
+    <string name="update">עדכון</string>
     <string name="one_time_expense">חד פעמית</string>
     <string name="monthly_expense">חודשית</string>
+    <string name="payments_expense">תשלומים</string>
     <string name="expense_name">שם ההוצאה</string>
-    <string name="expense_amount">עלות ההוצאה</string>
+    <string name="expense_cost">עלות ההוצאה</string>
+    <string name="payments_count">מספר תשלומים</string>
 
     <!-- Fragments -->
     <string name="app_name">מנהל ההוצאות</string>
@@ -14,6 +16,7 @@
     <string name="next_month_description">הצג את החודש הבא</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
+    <string name="expenses_page_chip_payments">תשלומים</string>
     <string name="expenses_page_chip_x_or_more">%s או יותר</string>
     <string name="expenses_page_chip_less_then_x">פחות מ-%s</string>
     <string name="expenses_page_chip_x_or_more_example">100 ₪ או יותר</string>
@@ -23,6 +26,7 @@
     <string name="expenses_page_recycler_item_name_example">מסעדה</string>
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
+    <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>
@@ -30,6 +34,7 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">ביטול</string>
+    <string name="update_expense_dialog_title">עדכון הוצאה</string>
     <string name="add_expense_dialog_title">הוספת הוצאה</string>
     <string name="add_expense_dialog_add">הוספה</string>
     <string name="delete_expense_dialog_title">מחיקת הוצאה</string>

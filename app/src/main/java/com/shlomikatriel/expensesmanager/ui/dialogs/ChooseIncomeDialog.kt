@@ -11,11 +11,11 @@ import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ChooseIncomeDialogBinding
-import com.shlomikatriel.expensesmanager.extensions.showError
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
+import com.shlomikatriel.expensesmanager.ui.showError
 import java.util.*
 import javax.inject.Inject
 

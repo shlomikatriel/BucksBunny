@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
+    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/one_time_monthly_buttons"
+            android:id="@+id/type_buttons"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             app:checkedButton="@id/one_time_expense"
             app:selectionRequired="true"
             app:singleSelection="true">
@@ -21,6 +28,7 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="@{ExpenseType.ONE_TIME}"
                 android:text="@string/one_time_expense" />
 
             <Button
@@ -28,7 +36,16 @@
                 style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="@{ExpenseType.MONTHLY}"
                 android:text="@string/monthly_expense" />
+
+            <Button
+                android:id="@+id/payments_expense"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:tag="@{ExpenseType.PAYMENTS}"
+                android:text="@string/payments_expense" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -46,13 +63,27 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cost_layout"
             style="@style/DialogInput"
-            android:hint="@string/expense_amount">
+            android:hint="@string/expense_cost">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/cost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/payments_layout"
+            style="@style/DialogInput"
+            android:hint="@string/payments_count"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/payments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 </layout>

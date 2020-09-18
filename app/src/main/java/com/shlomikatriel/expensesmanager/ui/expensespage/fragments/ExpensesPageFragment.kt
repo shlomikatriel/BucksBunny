@@ -74,7 +74,8 @@ class ExpensesPageFragment : Fragment() {
         expensesRecyclerAdapter = ExpensesPageRecyclerAdapter(
             requireContext(),
             this@ExpensesPageFragment,
-            currencyFormat
+            currencyFormat,
+            args.month
         )
         adapter = expensesRecyclerAdapter
     }
@@ -88,7 +89,7 @@ class ExpensesPageFragment : Fragment() {
     private fun initializeViewModel() {
         model = ViewModelProvider(
             this,
-            ExpensesPageViewModelFactory(appContext, args.month, args.year)
+            ExpensesPageViewModelFactory(appContext, args.month)
         ).get(args.pagePosition.toString(), ExpensesPageViewModel::class.java)
             .apply {
                 postEvent(ExpensesPageEvent.InitializeEvent)
@@ -99,13 +100,20 @@ class ExpensesPageFragment : Fragment() {
     private fun render(viewState: ExpensesPageViewState) {
         val filteredExpenses = filterExpensesUsingChips(viewState.expenses, viewState.selectedChips)
         expensesRecyclerAdapter.updateData(filteredExpenses)
-        val sum = filteredExpenses.sumByDouble { it.amount.toDouble() }
+        val sum = calculateSum(filteredExpenses)
         binding.sum = currencyFormat.format(sum)
 
         viewState.balance?.let {
             binding.balance.text = currencyFormat.format(viewState.balance)
             @ColorRes val color = if (viewState.balance >= 0) R.color.green else R.color.red
             binding.balance.setTextColor(ContextCompat.getColor(appContext, color))
+        }
+    }
+
+    private fun calculateSum(expenses: ArrayList<Expense>) = expenses.sumByDouble {
+        return when (it) {
+            is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
+            is Expense.Payments -> (it.cost / it.payments).toDouble()
         }
     }
 
@@ -124,6 +132,6 @@ class ExpensesPageFragment : Fragment() {
 
     fun addExpenseClicked() {
         Logger.i("Add expense button clicked")
-        navigate(openAddExpenseDialog(args.month, args.year))
+        navigate(openAddExpenseDialog(args.month))
     }
 }

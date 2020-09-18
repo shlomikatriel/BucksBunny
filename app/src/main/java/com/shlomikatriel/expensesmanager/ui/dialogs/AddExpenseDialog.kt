@@ -8,11 +8,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.database.ExpenseDao
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.extensions.showError
 import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.ui.getSelectedExpenseType
+import com.shlomikatriel.expensesmanager.ui.initialize
+import com.shlomikatriel.expensesmanager.ui.isInputValid
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.thread
@@ -23,7 +26,7 @@ class AddExpenseDialog : BaseDialog() {
     lateinit var appContext: Context
 
     @Inject
-    lateinit var expenseDao: ExpenseDao
+    lateinit var databaseManager: DatabaseManager
 
     @Inject
     lateinit var currency: Currency
@@ -41,53 +44,51 @@ class AddExpenseDialog : BaseDialog() {
 
     override fun bind(view: View) {
         binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
+            inputsLayout.initialize(currency.symbol)
             dialog = this@AddExpenseDialog
-            inputsLayout.costLayout.prefixText = currency.symbol
         }
     }
 
     fun addClicked() {
-        val monthly =
-            binding.inputsLayout.oneTimeMonthlyButtons.checkedButtonId == R.id.monthly_expense
+        val type = binding.inputsLayout.getSelectedExpenseType()
         val name = binding.inputsLayout.name.text.toString()
-        val cost = binding.inputsLayout.cost.text.toString()
-        val costAsFloat = cost.toFloatOrNull()
-        Logger.d("Trying to add expense [name=$name, cost=$cost, costAsFloat=$costAsFloat, monthly=$monthly]")
-        val nameBlank = name.isBlank()
-        val costBlank = cost.isBlank()
+        val costAsString = binding.inputsLayout.cost.text.toString()
+        val cost = costAsString.toFloatOrNull()
+        val paymentsAsString = binding.inputsLayout.payments.text.toString()
+        val payments = paymentsAsString.toIntOrNull()
+        Logger.d("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=$type]")
 
-        if (nameBlank) {
-            binding.inputsLayout.nameLayout.showError(appContext, R.string.error_empty_value)
-        }
-
-        when {
-            costBlank -> binding.inputsLayout.costLayout.showError(
-                appContext,
-                R.string.error_empty_value
-            )
-            costAsFloat == null -> binding.inputsLayout.costLayout.showError(
-                appContext,
-                R.string.error_number_illegal
-            )
-        }
-
-        if (!nameBlank && !costBlank && costAsFloat != null) {
-            addExpense(name, costAsFloat, monthly)
+        if (binding.inputsLayout.isInputValid(appContext)) {
+            addExpense(name, cost!!, payments, type)
         }
     }
 
-    private fun addExpense(name: String, cost: Float, monthly: Boolean) {
-        val expense = Expense(
-            timeStamp = System.currentTimeMillis(),
-            name = name,
-            amount = cost,
-            isMonthly = monthly,
-            month = args.month,
-            year = args.year
-        )
-        Logger.d("Inserting expense to database: $expense")
+    private fun addExpense(name: String, cost: Float, payments: Int?, type: ExpenseType) {
         thread(name = "AddExpenseThread") {
-            expenseDao.insert(expense)
+            val expense = when (type) {
+                ExpenseType.ONE_TIME -> Expense.OneTime(
+                    databaseId = null,
+                    timeStamp = System.currentTimeMillis(),
+                    name = name,
+                    cost = cost,
+                    month = args.month
+                )
+                ExpenseType.MONTHLY -> Expense.Monthly(
+                    databaseId = null,
+                    timeStamp = System.currentTimeMillis(),
+                    name = name,
+                    cost = cost
+                )
+                ExpenseType.PAYMENTS -> Expense.Payments(
+                    databaseId = null,
+                    timeStamp = System.currentTimeMillis(),
+                    name = name,
+                    cost = cost,
+                    month = args.month,
+                    payments = payments!!
+                )
+            }
+            databaseManager.insert(expense)
         }
         findNavController().popBackStack()
     }

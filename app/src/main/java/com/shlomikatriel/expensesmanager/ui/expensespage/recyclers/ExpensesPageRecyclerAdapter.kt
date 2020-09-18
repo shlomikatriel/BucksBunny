@@ -14,13 +14,15 @@ import com.shlomikatriel.expensesmanager.databinding.ExpenseRecyclerItemBinding
 import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openDeleteExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openEditExpenseDialog
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openUpdateExpenseDialog
 import java.text.NumberFormat
+import java.util.*
 
 class ExpensesPageRecyclerAdapter(
     private val context: Context,
     private val fragment: Fragment,
-    private val currencyFormat: NumberFormat
+    private val currencyFormat: NumberFormat,
+    private val month: Int
 ) : RecyclerView.Adapter<ExpensesPageRecyclerAdapter.ExpenseRecyclerViewHolder>() {
 
     init {
@@ -31,7 +33,8 @@ class ExpensesPageRecyclerAdapter(
     private var data = arrayListOf<Expense>()
 
     override fun getItemId(position: Int): Long {
-        return data[position].id!!
+        val expense = data[position]
+        return Objects.hash(expense.databaseId, expense.javaClass.name).toLong()
     }
 
     override fun onCreateViewHolder(
@@ -53,15 +56,24 @@ class ExpensesPageRecyclerAdapter(
         val data = data[position]
         holder.binding.apply {
             name.text = data.name
-            val amountFormatted = currencyFormat.format(data.amount)
-            amount.text = if (data.isMonthly) {
-                context.getString(R.string.expenses_page_recycler_item_monthly, amountFormatted)
-            } else {
-                amountFormatted
+            cost.text = when (data) {
+                is Expense.OneTime -> currencyFormat.format(data.cost)
+                is Expense.Monthly -> context.getString(
+                    R.string.expenses_page_recycler_item_monthly,
+                    currencyFormat.format(data.cost)
+                )
+                is Expense.Payments -> {
+                    context.getString(
+                        R.string.expenses_page_recycler_item_payments,
+                        currencyFormat.format(data.cost / data.payments),
+                        month - data.month + 1,
+                        data.payments
+                    )
+                }
             }
             val popupMenu = createPopupMenu(holder.binding.menu, data)
             holder.binding.menu.setOnClickListener {
-                Logger.d("Showing expense #${data.id} context menu")
+                Logger.d("Showing expense #${data.databaseId} context menu")
                 popupMenu.show()
             }
         }
@@ -72,20 +84,17 @@ class ExpensesPageRecyclerAdapter(
             menuInflater.inflate(R.menu.expense_context_menu, menu)
             setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.edit -> {
-                        Logger.i("Showing item #${item.id} edit dialog")
+                    R.id.update -> {
+                        Logger.i("Showing item #${item.databaseId} update dialog")
                         fragment.navigate(
-                            openEditExpenseDialog(
-                                item.id!!,
-                                item.name,
-                                item.amount,
-                                item.isMonthly
-                            )
+                            openUpdateExpenseDialog(item.databaseId!!, item.getExpenseType(), month)
                         )
                     }
                     R.id.delete -> {
-                        Logger.i("Showing item #${item.id} delete dialog")
-                        fragment.navigate(openDeleteExpenseDialog(item.id!!))
+                        Logger.i("Showing item #${item.databaseId} delete dialog")
+                        fragment.navigate(
+                            openDeleteExpenseDialog(item.databaseId!!, item.getExpenseType())
+                        )
                     }
                 }
                 true

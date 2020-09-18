@@ -81,6 +81,16 @@
                         android:text="@string/expenses_page_chip_monthly" />
 
                     <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_payments"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.PAYMENTS}"
+                        android:text="@string/expenses_page_chip_payments" />
+
+                    <com.google.android.material.chip.Chip
                         android:id="@+id/chip_x_or_more"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
