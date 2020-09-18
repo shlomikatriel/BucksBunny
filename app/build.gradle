@@ -27,18 +27,24 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions.annotationProcessorOptions {
-            arguments += ["room.incremental":"true"]
+            arguments += [
+                    "room.incremental":"true",
+                    "room.schemaLocation":"$projectDir/schemas".toString()
+            ]
         }
+    }
+
+    sourceSets {
+        // Adds exported schema location as test app assets.
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 
     signingConfigs {
         release {
-            Properties properties = new Properties()
-            properties.load(rootProject.file('local.properties').newDataInputStream())
-            storeFile file(properties.getProperty("storeFilePath"))
-            storePassword properties.getProperty("storePassword")
-            keyAlias properties.getProperty("keyAlias")
-            keyPassword properties.getProperty("keyPassword")
+            storeFile file(rootProject.ext.storeFilePath)
+            storePassword rootProject.ext.storePassword
+            keyAlias rootProject.ext.keyAlias
+            keyPassword rootProject.ext.keyPassword
         }
     }
 
@@ -74,8 +80,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0'
-    testImplementation 'junit:junit:4.13'
+    implementation 'com.google.android.material:material:1.2.1'
+    androidTestImplementation 'junit:junit:4.13'
+    androidTestImplementation "androidx.room:room-testing:2.2.5"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 

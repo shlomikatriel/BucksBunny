@@ -14,8 +14,8 @@
             android:id="@+id/open_add_expense_dialog"
             app:destination="@id/add_expense_dialog" />
         <action
-            android:id="@+id/open_edit_expense_dialog"
-            app:destination="@id/edit_expense_dialog" />
+            android:id="@+id/open_update_expense_dialog"
+            app:destination="@id/update_expense_dialog" />
         <action
             android:id="@+id/open_delete_expense_dialog"
             app:destination="@id/delete_expense_dialog" />
@@ -40,9 +40,6 @@
             app:argType="integer" />
         <argument
             android:name="month"
-            app:argType="integer" />
-        <argument
-            android:name="year"
             app:argType="integer" />
     </fragment>
 
@@ -70,28 +67,22 @@
         <argument
             android:name="month"
             app:argType="integer" />
-        <argument
-            android:name="year"
-            app:argType="integer" />
     </dialog>
 
     <dialog
-        android:id="@+id/edit_expense_dialog"
-        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.EditExpenseDialog"
-        android:label="edit_expense_dialog"
-        tools:layout="@layout/edit_expense_dialog">
+        android:id="@+id/update_expense_dialog"
+        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.UpdateExpenseDialog"
+        android:label="update_expense_dialog"
+        tools:layout="@layout/update_expense_dialog">
         <argument
             android:name="id"
             app:argType="long" />
         <argument
-            android:name="name"
-            app:argType="string" />
+            android:name="type"
+            app:argType="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
         <argument
-            android:name="amount"
-            app:argType="float" />
-        <argument
-            android:name="is_monthly"
-            app:argType="boolean" />
+            android:name="month"
+            app:argType="integer" />
     </dialog>
 
     <dialog
@@ -102,6 +93,9 @@
         <argument
             android:name="id"
             app:argType="long" />
+        <argument
+            android:name="type"
+            app:argType="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
     </dialog>
 
     <dialog

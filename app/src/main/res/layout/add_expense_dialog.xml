@@ -26,7 +26,7 @@
 
         <include
             android:id="@+id/inputs_layout"
-            layout="@layout/add_or_edit_dialog_expense_inputs"
+            layout="@layout/dialog_expense_inputs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dialog_vertical_spacing"

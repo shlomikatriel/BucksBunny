@@ -28,17 +28,18 @@ sealed class ExpensesPageResult {
 
 @Keep
 enum class Chip(private val predicate: (Expense) -> Boolean) {
-    ONE_TIME({ !it.isMonthly }),
-    MONTHLY({ it.isMonthly }),
-    X_OR_MORE({ it.amount >= BuildConfig.CHIP_FILTER_THRESHOLD }),
-    LESS_THEN_X({ it.amount < BuildConfig.CHIP_FILTER_THRESHOLD });
+    ONE_TIME({ it is Expense.OneTime }),
+    MONTHLY({ it is Expense.Monthly }),
+    PAYMENTS({ it is Expense.Payments }),
+    X_OR_MORE({ it.cost >= BuildConfig.CHIP_FILTER_THRESHOLD }),
+    LESS_THEN_X({ it.cost < BuildConfig.CHIP_FILTER_THRESHOLD });
 
     companion object {
         fun shouldShow(
             expense: Expense,
             selectedChips: List<Chip>
         ): Boolean {
-            val compliesToExpenseFrequency = selectedChips.intersect(listOf(MONTHLY, ONE_TIME))
+            val compliesToExpenseFrequency = selectedChips.intersect(listOf(MONTHLY, ONE_TIME, PAYMENTS))
                 .any { it.predicate(expense) }
             val complyToCostRange = selectedChips.intersect(listOf(X_OR_MORE, LESS_THEN_X))
                 .any { it.predicate(expense) }
