@@ -45,7 +45,8 @@
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragment">
+        android:name="com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragment"
+        android:label="settings_fragment">
         <action
             android:id="@+id/open_choose_income_dialog"
             app:destination="@id/choose_income_dialog" />

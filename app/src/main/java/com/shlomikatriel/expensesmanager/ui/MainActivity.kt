@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
+import com.shlomikatriel.expensesmanager.firebase.logEvent
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
@@ -20,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     lateinit var binding: MainActivityBinding
 
@@ -55,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private fun attachDestinationChangedListener() = findNavController(R.id.nav_host_fragment)
         .addOnDestinationChangedListener { _, destination, _ ->
             Logger.i("User navigated to ${destination.label}")
+            firebaseAnalytics.logEvent("${destination.label}_opened")
         }
 
     private fun configureDarkMode() {
