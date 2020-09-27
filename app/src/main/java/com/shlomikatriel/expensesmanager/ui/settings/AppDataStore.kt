@@ -13,17 +13,17 @@ class AppDataStore(val sharedPreferences: SharedPreferences) : PreferenceDataSto
 
 
     override fun getString(key: String?, defValue: String?): String? {
-        Logger.i("Get string [key=$key, defValue=$defValue]")
+        Logger.v("Get string [key=$key, defValue=$defValue]")
         val value = when (key) {
             SettingsFragment.KEY_DARK_MODE -> sharedPreferences.getInt(IntKey.DARK_MODE).toString()
             else -> super.getString(key, defValue)
         }
-        Logger.i("Got value: $value")
+        Logger.v("Got value: $value")
         return value
     }
 
     override fun putString(key: String?, value: String?) {
-        Logger.i("Put string [key=$key, value=$value]")
+        Logger.v("Put string [key=$key, value=$value]")
         return when (key) {
             SettingsFragment.KEY_DARK_MODE -> {
                 val valueAsInt = value?.toIntOrNull() ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM

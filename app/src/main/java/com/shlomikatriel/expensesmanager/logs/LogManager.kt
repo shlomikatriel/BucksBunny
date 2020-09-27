@@ -2,62 +2,55 @@ package com.shlomikatriel.expensesmanager.logs
 
 import android.content.Context
 import androidx.annotation.WorkerThread
+import com.bosphere.filelogger.FL
+import com.bosphere.filelogger.FLConfig
+import com.bosphere.filelogger.FLConst
 import com.shlomikatriel.expensesmanager.BuildConfig
-import de.mindpipe.android.logging.log4j.LogConfigurator
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
 import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
-import org.apache.log4j.EnhancedPatternLayout
-import org.apache.log4j.Level
-import org.apache.log4j.RollingFileAppender
-import java.io.*
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 import javax.inject.Inject
 
+
 class LogManager
-@Inject constructor(private val context: Context) {
+@Inject constructor(
+    private val context: Context,
+    private val emptyLogger: EmptyLogger,
+    private val logFileFormatter: LogFileFormatter
+) {
 
     companion object {
         const val LOG_ZIP_FILE_NAME = "ExpensesManagerLogs.zip"
         const val SYSTEM_PROPERTIES_FILE_NAME = "system_properties.log"
     }
 
-    @Synchronized
-    fun initializeLogger() {
-
-        val logger = org.apache.log4j.Logger.getLogger(BuildConfig.LOG_TAG)
-        Logger.setLogger(logger)
-
-        LogConfigurator().apply {
-            isUseLogCatAppender = BuildConfig.DEBUG
-            isUseFileAppender = false
-            rootLevel = Level.DEBUG
-            configure()
+    fun initialize() = FLConfig.Builder(context).run {
+        defaultTag(BuildConfig.LOG_TAG)
+        if (BuildConfig.DEBUG) {
+            minLevel(FLConst.Level.V)
+        } else {
+            minLevel(FLConst.Level.I)
+            logger(emptyLogger)
         }
-
-        org.apache.log4j.Logger.getRootLogger()?.addAppender(
-            createRollingFileAppender()
-        )
+        logToFile(true)
+        formatter(logFileFormatter)
+        dir(context.getLogFolder())
+        retentionPolicy(FLConst.RetentionPolicy.FILE_COUNT)
+        maxFileCount(7)
+        build()
+    }.let {
+        FL.init(it)
+        FL.setEnabled(true)
     }
-
-    private fun createRollingFileAppender() = RollingFileAppender(
-        EnhancedPatternLayout("%d{ISO8601} %p %m%n"),
-        getLogFilePath()
-    ).apply {
-        name = "RollingAppender"
-        maxBackupIndex = 5
-        setMaxFileSize("2MB")
-        threshold = Level.INFO
-    }
-
-    private fun getLogFilePath() = "${getLogFolderPath()}${File.separator}${BuildConfig.LOG_TAG}.log"
-
-    private fun getLogFolderPath() = "${context.filesDir.absolutePath}${File.separator}${Logger.LOG_FOLDER}"
 
     @WorkerThread
     fun collectLogs(): File {
-        val logFolder = File(getLogFolderPath())
+        val logFolder = context.getLogFolder()
         val file = File(logFolder, LOG_ZIP_FILE_NAME)
         if (file.exists()) {
             Logger.i("Deleting existing logs zip file [deleted=${file.delete()}]")
@@ -83,7 +76,7 @@ class LogManager
 
     @WorkerThread
     private fun createPropertiesFile() {
-        val file = File(getLogFolderPath(), SYSTEM_PROPERTIES_FILE_NAME)
+        val file = File(context.getLogFolder(), SYSTEM_PROPERTIES_FILE_NAME)
         if (file.exists()) {
             Logger.i("Deleting existing system properties file [deleted=${file.delete()}]")
         }
@@ -105,4 +98,6 @@ class LogManager
         }
         file.writeText(builder.toString())
     }
+
+    private fun Context.getLogFolder() = File("${filesDir.absolutePath}${File.separator}logs")
 }

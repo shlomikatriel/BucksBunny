@@ -93,8 +93,7 @@ dependencies {
     def versions = rootProject.ext.versions
 
     // Logging
-    implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
-    implementation 'log4j:log4j:1.2.17'
+    implementation 'com.github.bosphere.android-filelogger:filelogger:1.0.7'
     implementation 'net.lingala.zip4j:zip4j:2.6.2'
 
     // Room
