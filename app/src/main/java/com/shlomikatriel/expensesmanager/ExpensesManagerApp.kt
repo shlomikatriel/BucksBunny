@@ -27,7 +27,7 @@ class ExpensesManagerApp : Application() {
         super.onCreate()
         createObjectGraph()
         appComponent.inject(this)
-        logManager.initializeLogger()
+        logManager.initialize()
         Logger.i("Creating Application")
         initializeFirebaseServices()
         Logger.i("Application created")
