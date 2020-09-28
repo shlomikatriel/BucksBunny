@@ -54,7 +54,6 @@ class UpdateExpenseDialog : BaseDialog() {
         activity?.runOnUiThread {
             Logger.d("Populating fields: $expense")
             binding.inputsLayout.apply {
-                typeButtons.isEnabled = false
                 when (expense) {
                     is Expense.OneTime -> {
                         typeButtons.check(R.id.one_time_expense)
@@ -74,6 +73,9 @@ class UpdateExpenseDialog : BaseDialog() {
                         payments.setText(expense.payments.toString())
                     }
                 }
+                oneTimeExpense.isEnabled = false
+                monthlyExpense.isEnabled = false
+                paymentsExpense.isEnabled = false
             }
         }
     }
