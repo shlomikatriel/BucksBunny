@@ -111,7 +111,7 @@ class ExpensesPageFragment : Fragment() {
     }
 
     private fun calculateSum(expenses: ArrayList<Expense>) = expenses.sumByDouble {
-        return when (it) {
+        when (it) {
             is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
             is Expense.Payments -> (it.cost / it.payments).toDouble()
         }
