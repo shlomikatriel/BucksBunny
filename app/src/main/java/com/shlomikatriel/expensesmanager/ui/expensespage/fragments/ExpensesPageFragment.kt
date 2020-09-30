@@ -119,7 +119,7 @@ class ExpensesPageFragment : Fragment() {
 
     private fun filterExpensesUsingChips(
         expenses: ArrayList<Expense>,
-        selectedChips: List<Chip>
+        selectedChips: Set<Chip>
     ): ArrayList<Expense> {
         val newExpenses = expenses.filter { Chip.shouldShow(it, selectedChips) }.toTypedArray()
         return arrayListOf(*newExpenses)
@@ -127,7 +127,7 @@ class ExpensesPageFragment : Fragment() {
 
     private fun getSelectedChips() = binding.chipGroup.checkedChipIds
         .mapNotNull { binding.chipGroup.findViewById<View>(it).tag as Chip? }
-        .toList()
+        .toSet()
 
 
     fun addExpenseClicked() {
