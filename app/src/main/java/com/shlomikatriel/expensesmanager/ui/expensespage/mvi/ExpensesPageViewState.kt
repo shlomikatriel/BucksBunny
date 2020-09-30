@@ -7,12 +7,12 @@ import com.shlomikatriel.expensesmanager.database.Expense
 data class ExpensesPageViewState(
     val balance: Float? = null,
     val expenses: ArrayList<Expense> = arrayListOf(),
-    val selectedChips: List<Chip> = Chip.values().toList()
+    val selectedChips: Set<Chip> = Chip.values().toSet()
 )
 
 sealed class ExpensesPageEvent {
     object InitializeEvent : ExpensesPageEvent()
-    data class SelectedChipsChangedEvent(val chips: List<Chip>) : ExpensesPageEvent()
+    data class SelectedChipsChangedEvent(val chips: Set<Chip>) : ExpensesPageEvent()
 }
 
 sealed class ExpensesPageResult {
@@ -22,7 +22,7 @@ sealed class ExpensesPageResult {
     ) : ExpensesPageResult()
 
     data class SelectedChipsChangedResult(
-        val chips: List<Chip>
+        val chips: Set<Chip>
     ) : ExpensesPageResult()
 }
 
@@ -37,13 +37,32 @@ enum class Chip(private val predicate: (Expense) -> Boolean) {
     companion object {
         fun shouldShow(
             expense: Expense,
-            selectedChips: List<Chip>
+            selectedChips: Set<Chip>
         ): Boolean {
-            val compliesToExpenseFrequency = selectedChips.intersect(listOf(MONTHLY, ONE_TIME, PAYMENTS))
-                .any { it.predicate(expense) }
-            val complyToCostRange = selectedChips.intersect(listOf(X_OR_MORE, LESS_THEN_X))
-                .any { it.predicate(expense) }
-            return compliesToExpenseFrequency && complyToCostRange
+            val compliesWithFrequencyChips = doesComplyWithChipGroup(
+                expense,
+                selectedChips,
+                setOf(ONE_TIME, MONTHLY, PAYMENTS)
+            )
+            val compliesWithCostRangeChips = doesComplyWithChipGroup(
+                expense,
+                selectedChips,
+                setOf(X_OR_MORE, LESS_THEN_X)
+            )
+            return compliesWithFrequencyChips && compliesWithCostRangeChips
+        }
+
+        /**
+         * In case no chip selected from group we act as if all are selected.
+         * This is required for the initial state in which chips are not selected.
+         * */
+        private fun doesComplyWithChipGroup(
+            expense: Expense,
+            selectedChips: Set<Chip>,
+            chipGroup: Set<Chip>
+        ): Boolean {
+            val selectedGroupChips = selectedChips.intersect(chipGroup)
+            return selectedGroupChips.isEmpty() || selectedGroupChips.any { it.predicate(expense) }
         }
     }
 }

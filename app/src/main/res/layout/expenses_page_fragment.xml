@@ -57,35 +57,33 @@
                     android:layout_marginTop="@dimen/fragment_vertical_spacing"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:selectionRequired="true">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_one_time"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.ONE_TIME}"
-                        android:text="@string/expenses_page_chip_one_time" />
+                        android:text="@string/expenses_page_chip_one_time"
+                        tools:checked="true" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_monthly"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.MONTHLY}"
-                        android:text="@string/expenses_page_chip_monthly" />
+                        android:text="@string/expenses_page_chip_monthly"
+                        tools:checked="true" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_payments"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.PAYMENTS}"
                         android:text="@string/expenses_page_chip_payments" />
@@ -95,7 +93,6 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.X_OR_MORE}"
                         android:text="@{@string/expenses_page_chip_x_or_more(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
@@ -106,10 +103,10 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.LESS_THEN_X}"
                         android:text="@{@string/expenses_page_chip_less_then_x(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
+                        tools:checked="true"
                         tools:text="@string/expenses_page_chip_less_then_x_example" />
 
                 </com.google.android.material.chip.ChipGroup>
