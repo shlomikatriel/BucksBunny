@@ -87,6 +87,7 @@
             android:layout_marginTop="@dimen/dialog_vertical_spacing"
             android:onClick="@{() -> dialog.cancelClicked()}"
             android:text="@string/dialog_cancel"
+            android:visibility="@{from_on_boarding ? View.GONE : View.VISIBLE, default=visible}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/choose"
             app:layout_constraintTop_toBottomOf="@id/income_layout" />

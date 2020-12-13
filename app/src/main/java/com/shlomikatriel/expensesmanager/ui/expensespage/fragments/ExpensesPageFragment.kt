@@ -49,7 +49,7 @@ class ExpensesPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
 
         binding = DataBindingUtil.inflate<ExpensesPageFragmentBinding>(

@@ -12,8 +12,6 @@
 
     <!-- Fragments -->
     <string name="app_name">מנהל ההוצאות</string>
-    <string name="previous_month_description">הצג את החודש הקודם</string>
-    <string name="next_month_description">הצג את החודש הבא</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
@@ -27,6 +25,9 @@
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
     <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_button_description">הוספת הוצאה</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>

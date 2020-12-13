@@ -12,8 +12,6 @@
 
     <!-- Fragments -->
     <string name="app_name">Expenses Manager</string>
-    <string name="previous_month_description">View previous month</string>
-    <string name="next_month_description">View next month</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
@@ -27,6 +25,9 @@
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
     <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_button_description">Add expense</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
