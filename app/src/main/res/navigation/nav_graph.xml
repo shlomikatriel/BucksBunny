@@ -29,6 +29,14 @@
             app:exitAnim="@anim/fragment_exit"
             app:popEnterAnim="@anim/fragment_pop_enter"
             app:popExitAnim="@anim/fragment_pop_exit" />
+
+        <action
+            android:id="@+id/open_onboarding_fragment"
+            app:destination="@id/onboarding_fragment"
+            app:enterAnim="@null"
+            app:exitAnim="@null"
+            app:popEnterAnim="@null"
+            app:popExitAnim="@null" />
     </fragment>
 
     <fragment
@@ -45,7 +53,7 @@
 
     <fragment
         android:id="@+id/settings_fragment"
-        android:name="com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragment"
+        android:name="com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment"
         android:label="settings_fragment">
         <action
             android:id="@+id/open_choose_income_dialog"
@@ -59,6 +67,12 @@
             app:popEnterAnim="@anim/fragment_pop_enter"
             app:popExitAnim="@anim/fragment_pop_exit" />
     </fragment>
+
+    <fragment
+        android:id="@+id/onboarding_fragment"
+        android:name="com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment"
+        android:label="onboarding_fragment"
+        tools:layout="@layout/onboarding_fragment" />
 
     <dialog
         android:id="@+id/add_expense_dialog"
@@ -103,11 +117,7 @@
         android:id="@+id/choose_income_dialog"
         android:name="com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog"
         android:label="choose_income_dialog"
-        tools:layout="@layout/choose_income_dialog">
-        <argument
-            android:name="from_on_boarding"
-            app:argType="boolean" />
-    </dialog>
+        tools:layout="@layout/choose_income_dialog" />
 
     <activity
         android:id="@+id/open_source_licenses_activity"

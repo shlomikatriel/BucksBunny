@@ -8,4 +8,6 @@
 
     <color name="launcher_background">@color/colorPrimaryDark</color>
     <color name="launcher_foreground">@android:color/black</color>
+
+    <color name="colored_text">@color/colorPrimaryDark</color>
 </resources>

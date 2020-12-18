@@ -63,4 +63,19 @@
     <string name="settings_bug_report_subject">Bug Report</string>
     <string name="settings_bug_report_content">Describe the bug:\n</string>
     <string name="settings_application_info">App Info</string>
+    <string name="settings_anonymous_reports_category_title">Anonymous Reports</string>
+    <string name="settings_anonymous_reports_category_summary">These reports do not personal or sensitive data</string>
+    <string name="settings_anonymous_crash_reports_title">Anonymous Crash Reports</string>
+    <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
+    <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
+    <string name="settings_anonymous_usage_data_reports_summary">Usage data reports are used to analyse usage patterns and improves user experience</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_lets_get_started">Let\'s get started</string>
+    <string name="onboarding_welcome">Welcome to</string>
+    <string name="onboarding_expenses_manager">Expenses Manager</string>
+    <string name="onboarding_expenses_slogen">Control your expenses!</string>
+    <string name="onboarding_income_input_info">To keep your privacy, personal or sensitive data will never leave the app and will be stored safely</string>
+    <string name="onboarding_welcome_instructions">Tap \'Next\' to configure app</string>
 </resources>

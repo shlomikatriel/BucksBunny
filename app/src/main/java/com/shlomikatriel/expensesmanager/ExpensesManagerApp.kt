@@ -1,6 +1,7 @@
 package com.shlomikatriel.expensesmanager
 
 import android.app.Application
+import android.content.SharedPreferences
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
@@ -8,6 +9,8 @@ import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
+import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import javax.inject.Inject
 
 class ExpensesManagerApp : Application() {
@@ -22,6 +25,9 @@ class ExpensesManagerApp : Application() {
 
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
@@ -40,17 +46,12 @@ class ExpensesManagerApp : Application() {
     }
 
     private fun initializeFirebaseServices() {
-        firebaseCrashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
-        firebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_ANALYTICS_ENABLED))
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED))
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
         Logger.i("Low memory")
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-        Logger.i("App terminated")
     }
 }

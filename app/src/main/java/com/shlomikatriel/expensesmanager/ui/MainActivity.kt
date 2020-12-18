@@ -3,6 +3,7 @@ package com.shlomikatriel.expensesmanager.ui
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -41,11 +42,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBar)
 
         attachDestinationChangedListener()
-
-        applyConfigurations()
-    }
-
-    private fun applyConfigurations() {
         toggleOrientationLock()
         configureDarkMode()
     }
@@ -75,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         @StringRes title: Int,
         navigateUpEnabled: Boolean
     ) {
+        binding.appBar.visibility = View.VISIBLE
         supportActionBar!!.title = getString(title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(navigateUpEnabled)
         if (navigateUpEnabled) {
@@ -84,5 +81,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             binding.appBar.setNavigationOnClickListener(null)
         }
+    }
+
+    fun hideToolbar() {
+        binding.appBar.visibility = View.GONE
     }
 }

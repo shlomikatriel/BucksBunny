@@ -14,13 +14,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
 import com.shlomikatriel.expensesmanager.ui.configureToolbar
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openOnboardingFragment
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesEvent
 import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel
@@ -63,9 +63,9 @@ class ExpensesMainFragment : Fragment() {
 
         model.getViewState().observe(viewLifecycleOwner, { render(it) })
 
-        if (!sharedPreferences.getBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN)) {
-            sharedPreferences.putBoolean(BooleanKey.CHOOSE_INCOME_DIALOG_SHOWN, true)
-            navigate(openChooseIncomeDialog(fromOnBoarding = true))
+        if (sharedPreferences.getBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING)) {
+            sharedPreferences.putBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING, false)
+            navigate(openOnboardingFragment())
         }
 
         configureToolbar(R.string.app_name)
@@ -105,25 +105,27 @@ class ExpensesMainFragment : Fragment() {
         viewState.forceSelectPage?.let { selectedPage ->
             if (binding.pager.currentItem != selectedPage) binding.pager.setCurrentItem(
                 selectedPage,
-                false 
+                false
             )
         }
     }
 
-    private fun startHintAnimation() = binding.pager.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-        override fun onGlobalLayout() {
-            binding.pager.viewTreeObserver.removeOnGlobalLayoutListener(this)
-            val pixels = binding.pager.width / 8
-            ValueAnimator.ofInt(0, pixels).apply {
-                duration = 200L
-                interpolator = DecelerateInterpolator()
-                repeatCount = 3
-                repeatMode = ValueAnimator.REVERSE
-                addUpdateListener {
-                    binding.pager.scrollX = it.animatedValue as Int
-                }
-            }.start()
+    private fun startHintAnimation() {
+        val listener = object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.pager.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val pixels = binding.pager.width / 8
+                ValueAnimator.ofInt(0, pixels).apply {
+                    duration = 200L
+                    interpolator = DecelerateInterpolator()
+                    repeatCount = 3
+                    repeatMode = ValueAnimator.REVERSE
+                    addUpdateListener {
+                        binding.pager.scrollX = it.animatedValue as Int
+                    }
+                }.start()
+            }
         }
-
-    })
+        binding.pager.viewTreeObserver.addOnGlobalLayoutListener(listener)
+    }
 }

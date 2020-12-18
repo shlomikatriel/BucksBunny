@@ -16,7 +16,7 @@ import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.navigate
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*

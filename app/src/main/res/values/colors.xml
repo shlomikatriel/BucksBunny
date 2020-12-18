@@ -12,4 +12,6 @@
 
     <color name="launcher_background">@color/colorPrimary</color>
     <color name="launcher_foreground">@android:color/white</color>
+
+    <color name="colored_text">@color/colorPrimary</color>
 </resources>
