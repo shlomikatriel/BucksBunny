@@ -19,6 +19,18 @@
             android:title="@string/settings_monthly_income"
             tools:summary="5600$" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:summary="@string/settings_anonymous_reports_category_summary"
+        android:title="@string/settings_anonymous_reports_category_title">
+        <SwitchPreference
+            android:key="anonymous_crash_reports"
+            android:summary="@string/settings_anonymous_crash_reports_summary"
+            android:title="@string/settings_anonymous_crash_reports_title" />
+        <SwitchPreference
+            android:key="anonymous_usage_data"
+            android:summary="@string/settings_anonymous_usage_data_reports_summary"
+            android:title="@string/settings_anonymous_usage_data_reports_title" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_general_title">
         <Preference
             android:key="application_info"

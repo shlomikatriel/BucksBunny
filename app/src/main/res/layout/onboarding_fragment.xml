@@ -5,17 +5,11 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment" />
-
-        <import type="com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel" />
+        <import type="com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment" />
 
         <variable
             name="fragment"
-            type="ExpensesMainFragment" />
-
-        <variable
-            name="model"
-            type="ExpensesViewModel" />
+            type="OnboardingFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,37 +17,37 @@
         android:layout_height="match_parent"
         android:padding="@dimen/fragment_padding">
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="5 / 2020" />
-
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
-            tools:background="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@id/dots"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@android:color/darker_gray" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:chainUseRtl="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/next"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:tabBackground="@drawable/dot_selector"
             app:tabIndicatorHeight="0dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
+            android:onClick="@{() -> fragment.nextClicked()}"
+            android:text="@string/onboarding_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

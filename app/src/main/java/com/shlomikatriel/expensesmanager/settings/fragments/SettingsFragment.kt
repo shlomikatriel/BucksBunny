@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.settings.fragments
+package com.shlomikatriel.expensesmanager.settings.fragments
 
 import android.content.Context
 import android.content.Intent
@@ -16,15 +16,15 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.extensions.navigate
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.ui.configureToolbar
-import com.shlomikatriel.expensesmanager.ui.settings.AppDataStore
-import com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
-import com.shlomikatriel.expensesmanager.ui.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
+import com.shlomikatriel.expensesmanager.settings.AppDataStore
+import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -39,6 +39,8 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     companion object {
         const val KEY_DARK_MODE = "dark_mode"
         const val MONTHLY_INCOME_KEY = "monthly_income"
+        const val ANONYMOUS_CRASH_REPORTS_KEY = "anonymous_crash_reports"
+        const val ANONYMOUS_USAGE_DATA_KEY = "anonymous_usage_data"
         const val OPEN_SOURCE_LICENSES_KEY = "open_source_licenses"
         const val APPLICATION_INFO_KEY = "application_info"
         const val REPORT_BUG_KEY = "report_bug"
@@ -54,12 +56,15 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     @Inject
     lateinit var logManager: LogManager
 
+    @Inject
+    lateinit var appDataStore: AppDataStore
+
     private var job: Job? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
 
-        preferenceManager.preferenceDataStore = AppDataStore(sharedPreferences)
+        preferenceManager.preferenceDataStore = appDataStore
 
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
@@ -95,7 +100,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         Logger.i("Preference ${preference?.key} clicked")
         try {
             when (preference?.key) {
-                MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog(fromOnBoarding = false))
+                MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
                 REPORT_BUG_KEY -> handleReportBugClick()
                 OPEN_SOURCE_LICENSES_KEY -> navigate(openOpenSourceLicensesActivity())
                 APPLICATION_INFO_KEY -> handleApplicationInfoClicked()

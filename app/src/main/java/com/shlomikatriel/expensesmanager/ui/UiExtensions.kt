@@ -2,43 +2,31 @@ package com.shlomikatriel.expensesmanager.ui
 
 import android.content.Context
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DialogExpenseInputsBinding
+import com.shlomikatriel.expensesmanager.databinding.IncomeInputLayoutBinding
 import com.shlomikatriel.expensesmanager.logs.Logger
 
-fun Fragment.configureToolbar(
-    @StringRes title: Int,
-    navigateUpEnabled: Boolean = false
-) {
-    setHasOptionsMenu(true)
-    (activity as MainActivity?)?.configureToolbar(
-        title,
-        navigateUpEnabled
-    ) ?: Logger.e("Main activity is null for fragment '${javaClass.simpleName}'")
+fun Fragment.configureToolbar(@StringRes title: Int, navigateUpEnabled: Boolean = false) {
+    if (activity is MainActivity) {
+        setHasOptionsMenu(true)
+        (activity as MainActivity).configureToolbar(title, navigateUpEnabled)
+    } else {
+        Logger.e("Can't configure toolbar, main activity is null for fragment '${javaClass.simpleName}'")
+    }
 }
 
-fun View.startPopAnimation() {
-    val animation = ScaleAnimation(
-        1f,
-        1.4f,
-        1f,
-        1.4f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f,
-        Animation.RELATIVE_TO_SELF,
-        0.5f
-    ).apply {
-        duration = 150
-        repeatCount = 1
-        repeatMode = Animation.REVERSE
+fun Fragment.hideToolbar() {
+    if (activity is MainActivity) {
+        (activity as MainActivity).hideToolbar()
+    } else {
+        Logger.e("Can't hide toolbar, main activity is null for fragment '${javaClass.simpleName}'")
     }
-    startAnimation(animation)
 }
 
 fun DialogExpenseInputsBinding.initialize(currencySymbol: String) {
@@ -92,6 +80,30 @@ fun DialogExpenseInputsBinding.isInputValid(
         true
     }
 }
+
+fun IncomeInputLayoutBinding.isInputValid(
+    context: Context
+): Boolean {
+    val income = income.text.toString()
+    val incomeBlank = income.isBlank()
+    val incomeAsFloat = income.toFloatOrNull()
+
+    when {
+        incomeBlank -> incomeLayout.showError(context, R.string.error_empty_value)
+        incomeAsFloat == null -> incomeLayout.showError(context, R.string.error_number_illegal)
+    }
+
+    return !incomeBlank && incomeAsFloat != null
+}
+
+fun IncomeInputLayoutBinding.initialize(currencySymbol: String, currentIncome: Float) {
+    incomeLayout.prefixText = currencySymbol
+    income.setText(
+        currentIncome.toString(),
+        TextView.BufferType.NORMAL
+    )
+}
+
 
 fun TextInputLayout.showError(context: Context, @StringRes errorRes: Int) {
     error = context.getString(errorRes)

@@ -12,8 +12,6 @@
 
     <!-- Fragments -->
     <string name="app_name">מנהל ההוצאות</string>
-    <string name="previous_month_description">הצג את החודש הקודם</string>
-    <string name="next_month_description">הצג את החודש הבא</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
@@ -27,6 +25,9 @@
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
     <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_button_description">הוספת הוצאה</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>
@@ -62,4 +63,19 @@
     <string name="settings_bug_report_subject">דיווח על באג</string>
     <string name="settings_bug_report_content">תיאור הבאג:\n</string>
     <string name="settings_application_info">פרטי יישום</string>
+    <string name="settings_anonymous_reports_category_title">דיווחים אנונימיים</string>
+    <string name="settings_anonymous_reports_category_summary">דוחות אלו אינם מכילים שום מידע אישי או רגיש</string>
+    <string name="settings_anonymous_crash_reports_title">דוחות קריסה אנונימיים</string>
+    <string name="settings_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
+    <string name="settings_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>
+    <string name="settings_anonymous_usage_data_reports_summary">נתוני שימוש משומשים לניתוח תבניות שימוש ושיפור חווית המשתמש</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_next">הבא בתור</string>
+    <string name="onboarding_lets_get_started">בואו נתחיל</string>
+    <string name="onboarding_welcome">ברוכים הבאים</string>
+    <string name="onboarding_expenses_manager">למנהל ההוצאות</string>
+    <string name="onboarding_expenses_slogen">תשלטו בהוצאות שלכם!</string>
+    <string name="onboarding_income_input_info">על מנת לשמור על פרטיותכם, מידע אישי או רגיש לעולם לא יצאו מהאפליקציה וישמר בבטחה</string>
+    <string name="onboarding_welcome_instructions">הקישו \'הבא בתור\' על מנת להגדיר את האפליקציה</string>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/fragment_padding">
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/DialogTitle"
+            android:text="@string/settings_anonymous_reports_category_title"
+            android:textColor="@color/colored_text"
+            app:layout_constraintBottom_toTopOf="@id/info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/info"
+            style="@style/HintTextView"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
+            android:text="@string/settings_anonymous_reports_category_summary"
+            app:drawableStartCompat="@drawable/info"
+            app:layout_constraintBottom_toTopOf="@id/crash_reports"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <include
+            android:id="@+id/crash_reports"
+            layout="@layout/onboarding_permission_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
+            app:layout_constraintBottom_toTopOf="@id/usage_data_reports"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:summary="@{@string/settings_anonymous_crash_reports_summary}"
+            app:title="@{@string/settings_anonymous_crash_reports_title}" />
+
+        <include
+            android:id="@+id/usage_data_reports"
+            layout="@layout/onboarding_permission_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_vertical_spacing"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/crash_reports"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:summary="@{@string/settings_anonymous_usage_data_reports_summary}"
+            app:title="@{@string/settings_anonymous_usage_data_reports_title}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

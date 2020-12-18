@@ -16,7 +16,7 @@ import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.navigate
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
@@ -49,7 +49,7 @@ class ExpensesPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
 
         binding = DataBindingUtil.inflate<ExpensesPageFragmentBinding>(
