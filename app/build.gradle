@@ -52,10 +52,13 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            debuggable false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            minifyEnabled false
+            debuggable true
             versionNameSuffix '-debug'
         }
     }
@@ -85,7 +88,7 @@ dependencies {
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.android.material:material:1.2.1'
     androidTestImplementation 'junit:junit:4.13'
-    androidTestImplementation "androidx.room:room-testing:2.2.5"
+    androidTestImplementation "androidx.room:room-testing:2.2.6"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
