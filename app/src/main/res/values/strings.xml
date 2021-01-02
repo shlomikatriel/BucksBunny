@@ -69,6 +69,9 @@
     <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
     <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
     <string name="settings_anonymous_usage_data_reports_summary">Usage data reports are used to analyse usage patterns and improves user experience</string>
+    <string name="settings_about_category_title">About This App</string>
+    <string name="settings_github_title">Source code in GitHub</string>
+    <string name="settings_apache_license_title">Apache 2.0 License</string>
 
     <!-- Onboarding -->
     <string name="onboarding_next">Next</string>
