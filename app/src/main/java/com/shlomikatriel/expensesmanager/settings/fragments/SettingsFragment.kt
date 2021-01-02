@@ -41,10 +41,16 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         const val MONTHLY_INCOME_KEY = "monthly_income"
         const val ANONYMOUS_CRASH_REPORTS_KEY = "anonymous_crash_reports"
         const val ANONYMOUS_USAGE_DATA_KEY = "anonymous_usage_data"
-        const val OPEN_SOURCE_LICENSES_KEY = "open_source_licenses"
         const val APPLICATION_INFO_KEY = "application_info"
         const val REPORT_BUG_KEY = "report_bug"
+        const val GITHUB_KEY = "github"
+        const val APACHE_LICENSE_KEY = "apache_license"
+        const val OPEN_SOURCE_LICENSES_KEY = "open_source_licenses"
+
         const val MAIL_ADDRESS = "shlomikatriel@gmail.com"
+        const val GITHUB_URL = "https://github.com/shlomikatriel/ExpensesManager"
+        const val APACHE_LICENSE_URL =
+            "https://raw.githubusercontent.com/shlomikatriel/ExpensesManager/develop/LICENSE"
     }
 
     @Inject
@@ -102,8 +108,10 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             when (preference?.key) {
                 MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
                 REPORT_BUG_KEY -> handleReportBugClick()
-                OPEN_SOURCE_LICENSES_KEY -> navigate(openOpenSourceLicensesActivity())
                 APPLICATION_INFO_KEY -> handleApplicationInfoClicked()
+                GITHUB_KEY -> openWebPage(GITHUB_URL)
+                APACHE_LICENSE_KEY -> openWebPage(APACHE_LICENSE_URL)
+                OPEN_SOURCE_LICENSES_KEY -> navigate(openOpenSourceLicensesActivity())
                 else -> return super.onPreferenceTreeClick(preference)
             }
             return true
@@ -156,6 +164,11 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         startActivity(intent)
     } catch (e: Exception) {
         Logger.e("Failed to open application info", e)
+    }
+
+    private fun openWebPage(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     override fun onStop() {
