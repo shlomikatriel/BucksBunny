@@ -32,30 +32,26 @@ class ExpensesViewModel : ViewModel() {
     private fun handleMonthChange(newPosition: Int) {
         Logger.d("Handling month change event [newPosition=$newPosition")
         if (newPosition in 0 until BuildConfig.MONTHS_COUNT) {
-            resultToViewState(
-                ExpensesResult.MonthChangeResult(
-                    newPosition
-                )
-            )
+            resultToViewState(ExpensesResult.MonthChangeResult(newPosition))
         } else {
             Logger.i("New position is not in acceptable range, ignoring event")
         }
     }
 
     private fun resultToViewState(expensesResult: ExpensesResult) {
-        Logger.i("Processing result $expensesResult")
+        Logger.d("Processing result $expensesResult")
         viewState = when (expensesResult) {
             ExpensesResult.InitializeResult -> {
-                val position = viewState.selectedPage ?: BuildConfig.MAX_MONTHS_OFFSET
+                val position = viewState.forceSelectPage ?: BuildConfig.MAX_MONTHS_OFFSET
                 viewState.copy(
                     time = transformPositionToMonthMillis(position),
-                    selectedPage = position
+                    forceSelectPage = position
                 )
             }
             is ExpensesResult.MonthChangeResult -> {
                 viewState.copy(
                     time = transformPositionToMonthMillis(expensesResult.newPosition),
-                    selectedPage = expensesResult.newPosition
+                    forceSelectPage = null
                 )
             }
         }

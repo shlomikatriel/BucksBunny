@@ -30,7 +30,9 @@ enum class FloatKey(private val key: String, private val default: Float) : BaseK
 
 enum class BooleanKey(private val key: String, private val default: Boolean) : BaseKey<Boolean> {
 
-    CHOOSE_INCOME_DIALOG_SHOWN("choose_income_dialog_shown", false);
+    SHOULD_SHOW_ONBOARDING("should_show_onboarding", true),
+    FIREBASE_ANALYTICS_ENABLED("firebase_analytics_enabled", false),
+    FIREBASE_CRASHLYTICS_ENABLED("firebase_crashlytics_enabled", false);
 
     override fun getKey() = key
 

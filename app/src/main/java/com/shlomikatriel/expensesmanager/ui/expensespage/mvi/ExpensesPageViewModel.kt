@@ -3,19 +3,18 @@ package com.shlomikatriel.expensesmanager.ui.expensespage.mvi
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.*
-import androidx.lifecycle.Observer
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.database.ExpenseDao
 import com.shlomikatriel.expensesmanager.logs.Logger
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import javax.inject.Inject
 
-class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int): ViewModel() {
+class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
 
     @Inject
-    lateinit var expenseDao: ExpenseDao
+    lateinit var databaseManager: DatabaseManager
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -35,17 +34,18 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
         resultToViewState(ExpensesPageResult.ExpenseListChangedResult(it))
     }
 
-    private val onSharedPreferencesChangeListener : SharedPreferences.OnSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, key: String ->
-        if (key == FloatKey.INCOME.getKey()) {
-            val income = sharedPreferences.getFloat(FloatKey.INCOME)
-            Logger.i("Income shared preference changed [income=$income]")
-            resultToViewState(ExpensesPageResult.IncomeChangedResult(income))
+    private val onSharedPreferencesChangeListener: SharedPreferences.OnSharedPreferenceChangeListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, key: String ->
+            if (key == FloatKey.INCOME.getKey()) {
+                val income = sharedPreferences.getFloat(FloatKey.INCOME)
+                Logger.i("Income shared preference changed")
+                resultToViewState(ExpensesPageResult.IncomeChangedResult(income))
+            }
         }
-    }
 
     init {
         (appContext as ExpensesManagerApp).appComponent.inject(this)
-        expenseItemsLiveData = expenseDao.getExpensesOfMonth(month, year)
+        expenseItemsLiveData = databaseManager.getExpensesOfMonth(month)
     }
 
     fun getViewState() = viewStateLiveData
@@ -54,7 +54,11 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
         Logger.i("Processing event $expensesPageEvent")
         when (expensesPageEvent) {
             is ExpensesPageEvent.InitializeEvent -> handleInitialize()
-            is ExpensesPageEvent.SelectedChipsChangedEvent -> resultToViewState(ExpensesPageResult.SelectedChipsChangedResult(expensesPageEvent.chips))
+            is ExpensesPageEvent.SelectedChipsChangedEvent -> resultToViewState(
+                ExpensesPageResult.SelectedChipsChangedResult(
+                    expensesPageEvent.chips
+                )
+            )
         }
     }
 
@@ -64,18 +68,18 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
     }
 
     private fun resultToViewState(result: ExpensesPageResult) {
-        Logger.i("Processing result $result")
+        Logger.d("Processing result $result")
         viewState = when (result) {
             is ExpensesPageResult.IncomeChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)
-                viewState.expenses.forEach { balance -= it.amount }
+                viewState.expenses.forEach { balance -= getCost(it) }
                 viewState.copy(
                     balance = balance
                 )
             }
             is ExpensesPageResult.ExpenseListChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)
-                result.expenses.forEach { balance -= it.amount }
+                result.expenses.forEach { balance -= getCost(it) }
                 viewState.copy(
                     balance = balance,
                     expenses = transformToArrayList(result.expenses)
@@ -88,22 +92,32 @@ class ExpensesPageViewModel(appContext: Context, val month: Int, val year: Int):
 
     }
 
-    private fun transformToArrayList(expenses: List<Expense>) = arrayListOf(*(expenses.toTypedArray()))
-        .apply { sortBy { it.timeStamp } }
+    private fun getCost(expense: Expense) = if (expense is Expense.Payments) {
+        expense.cost / expense.payments
+    } else {
+        expense.cost
+    }
+
+    private fun transformToArrayList(expenses: List<Expense>) =
+        arrayListOf(*(expenses.toTypedArray()))
+            .apply { sortBy { it.timeStamp } }
 
     override fun onCleared() {
         super.onCleared()
         Logger.i("Expenses page fragment view model cleared")
         expenseItemsLiveData.removeObserver(expenseItemsLiveDataObserver)
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(onSharedPreferencesChangeListener)
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(
+            onSharedPreferencesChangeListener
+        )
     }
 }
 
-class ExpensesPageViewModelFactory(private val appContext: Context, private val month: Int, private val year: Int) : ViewModelProvider.Factory {
+class ExpensesPageViewModelFactory(private val appContext: Context, private val month: Int) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
-        return ExpensesPageViewModel(appContext, month, year) as T
+        return ExpensesPageViewModel(appContext, month) as T
     }
 
 }

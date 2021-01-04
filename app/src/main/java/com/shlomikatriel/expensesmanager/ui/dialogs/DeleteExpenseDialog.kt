@@ -7,7 +7,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.database.ExpenseDao
+import com.shlomikatriel.expensesmanager.database.DatabaseManager
+import com.shlomikatriel.expensesmanager.database.Expense
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DeleteExpenseDialogBinding
 import com.shlomikatriel.expensesmanager.logs.Logger
 import javax.inject.Inject
@@ -16,7 +18,7 @@ import kotlin.concurrent.thread
 class DeleteExpenseDialog : BaseDialog() {
 
     @Inject
-    lateinit var expenseDao: ExpenseDao
+    lateinit var databaseManager: DatabaseManager
 
     lateinit var binding: DeleteExpenseDialogBinding
 
@@ -41,9 +43,13 @@ class DeleteExpenseDialog : BaseDialog() {
     }
 
     fun deleteClicked() {
-        Logger.v("Deleting expense from database: ${args.id}")
         thread(name = "DeleteExpenseThread") {
-            expenseDao.deleteById(args.id)
+            val expense = when (args.type) {
+                ExpenseType.ONE_TIME -> Expense.OneTime(args.id, 0L, "", 0f, 0)
+                ExpenseType.MONTHLY -> Expense.Monthly(args.id, 0L, "", 0f)
+                ExpenseType.PAYMENTS -> Expense.Payments(args.id, 0L, "", 0f, 0, 0)
+            }
+            databaseManager.delete(expense)
         }
         findNavController().popBackStack()
     }

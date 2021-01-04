@@ -20,20 +20,24 @@ class ExpensesPagePagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragme
     private fun createFragmentAndUpdateCache(position: Int): Fragment {
         Logger.i("Creating new fragment for page $position")
         val fragment = ExpensesPageFragment().apply {
-            val (month, year) = transformPositionToMonthAndYear(position)
-            arguments = ExpensesPageFragmentArgs(position, month, year).toBundle()
+            val month = getMonthOfPosition(position)
+            arguments = ExpensesPageFragmentArgs(position, month).toBundle()
         }
         fragments[position] = fragment
         return fragment
     }
 
-    private fun transformPositionToMonthAndYear(position: Int): Pair<Int, Int> {
+    /**
+     * @return the months that passed since year 0
+     * */
+    private fun getMonthOfPosition(position: Int): Int {
         val offset = position - BuildConfig.MAX_MONTHS_OFFSET
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, offset)
-        val month = calendar.get(Calendar.MONTH)
+        val monthInYear = calendar.get(Calendar.MONTH)
         val year = calendar.get(Calendar.YEAR)
-        Logger.v("Offset $offset transformed to (month, year)=($month, $year)")
-        return Pair(month, year)
+        val month = 12 * year + monthInYear
+        Logger.d("Offset $offset transformed to month [monthInYear=$monthInYear, year=$year, month=$month]")
+        return month
     }
 }

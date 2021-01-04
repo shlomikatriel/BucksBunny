@@ -28,9 +28,20 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fragment_vertical_spacing"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="4362₪"
+            tools:textColor="@color/green" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/expenses_scroll_view"
@@ -38,10 +49,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/balance">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -57,35 +68,42 @@
                     android:layout_marginTop="@dimen/fragment_vertical_spacing"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:selectionRequired="true">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_one_time"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.ONE_TIME}"
-                        android:text="@string/expenses_page_chip_one_time" />
+                        android:text="@string/expenses_page_chip_one_time"
+                        tools:checked="true" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_monthly"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.MONTHLY}"
-                        android:text="@string/expenses_page_chip_monthly" />
+                        android:text="@string/expenses_page_chip_monthly"
+                        tools:checked="true" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_payments"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> fragment.onCheckedChanged()}"
+                        android:tag="@{Chip.PAYMENTS}"
+                        android:text="@string/expenses_page_chip_payments" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_x_or_more"
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.X_OR_MORE}"
                         android:text="@{@string/expenses_page_chip_x_or_more(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
@@ -96,10 +114,10 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.LESS_THEN_X}"
                         android:text="@{@string/expenses_page_chip_less_then_x(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
+                        tools:checked="true"
                         tools:text="@string/expenses_page_chip_less_then_x_example" />
 
                 </com.google.android.material.chip.ChipGroup>
@@ -131,23 +149,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="32dp"
+            android:contentDescription="@string/add_button_description"
             android:onClick="@{() -> fragment.addExpenseClicked()}"
-            app:layout_constraintBottom_toTopOf="@id/balance"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@drawable/add" />
-
-        <TextView
-            android:id="@+id/balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fragment_vertical_spacing"
-            android:layout_marginBottom="@dimen/fragment_vertical_spacing"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="4362₪"
-            tools:textColor="@color/green" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

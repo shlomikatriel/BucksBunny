@@ -2,7 +2,7 @@ package com.shlomikatriel.expensesmanager.ui.expenses.mvi
 
 data class ExpensesViewState(
     val time: Long? = null,
-    val selectedPage: Int? = null
+    val forceSelectPage: Int? = null
 )
 
 sealed class ExpensesEvent {

@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- General -->
     <string name="delete">Delete</string>
-    <string name="edit">Edit</string>
+    <string name="update">Update</string>
     <string name="one_time_expense">One Time</string>
     <string name="monthly_expense">Monthly</string>
+    <string name="payments_expense">Payments</string>
     <string name="expense_name">Expense Name</string>
-    <string name="expense_amount">Expense Cost</string>
+    <string name="expense_cost">Expense Cost</string>
+    <string name="payments_count">Payments Count</string>
 
     <!-- Fragments -->
     <string name="app_name">Expenses Manager</string>
-    <string name="previous_month_description">View previous month</string>
-    <string name="next_month_description">View next month</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
+    <string name="expenses_page_chip_payments">Payments</string>
     <string name="expenses_page_chip_x_or_more">%s or more</string>
     <string name="expenses_page_chip_less_then_x">Less Then %s</string>
     <string name="expenses_page_chip_x_or_more_example">100 $ or more</string>
@@ -23,6 +24,10 @@
     <string name="expenses_page_recycler_item_name_example">Restaurant</string>
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
+    <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
+
+    <!-- Content Descriptions -->
+    <string name="add_button_description">Add expense</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -30,6 +35,7 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
+    <string name="update_expense_dialog_title">Update Expense</string>
     <string name="add_expense_dialog_title">Add Expense</string>
     <string name="add_expense_dialog_add">Add</string>
     <string name="delete_expense_dialog_title">Delete Expense</string>
@@ -44,15 +50,35 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
-    <string name="settings_dark_mode_title">Dark/Light mode</string>
+    <string name="settings_dark_mode_title">Dark Mode</string>
     <string name="settings_dark_mode_entry_system_default">System default</string>
-    <string name="settings_dark_mode_entry_dark">Dark mode</string>
-    <string name="settings_dark_mode_entry_light">Light mode</string>
+    <string name="settings_dark_mode_entry_always">Always</string>
+    <string name="settings_dark_mode_entry_never">Never</string>
     <string name="settings_graphics_title">Graphics</string>
     <string name="settings_functionality_title">Functionality</string>
     <string name="settings_general_title">General</string>
     <string name="settings_monthly_income">Monthly Income</string>
-    <string name="settings_send_mail">Send Feedback</string>
-    <string name="settings_send_mail_subject">Feedback</string>
-    <string name="settings_send_mail_content">This is my feedback for the app:\n</string>
+    <string name="settings_open_source_licenses">Open Source Licenses</string>
+    <string name="settings_bug_report">Report A Bug</string>
+    <string name="settings_bug_report_subject">Bug Report</string>
+    <string name="settings_bug_report_content">Describe the bug:\n</string>
+    <string name="settings_application_info">App Info</string>
+    <string name="settings_anonymous_reports_category_title">Anonymous Reports</string>
+    <string name="settings_anonymous_reports_category_summary">These reports do not personal or sensitive data</string>
+    <string name="settings_anonymous_crash_reports_title">Anonymous Crash Reports</string>
+    <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
+    <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
+    <string name="settings_anonymous_usage_data_reports_summary">Usage data reports are used to analyse usage patterns and improves user experience</string>
+    <string name="settings_about_category_title">About This App</string>
+    <string name="settings_github_title">Source code in GitHub</string>
+    <string name="settings_apache_license_title">Apache 2.0 License</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_lets_get_started">Let\'s get started</string>
+    <string name="onboarding_welcome">Welcome to</string>
+    <string name="onboarding_expenses_manager">Expenses Manager</string>
+    <string name="onboarding_expenses_slogen">Control your expenses!</string>
+    <string name="onboarding_income_input_info">To keep your privacy, personal or sensitive data will never leave the app and will be stored safely</string>
+    <string name="onboarding_welcome_instructions">Tap \'Next\' to configure app</string>
 </resources>

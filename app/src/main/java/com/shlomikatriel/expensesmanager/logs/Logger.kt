@@ -1,37 +1,43 @@
 package com.shlomikatriel.expensesmanager.logs
 
 import android.util.Log
-import com.shlomikatriel.expensesmanager.BuildConfig
+import com.bosphere.filelogger.FL
 
-@Suppress("unused")
+
 class Logger {
     companion object {
-        fun e(message: String, throwable: Throwable? = null) = if (throwable != null) {
-            Log.e(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message), throwable)
-        } else {
-            Log.e(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
-        }
+        fun v(message: String) = FL.v(message.addCallerPrefix())
+
+        fun d(message: String) = FL.d(message.addCallerPrefix())
+
+        fun i(message: String) = FL.i(message.addCallerPrefix())
 
         fun w(message: String, throwable: Throwable? = null) = if (throwable != null) {
-            Log.w(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message), throwable)
+            FL.w(message.addCallerPrefix().appendStackTrace(throwable))
         } else {
-            Log.w(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
+            FL.w(message.addCallerPrefix())
         }
 
-        fun i(message: String) = Log.i(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
+        fun e(message: String, throwable: Throwable? = null) = if (throwable != null) {
+            FL.e(message.addCallerPrefix(), throwable)
+        } else {
+            FL.e(message.addCallerPrefix())
+        }
 
-        fun d(message: String) = Log.d(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
-
-        fun v(message: String) = Log.v(BuildConfig.LOG_TAG, appendMessageToCallerDetails(message))
-
-        private fun appendMessageToCallerDetails(message: String): String {
+        private fun String.addCallerPrefix(): String {
             val thread = Thread.currentThread()
             return thread.stackTrace[4].let {
                 val classSimpleName = simplifyFullyQualifiedClassName(it.className)
-                "[${thread.id}] $classSimpleName#${it.methodName}: $message"
+                "[${thread.id}] $classSimpleName#${it.methodName}: $this"
             }
         }
 
-        private fun simplifyFullyQualifiedClassName(className: String) = className.substringAfterLast('.')
+        private fun String.appendStackTrace(throwable: Throwable): String {
+            return "$this\n${Log.getStackTraceString(throwable)}"
+        }
+
+        private fun simplifyFullyQualifiedClassName(className: String): String {
+            return className.substringAfterLast('.')
+        }
     }
 }

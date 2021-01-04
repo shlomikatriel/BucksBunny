@@ -5,7 +5,7 @@
 
     <dimen name="dialog_padding">24dp</dimen>
     <dimen name="dialog_vertical_spacing">12dp</dimen>
-    <dimen name="fragment_padding">18dp</dimen>
-    <dimen name="fragment_vertical_spacing">12dp</dimen>
+    <dimen name="fragment_padding">12dp</dimen>
+    <dimen name="fragment_vertical_spacing">8dp</dimen>
     <dimen name="fragment_width">@dimen/match_parent</dimen>
 </resources>

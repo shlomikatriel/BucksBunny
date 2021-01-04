@@ -10,16 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.extensions.safeNavigate
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections
+import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
 import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
 import java.text.NumberFormat
@@ -50,7 +49,7 @@ class ExpensesPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
 
         binding = DataBindingUtil.inflate<ExpensesPageFragmentBinding>(
@@ -74,8 +73,9 @@ class ExpensesPageFragment : Fragment() {
         layoutManager = LinearLayoutManager(requireContext())
         expensesRecyclerAdapter = ExpensesPageRecyclerAdapter(
             requireContext(),
-            findNavController(),
-            currencyFormat
+            this@ExpensesPageFragment,
+            currencyFormat,
+            args.month
         )
         adapter = expensesRecyclerAdapter
     }
@@ -89,7 +89,7 @@ class ExpensesPageFragment : Fragment() {
     private fun initializeViewModel() {
         model = ViewModelProvider(
             this,
-            ExpensesPageViewModelFactory(appContext, args.month, args.year)
+            ExpensesPageViewModelFactory(appContext, args.month)
         ).get(args.pagePosition.toString(), ExpensesPageViewModel::class.java)
             .apply {
                 postEvent(ExpensesPageEvent.InitializeEvent)
@@ -100,7 +100,7 @@ class ExpensesPageFragment : Fragment() {
     private fun render(viewState: ExpensesPageViewState) {
         val filteredExpenses = filterExpensesUsingChips(viewState.expenses, viewState.selectedChips)
         expensesRecyclerAdapter.updateData(filteredExpenses)
-        val sum = filteredExpenses.sumByDouble { it.amount.toDouble() }
+        val sum = calculateSum(filteredExpenses)
         binding.sum = currencyFormat.format(sum)
 
         viewState.balance?.let {
@@ -110,9 +110,16 @@ class ExpensesPageFragment : Fragment() {
         }
     }
 
+    private fun calculateSum(expenses: ArrayList<Expense>) = expenses.sumByDouble {
+        when (it) {
+            is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
+            is Expense.Payments -> (it.cost / it.payments).toDouble()
+        }
+    }
+
     private fun filterExpensesUsingChips(
         expenses: ArrayList<Expense>,
-        selectedChips: List<Chip>
+        selectedChips: Set<Chip>
     ): ArrayList<Expense> {
         val newExpenses = expenses.filter { Chip.shouldShow(it, selectedChips) }.toTypedArray()
         return arrayListOf(*newExpenses)
@@ -120,13 +127,11 @@ class ExpensesPageFragment : Fragment() {
 
     private fun getSelectedChips() = binding.chipGroup.checkedChipIds
         .mapNotNull { binding.chipGroup.findViewById<View>(it).tag as Chip? }
-        .toList()
+        .toSet()
 
 
     fun addExpenseClicked() {
         Logger.i("Add expense button clicked")
-        findNavController().safeNavigate(
-            ExpensesMainFragmentDirections.openAddExpenseDialog(args.month, args.year)
-        )
+        navigate(openAddExpenseDialog(args.month))
     }
 }

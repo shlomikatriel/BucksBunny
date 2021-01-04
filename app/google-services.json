@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "854407099144",
+    "firebase_url": "https://expenses-manager-c0273.firebaseio.com",
+    "project_id": "expenses-manager-c0273",
+    "storage_bucket": "expenses-manager-c0273.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:854407099144:android:558c0da8ff779966db72bd",
+        "android_client_info": {
+          "package_name": "com.shlomikatriel.expensesmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "854407099144-p004pv08pgt357hb8k5fmnpm2c3qonbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm-WrBtLtmcgkhjsWnsJO7PbhXCFwdyxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "854407099144-p004pv08pgt357hb8k5fmnpm2c3qonbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
