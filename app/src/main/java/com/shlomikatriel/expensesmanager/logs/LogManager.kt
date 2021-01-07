@@ -13,7 +13,7 @@ import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
 import java.io.BufferedReader
 import java.io.File
-import java.io.InputStreamReader
+import java.io.InputStream
 import javax.inject.Inject
 
 
@@ -27,6 +27,7 @@ class LogManager
     companion object {
         const val LOG_ZIP_FILE_NAME = "ExpensesManagerLogs.zip"
         const val SYSTEM_PROPERTIES_FILE_NAME = "system_properties.log"
+        const val LOGCAT_FILE_NAME = "logcat.log"
     }
 
     fun initialize() = FLConfig.Builder(context).run {
@@ -58,6 +59,8 @@ class LogManager
 
         createPropertiesFile()
 
+        createLogcatFile()
+
         val zipParameters = ZipParameters().apply {
             compressionMethod = CompressionMethod.DEFLATE
             compressionLevel = CompressionLevel.FASTEST
@@ -80,23 +83,57 @@ class LogManager
         if (file.exists()) {
             Logger.i("Deleting existing system properties file [deleted=${file.delete()}]")
         }
+        Logger.i("Collecting properties")
 
         val builder = StringBuilder()
         var process: Process? = null
-        var reader: BufferedReader? = null
         try {
             process = Runtime.getRuntime().exec("getprop")
-            reader = BufferedReader(InputStreamReader(process.inputStream, "UTF-8"))
-            var line: String?
-            do {
-                line = reader.readLine()
-                builder.append(line).append('\n')
-            } while (line != null)
+            builder.appendInputStream(process.inputStream)
         } finally {
-            reader?.close()
-            process?.destroy()
+            process?.apply {
+                inputStream.close()
+                destroy()
+            }
         }
         file.writeText(builder.toString())
+    }
+
+    @WorkerThread
+    private fun createLogcatFile() {
+        val file = File(context.getLogFolder(), LOGCAT_FILE_NAME)
+        if (file.exists()) {
+            Logger.i("Deleting existing logcat file [deleted=${file.delete()}]")
+        }
+        Logger.i("Collecting logcat")
+
+        val builder = StringBuilder()
+        var process: Process? = null
+        try {
+            process = Runtime.getRuntime().exec("logcat -d")
+            process.inputStream.bufferedReader()
+            builder.append("Input Stream:\n")
+                .appendInputStream(process.inputStream)
+                .append("\nError Stream:\n")
+                .appendInputStream(process.errorStream)
+        } finally {
+            process?.apply {
+                inputStream.close()
+                errorStream.close()
+                destroy()
+            }
+        }
+        file.writeText(builder.toString())
+    }
+
+    private fun StringBuilder.appendInputStream(inputStream: InputStream): StringBuilder {
+        val reader: BufferedReader = inputStream.bufferedReader()
+        var line: String?
+        do {
+            line = reader.readLine()
+            append(line).append('\n')
+        } while (line != null)
+        return this
     }
 
     private fun Context.getLogFolder() = File("${filesDir.absolutePath}${File.separator}logs")
