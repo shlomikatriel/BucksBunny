@@ -1,6 +1,5 @@
 package com.shlomikatriel.expensesmanager.database
 
-import androidx.annotation.Keep
 import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
@@ -8,11 +7,10 @@ import androidx.lifecycle.MediatorLiveData
 import com.shlomikatriel.expensesmanager.database.dao.MonthlyExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.OneTimeExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.PaymentsExpenseDao
-import com.shlomikatriel.expensesmanager.database.model.*
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.logs.Logger
 import javax.inject.Inject
 
-@Keep
 class DatabaseManager
 @Inject constructor() {
 
