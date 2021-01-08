@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
@@ -35,6 +35,7 @@ class ExpensesMainFragment : Fragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
+    @Suppress("SpellCheckingInspection")
     private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
 
     private lateinit var binding: ExpensesMainFragmentBinding
@@ -90,7 +91,7 @@ class ExpensesMainFragment : Fragment() {
 
         registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                Logger.d("Page $position selected")
+                logDebug("Page $position selected")
                 model.postEvent(ExpensesEvent.MonthChangeEvent(position))
             }
         })

@@ -18,7 +18,9 @@ import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.LogManager
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logError
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.ui.configureToolbar
@@ -79,20 +81,20 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     override fun onResume() {
         super.onResume()
-        Logger.d("Settings fragment resumed, registering fragment for shared preferences changes")
+        logDebug("Settings fragment resumed, registering fragment for shared preferences changes")
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
     }
 
     override fun onPause() {
         super.onPause()
-        Logger.d("Settings fragment paused, unregistering fragment for shared preferences changes")
+        logDebug("Settings fragment paused, unregistering fragment for shared preferences changes")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == FloatKey.INCOME.getKey()) {
-            Logger.i("Monthly income changed, updating summary")
+            logInfo("Monthly income changed, updating summary")
             updateMonthlyIncomeSummary()
         }
     }
@@ -103,7 +105,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        Logger.i("Preference ${preference?.key} clicked")
+        logInfo("Preference ${preference?.key} clicked")
         try {
             when (preference?.key) {
                 MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
@@ -116,7 +118,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             }
             return true
         } catch (e: Exception) {
-            Logger.e("Failed to process preference ${preference?.key} click", e)
+            logError("Failed to process preference ${preference?.key} click", e)
             return false
         }
     }
@@ -126,14 +128,14 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Logger.d("Creating settings fragment view")
+        logDebug("Creating settings fragment view")
         configureToolbar(R.string.settings_title, true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun handleReportBugClick() {
         if (job?.isCompleted != false) {
-            Logger.i("Starting log collection job")
+            logInfo("Starting log collection job")
             job = GlobalScope.launch {
                 val file = logManager.collectLogs()
                 val intent = Intent(Intent.ACTION_SEND).apply {
@@ -149,10 +151,10 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
                     putExtra(Intent.EXTRA_STREAM, uri)
                 }
                 startActivity(Intent.createChooser(intent, getString(R.string.settings_bug_report)))
-                Logger.i("Log collection job done")
+                logInfo("Log collection job done")
             }
         } else {
-            Logger.i("Active log collection job is not complete [completed=${job?.isCompleted}]")
+            logInfo("Active log collection job is not complete [completed=${job?.isCompleted}]")
         }
     }
 
@@ -163,7 +165,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         }
         startActivity(intent)
     } catch (e: Exception) {
-        Logger.e("Failed to open application info", e)
+        logError("Failed to open application info", e)
     }
 
     private fun openWebPage(url: String) {
@@ -173,7 +175,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     override fun onStop() {
         super.onStop()
-        Logger.i("Settings fragment stopped [isJobCompleted=${job?.isCompleted}]")
+        logInfo("Settings fragment stopped [isJobCompleted=${job?.isCompleted}]")
         job?.takeIf { !it.isCompleted }?.cancel(CancellationException("Settings fragment stopped"))
     }
 }

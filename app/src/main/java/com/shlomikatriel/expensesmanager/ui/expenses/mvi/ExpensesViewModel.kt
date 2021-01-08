@@ -3,7 +3,8 @@ package com.shlomikatriel.expensesmanager.ui.expenses.mvi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shlomikatriel.expensesmanager.BuildConfig
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import java.util.*
 
 class ExpensesViewModel : ViewModel() {
@@ -20,7 +21,7 @@ class ExpensesViewModel : ViewModel() {
     fun getViewState() = viewStateLiveData
 
     fun postEvent(expensesEvent: ExpensesEvent) {
-        Logger.i("Processing event $expensesEvent")
+        logInfo("Processing event $expensesEvent")
         when (expensesEvent) {
             is ExpensesEvent.InitializeEvent -> resultToViewState(
                 ExpensesResult.InitializeResult
@@ -30,16 +31,16 @@ class ExpensesViewModel : ViewModel() {
     }
 
     private fun handleMonthChange(newPosition: Int) {
-        Logger.d("Handling month change event [newPosition=$newPosition")
+        logDebug("Handling month change event [newPosition=$newPosition")
         if (newPosition in 0 until BuildConfig.MONTHS_COUNT) {
             resultToViewState(ExpensesResult.MonthChangeResult(newPosition))
         } else {
-            Logger.i("New position is not in acceptable range, ignoring event")
+            logInfo("New position is not in acceptable range, ignoring event")
         }
     }
 
     private fun resultToViewState(expensesResult: ExpensesResult) {
-        Logger.d("Processing result $expensesResult")
+        logDebug("Processing result $expensesResult")
         viewState = when (expensesResult) {
             ExpensesResult.InitializeResult -> {
                 val position = viewState.forceSelectPage ?: BuildConfig.MAX_MONTHS_OFFSET
@@ -65,6 +66,6 @@ class ExpensesViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        Logger.i("Expenses fragment view model cleared")
+        logInfo("Expenses fragment view model cleared")
     }
 }

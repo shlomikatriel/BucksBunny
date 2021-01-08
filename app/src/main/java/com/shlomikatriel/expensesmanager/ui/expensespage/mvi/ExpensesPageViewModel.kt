@@ -6,7 +6,8 @@ import androidx.lifecycle.*
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
     private val expenseItemsLiveData: LiveData<List<Expense>>
 
     private val expenseItemsLiveDataObserver: Observer<List<Expense>> = Observer {
-        Logger.i("Expenses list changed")
+        logInfo("Expenses list changed")
         resultToViewState(ExpensesPageResult.ExpenseListChangedResult(it))
     }
 
@@ -38,7 +39,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
         SharedPreferences.OnSharedPreferenceChangeListener { _: SharedPreferences, key: String ->
             if (key == FloatKey.INCOME.getKey()) {
                 val income = sharedPreferences.getFloat(FloatKey.INCOME)
-                Logger.i("Income shared preference changed")
+                logInfo("Income shared preference changed")
                 resultToViewState(ExpensesPageResult.IncomeChangedResult(income))
             }
         }
@@ -51,7 +52,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
     fun getViewState() = viewStateLiveData
 
     fun postEvent(expensesPageEvent: ExpensesPageEvent) {
-        Logger.i("Processing event $expensesPageEvent")
+        logInfo("Processing event $expensesPageEvent")
         when (expensesPageEvent) {
             is ExpensesPageEvent.InitializeEvent -> handleInitialize()
             is ExpensesPageEvent.SelectedChipsChangedEvent -> resultToViewState(
@@ -68,7 +69,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
     }
 
     private fun resultToViewState(result: ExpensesPageResult) {
-        Logger.d("Processing result $result")
+        logDebug("Processing result $result")
         viewState = when (result) {
             is ExpensesPageResult.IncomeChangedResult -> {
                 var balance = sharedPreferences.getFloat(FloatKey.INCOME)
@@ -104,7 +105,7 @@ class ExpensesPageViewModel(appContext: Context, val month: Int) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        Logger.i("Expenses page fragment view model cleared")
+        logInfo("Expenses page fragment view model cleared")
         expenseItemsLiveData.removeObserver(expenseItemsLiveDataObserver)
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(
             onSharedPreferencesChangeListener

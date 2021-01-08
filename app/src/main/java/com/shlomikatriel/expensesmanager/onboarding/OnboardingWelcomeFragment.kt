@@ -48,6 +48,6 @@ class OnboardingWelcomeFragment : Fragment() {
             repeatCount = Animation.INFINITE
             duration = 800L
         }
-        binding.expensesSlogen.startAnimation(animation)
+        binding.expensesSlogan.startAnimation(animation)
     }
 }

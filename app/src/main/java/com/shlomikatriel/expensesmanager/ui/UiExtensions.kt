@@ -10,14 +10,14 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DialogExpenseInputsBinding
 import com.shlomikatriel.expensesmanager.databinding.IncomeInputLayoutBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logError
 
 fun Fragment.configureToolbar(@StringRes title: Int, navigateUpEnabled: Boolean = false) {
     if (activity is MainActivity) {
         setHasOptionsMenu(true)
         (activity as MainActivity).configureToolbar(title, navigateUpEnabled)
     } else {
-        Logger.e("Can't configure toolbar, main activity is null for fragment '${javaClass.simpleName}'")
+        logError("Can't configure toolbar, main activity is null for fragment '${javaClass.simpleName}'")
     }
 }
 
@@ -25,7 +25,7 @@ fun Fragment.hideToolbar() {
     if (activity is MainActivity) {
         (activity as MainActivity).hideToolbar()
     } else {
-        Logger.e("Can't hide toolbar, main activity is null for fragment '${javaClass.simpleName}'")
+        logError("Can't hide toolbar, main activity is null for fragment '${javaClass.simpleName}'")
     }
 }
 

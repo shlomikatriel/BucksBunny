@@ -27,18 +27,18 @@
             android:textColor="@color/colored_text"
             android:textSize="32sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/expenses_slogen"
+            app:layout_constraintBottom_toTopOf="@id/expenses_slogan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/welcome"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <TextView
-            android:id="@+id/expenses_slogen"
+            android:id="@+id/expenses_slogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/onboarding_expenses_slogen"
+            android:text="@string/onboarding_expenses_slogan"
             android:textColor="@color/colored_text"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

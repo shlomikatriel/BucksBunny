@@ -13,7 +13,8 @@ import androidx.fragment.app.Fragment
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.OnboardingIncomeFragmentBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
@@ -58,7 +59,7 @@ class OnboardingIncomeFragment : Fragment() {
 
         income.addTextChangedListener {
             val valid = isInputValid(appContext)
-            Logger.v("Input text changed. [valid=$valid]")
+            logVerbose("Input text changed. [valid=$valid]")
         }
 
         // Color title
@@ -68,7 +69,7 @@ class OnboardingIncomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         val valid = binding.incomeInputLayout.isInputValid(appContext)
-        Logger.i("Onboarding input fragment paused, storing income if valid [valid=$valid]")
+        logInfo("Onboarding input fragment paused, storing income if valid [valid=$valid]")
         if (valid) {
             sharedPreferences.putFloat(
                 FloatKey.INCOME,

@@ -12,7 +12,8 @@ import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.ui.getSelectedExpenseType
 import com.shlomikatriel.expensesmanager.ui.initialize
 import com.shlomikatriel.expensesmanager.ui.isInputValid
@@ -56,7 +57,7 @@ class AddExpenseDialog : BaseDialog() {
         val cost = costAsString.toFloatOrNull()
         val paymentsAsString = binding.inputsLayout.payments.text.toString()
         val payments = paymentsAsString.toIntOrNull()
-        Logger.d("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=$type]")
+        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=$type]")
 
         if (binding.inputsLayout.isInputValid(appContext)) {
             addExpense(name, cost!!, payments, type)
@@ -94,7 +95,7 @@ class AddExpenseDialog : BaseDialog() {
     }
 
     fun cancelClicked() {
-        Logger.i("Canceling add expense")
+        logInfo("Canceling add expense")
         findNavController().popBackStack()
     }
 }

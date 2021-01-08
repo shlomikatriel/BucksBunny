@@ -11,7 +11,8 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.UpdateExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.ui.initialize
 import com.shlomikatriel.expensesmanager.ui.isInputValid
 import java.util.*
@@ -49,10 +50,10 @@ class UpdateExpenseDialog : BaseDialog() {
     }
 
     private fun populateFields() = thread(name = "PopulateUpdateExpenseDialogFields") {
-        Logger.d("Fetching expense to populate fields [$args]")
+        logDebug("Fetching expense to populate fields [$args]")
         val expense = databaseManager.getExpense(args.id, args.type)
         activity?.runOnUiThread {
-            Logger.d("Populating fields: $expense")
+            logDebug("Populating fields: $expense")
             binding.inputsLayout.apply {
                 when (expense) {
                     is Expense.OneTime -> {
@@ -86,7 +87,7 @@ class UpdateExpenseDialog : BaseDialog() {
         val cost = costAsString.toFloatOrNull()
         val paymentsString = binding.inputsLayout.payments.text.toString()
         val payments = paymentsString.toIntOrNull()
-        Logger.d("Trying to update expense [name=$name, costAsString=$costAsString, paymentsString=$paymentsString, type=${args.type}]")
+        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsString=$paymentsString, type=${args.type}]")
 
         if (binding.inputsLayout.isInputValid(appContext)) {
             updateExpense(name, cost!!, payments)
@@ -117,7 +118,7 @@ class UpdateExpenseDialog : BaseDialog() {
     }
 
     fun cancelClicked() {
-        Logger.i("Canceling update expense")
+        logInfo("Canceling update expense")
         findNavController().popBackStack()
     }
 }

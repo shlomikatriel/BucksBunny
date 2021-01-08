@@ -11,7 +11,7 @@ import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DeleteExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
@@ -38,7 +38,7 @@ class DeleteExpenseDialog : BaseDialog() {
     }
 
     fun cancelClicked() {
-        Logger.i("Canceling delete expense")
+        logInfo("Canceling delete expense")
         findNavController().popBackStack()
     }
 

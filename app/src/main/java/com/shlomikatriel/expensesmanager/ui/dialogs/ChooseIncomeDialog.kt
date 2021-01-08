@@ -9,7 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ChooseIncomeDialogBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
@@ -51,7 +52,7 @@ class ChooseIncomeDialog : BaseDialog() {
     fun chooseClicked() {
         val income = binding.incomeInputLayout.income.text.toString()
         val incomeAsFloat = income.toFloatOrNull()
-        Logger.d("Trying to add expense [income=$income, incomeAsFloat=$incomeAsFloat]")
+        logDebug("Trying to add expense [income=$income, incomeAsFloat=$incomeAsFloat]")
         if (binding.incomeInputLayout.isInputValid(appContext)) {
             sharedPreferences.putFloat(FloatKey.INCOME, incomeAsFloat!!)
             findNavController().popBackStack()
@@ -59,7 +60,7 @@ class ChooseIncomeDialog : BaseDialog() {
     }
 
     fun cancelClicked() {
-        Logger.i("Canceling choose income")
+        logInfo("Canceling choose income")
         findNavController().popBackStack()
     }
 }
