@@ -8,7 +8,7 @@ import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
 import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.logs.LogManager
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import javax.inject.Inject
@@ -34,9 +34,9 @@ class ExpensesManagerApp : Application() {
         createObjectGraph()
         appComponent.inject(this)
         logManager.initialize()
-        Logger.i("Creating Application")
+        logInfo("Creating Application")
         initializeFirebaseServices()
-        Logger.i("Application created")
+        logInfo("Application created")
     }
 
     private fun createObjectGraph() {
@@ -52,6 +52,6 @@ class ExpensesManagerApp : Application() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        Logger.i("Low memory")
+        logInfo("Low memory")
     }
 }

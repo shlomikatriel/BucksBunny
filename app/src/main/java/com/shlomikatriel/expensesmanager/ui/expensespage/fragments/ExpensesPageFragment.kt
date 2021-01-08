@@ -17,7 +17,7 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
 import com.shlomikatriel.expensesmanager.navigation.navigate
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
 import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
@@ -82,7 +82,7 @@ class ExpensesPageFragment : Fragment() {
 
     fun onCheckedChanged() {
         val selectedChips = getSelectedChips()
-        Logger.i("Selected chips changed [selectedChips=$selectedChips]")
+        logInfo("Selected chips changed [selectedChips=$selectedChips]")
         model.postEvent(ExpensesPageEvent.SelectedChipsChangedEvent(selectedChips))
     }
 
@@ -131,7 +131,7 @@ class ExpensesPageFragment : Fragment() {
 
 
     fun addExpenseClicked() {
-        Logger.i("Add expense button clicked")
+        logInfo("Add expense button clicked")
         navigate(openAddExpenseDialog(args.month))
     }
 }

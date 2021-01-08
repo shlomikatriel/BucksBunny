@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceDataStore
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
 import javax.inject.Inject
@@ -18,17 +18,17 @@ class AppDataStore
 ) : PreferenceDataStore() {
 
     override fun getString(key: String?, defValue: String?): String? {
-        Logger.v("Get string [key=$key, defValue=$defValue]")
+        logVerbose("Get string [key=$key, defValue=$defValue]")
         val value = when (key) {
             SettingsFragment.KEY_DARK_MODE -> sharedPreferences.getInt(IntKey.DARK_MODE).toString()
             else -> super.getString(key, defValue)
         }
-        Logger.v("Got value: $value")
+        logVerbose("Got value: $value")
         return value
     }
 
     override fun putString(key: String?, value: String?) {
-        Logger.v("Put string [key=$key, value=$value]")
+        logVerbose("Put string [key=$key, value=$value]")
         when (key) {
             SettingsFragment.KEY_DARK_MODE -> {
                 val valueAsInt = value?.toIntOrNull() ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -40,7 +40,7 @@ class AppDataStore
     }
 
     override fun getBoolean(key: String?, defValue: Boolean): Boolean {
-        Logger.v("Get boolean [key=$key, defValue=$defValue]")
+        logVerbose("Get boolean [key=$key, defValue=$defValue]")
         return when (key) {
             SettingsFragment.ANONYMOUS_USAGE_DATA_KEY -> sharedPreferences.getBoolean(BooleanKey.FIREBASE_ANALYTICS_ENABLED)
             SettingsFragment.ANONYMOUS_CRASH_REPORTS_KEY -> sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED)
@@ -49,7 +49,7 @@ class AppDataStore
     }
 
     override fun putBoolean(key: String?, value: Boolean) {
-        Logger.v("Put boolean [key=$key, value=$value]")
+        logVerbose("Put boolean [key=$key, value=$value]")
         when (key) {
             SettingsFragment.ANONYMOUS_USAGE_DATA_KEY -> {
                 sharedPreferences.putBoolean(BooleanKey.FIREBASE_ANALYTICS_ENABLED, value)

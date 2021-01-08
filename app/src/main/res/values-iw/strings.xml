@@ -78,7 +78,7 @@
     <string name="onboarding_lets_get_started">בואו נתחיל</string>
     <string name="onboarding_welcome">ברוכים הבאים</string>
     <string name="onboarding_expenses_manager">למנהל ההוצאות</string>
-    <string name="onboarding_expenses_slogen">תשלטו בהוצאות שלכם!</string>
+    <string name="onboarding_expenses_slogan">תשלטו בהוצאות שלכם!</string>
     <string name="onboarding_income_input_info">על מנת לשמור על פרטיותכם, מידע אישי או רגיש לעולם לא יצאו מהאפליקציה וישמר בבטחה</string>
     <string name="onboarding_welcome_instructions">הקישו \'הבא בתור\' על מנת להגדיר את האפליקציה</string>
 </resources>
