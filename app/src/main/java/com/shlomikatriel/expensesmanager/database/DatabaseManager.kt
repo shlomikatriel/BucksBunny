@@ -105,4 +105,12 @@ class DatabaseManager
             }
         }
     }
+
+    fun countExpenses(): Int {
+        val oneTime = oneTimeExpenseDao.count()
+        val monthly = monthlyExpenseDao.count()
+        val payments = paymentsExpenseDao.count()
+        logDebug("Counting expenses [oneTime=$oneTime, monthly=$monthly, payments=$payments]")
+        return oneTime + monthly + payments
+    }
 }

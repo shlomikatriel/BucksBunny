@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.appreview.AppReviewManager
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.navigation.navigate
@@ -32,8 +33,12 @@ import javax.inject.Inject
 
 class ExpensesMainFragment : Fragment() {
 
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
+    @Inject
+    lateinit var appReviewManager: AppReviewManager
 
     @Suppress("SpellCheckingInspection")
     private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
@@ -64,12 +69,12 @@ class ExpensesMainFragment : Fragment() {
 
         model.getViewState().observe(viewLifecycleOwner, { render(it) })
 
-        if (sharedPreferences.getBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING)) {
-            sharedPreferences.putBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING, false)
-            navigate(openOnboardingFragment())
-        }
-
         configureToolbar(R.string.app_name)
+
+        val onboardingShown = showOnboardingIfNeeded()
+        if (!onboardingShown) {
+            appReviewManager.showAppReviewDialogIfNeeded(requireActivity())
+        }
 
         return binding.root
     }
@@ -129,4 +134,17 @@ class ExpensesMainFragment : Fragment() {
         }
         binding.pager.viewTreeObserver.addOnGlobalLayoutListener(listener)
     }
+
+    /**
+     * @return if onboarding was shown
+     * */
+    private fun showOnboardingIfNeeded() = if (sharedPreferences.getBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING)) {
+        sharedPreferences.putBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING, false)
+        navigate(openOnboardingFragment())
+        true
+    } else {
+        false
+    }
+
+
 }
