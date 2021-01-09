@@ -13,4 +13,7 @@ interface MonthlyExpenseDao : BaseDao<MonthlyExpenseModel> {
 
     @Query("SELECT * FROM monthly_expense where :id=id")
     fun getExpenseById(id: Long): MonthlyExpenseModel
+
+    @Query("SELECT COUNT(*) FROM monthly_expense")
+    fun count(): Int
 }
