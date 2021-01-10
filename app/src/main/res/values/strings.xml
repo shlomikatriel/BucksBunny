@@ -81,4 +81,8 @@
     <string name="onboarding_expenses_slogan">Control your expenses!</string>
     <string name="onboarding_income_input_info">To keep your privacy, personal or sensitive data will never leave the app and will be stored safely</string>
     <string name="onboarding_welcome_instructions">Tap \'Next\' to configure app</string>
+
+    <!-- App Update -->
+    <string name="app_update_instructions">New version available, update to enjoy great new features</string>
+    <string name="app_update_button">Update</string>
 </resources>
