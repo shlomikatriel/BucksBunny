@@ -7,6 +7,10 @@ fun SharedPreferences.putInt(key: IntKey, value: Int) = edit { putInt(key.getKey
 
 fun SharedPreferences.getInt(key: IntKey) = getInt(key.getKey(), key.getDefault())
 
+fun SharedPreferences.putLong(key: LongKey, value: Long) = edit { putLong(key.getKey(), value) }
+
+fun SharedPreferences.getLong(key: LongKey) = getLong(key.getKey(), key.getDefault())
+
 fun SharedPreferences.putFloat(key: FloatKey, value: Float) = edit { putFloat(key.getKey(), value) }
 
 fun SharedPreferences.getFloat(key: FloatKey) = getFloat(key.getKey(), key.getDefault())

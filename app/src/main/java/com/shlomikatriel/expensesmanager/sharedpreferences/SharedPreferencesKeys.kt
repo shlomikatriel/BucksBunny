@@ -19,6 +19,16 @@ enum class IntKey(private val key: String, private val default: Int) : BaseKey<I
 
 }
 
+enum class LongKey(private val key: String, private val default: Long) : BaseKey<Long> {
+
+    LAST_IN_APP_REVIEW_TIME("last_in_app_review_time", -1);
+
+    override fun getKey() = key
+
+    override fun getDefault() = default
+
+}
+
 enum class FloatKey(private val key: String, private val default: Float) : BaseKey<Float> {
 
     INCOME("income", 5000f);
