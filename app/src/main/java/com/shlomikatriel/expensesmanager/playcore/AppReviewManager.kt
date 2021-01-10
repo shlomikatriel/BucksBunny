@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.appreview
+package com.shlomikatriel.expensesmanager.playcore
 
 import android.app.Activity
 import com.google.android.play.core.review.ReviewManagerFactory
@@ -31,10 +31,7 @@ class AppReviewManager
                     val reviewInfo = request.result
                     logInfo("Starting In-App Review flow")
                     val flow = manager.launchReviewFlow(activity, reviewInfo)
-                    flow.addOnCompleteListener { _ ->
-                        // The flow has finished. The API does not indicate whether the user
-                        // reviewed or not, or even whether the review dialog was shown. Thus, no
-                        // matter the result, we continue our app flow.
+                    flow.addOnCompleteListener {
                         logInfo("In-App Review completed")
                     }
                 } else {

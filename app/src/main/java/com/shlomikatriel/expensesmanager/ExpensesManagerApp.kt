@@ -41,7 +41,7 @@ class ExpensesManagerApp : Application() {
 
         initializeFirebaseServices()
 
-        checkForUpgrade()
+        checkForUpdate()
 
         logInfo("Application created")
     }
@@ -57,7 +57,7 @@ class ExpensesManagerApp : Application() {
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED))
     }
 
-    private fun checkForUpgrade() {
+    private fun checkForUpdate() {
         val latestVersionCode = sharedPreferences.getInt(IntKey.LATEST_VERSION_CODE)
         when {
             latestVersionCode == IntKey.LATEST_VERSION_CODE.getDefault() -> {
@@ -66,11 +66,11 @@ class ExpensesManagerApp : Application() {
             }
             BuildConfig.VERSION_CODE > latestVersionCode -> {
                 val latestVersionName = sharedPreferences.getString(StringKey.LATEST_VERSION_NAME)
-                logDebug("Version upgrade: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
+                logDebug("Version update: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
                 updateVersion()
             }
             BuildConfig.VERSION_CODE == latestVersionCode -> {
-                logVerbose("No upgrade")
+                logVerbose("No update")
             }
         }
     }

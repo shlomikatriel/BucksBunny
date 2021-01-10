@@ -1,6 +1,7 @@
 package com.shlomikatriel.expensesmanager.ui.expenses.fragments
 
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
@@ -13,10 +14,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.appreview.AppReviewManager
+import com.shlomikatriel.expensesmanager.playcore.AppReviewManager
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.navigation.navigate
+import com.shlomikatriel.expensesmanager.playcore.UpdateManager
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
@@ -39,6 +41,9 @@ class ExpensesMainFragment : Fragment() {
 
     @Inject
     lateinit var appReviewManager: AppReviewManager
+
+    @Inject
+    lateinit var updateManager: UpdateManager
 
     @Suppress("SpellCheckingInspection")
     private val dateFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
@@ -73,7 +78,10 @@ class ExpensesMainFragment : Fragment() {
 
         val onboardingShown = showOnboardingIfNeeded()
         if (!onboardingShown) {
-            appReviewManager.showAppReviewDialogIfNeeded(requireActivity())
+            activity?.let {
+                appReviewManager.showAppReviewDialogIfNeeded(it)
+            }
+            updateManager.showUpdateSnackbarIfNeeded(this, binding.root)
         }
 
         return binding.root
@@ -146,5 +154,8 @@ class ExpensesMainFragment : Fragment() {
         false
     }
 
-
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        updateManager.processResult(requestCode, resultCode)
+    }
 }
