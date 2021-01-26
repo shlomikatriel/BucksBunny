@@ -12,6 +12,9 @@
 
     <!-- Fragments -->
     <string name="app_name">מנהל ההוצאות</string>
+    <string name="expenses_main_graph_income">הכנסות</string>
+    <string name="expenses_main_graph_expenses">הוצאות</string>
+    <string name="expenses_main_graph_balance">יתרה</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>

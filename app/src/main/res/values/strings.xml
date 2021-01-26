@@ -12,6 +12,9 @@
 
     <!-- Fragments -->
     <string name="app_name">Expenses Manager</string>
+    <string name="expenses_main_graph_income">Income</string>
+    <string name="expenses_main_graph_expenses">Expenses</string>
+    <string name="expenses_main_graph_balance">Balance</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
