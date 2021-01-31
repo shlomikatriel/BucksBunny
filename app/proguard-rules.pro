@@ -21,3 +21,5 @@
 #-renamesourcefileattribute SourceFile
 -keep class org.apache.log4j.* { *; }
 -keep class org.apache.log4j.**.* { *; }
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler

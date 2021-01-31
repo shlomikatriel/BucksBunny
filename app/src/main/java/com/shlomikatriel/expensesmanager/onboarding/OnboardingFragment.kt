@@ -16,7 +16,7 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.OnboardingFragmentBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.ui.hideToolbar
+import com.shlomikatriel.expensesmanager.hideToolbar
 import javax.inject.Inject
 
 class OnboardingFragment : Fragment() {

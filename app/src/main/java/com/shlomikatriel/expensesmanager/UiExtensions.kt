@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui
+package com.shlomikatriel.expensesmanager
 
 import android.content.Context
 import android.view.View
@@ -6,7 +6,6 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DialogExpenseInputsBinding
 import com.shlomikatriel.expensesmanager.databinding.IncomeInputLayoutBinding

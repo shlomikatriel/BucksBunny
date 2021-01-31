@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.dialogs
+package com.shlomikatriel.expensesmanager.expenses.dialogs
 
 import android.content.Context
 import android.os.Bundle
@@ -6,15 +6,12 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.UpdateExpenseDialogBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.ui.initialize
-import com.shlomikatriel.expensesmanager.ui.isInputValid
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.thread

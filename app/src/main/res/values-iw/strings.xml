@@ -12,16 +12,15 @@
 
     <!-- Fragments -->
     <string name="app_name">מנהל ההוצאות</string>
+    <string name="expenses_main_graph_income">הכנסות</string>
+    <string name="expenses_main_graph_expenses">הוצאות</string>
+    <string name="expenses_main_graph_balance">יתרה</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
     <string name="expenses_page_chip_x_or_more">%s או יותר</string>
     <string name="expenses_page_chip_less_then_x">פחות מ-%s</string>
-    <string name="expenses_page_chip_x_or_more_example">100 ₪ או יותר</string>
-    <string name="expenses_page_chip_less_then_x_example">פחות מ-100 ₪</string>
-    <string name="expenses_page_sum">סך הכל: %s</string>
-    <string name="expenses_page_sum_example">סך הכל: 430 ₪</string>
-    <string name="expenses_page_recycler_item_name_example">מסעדה</string>
+    <string name="expenses_page_total">סך הכל: %s</string>
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
     <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>

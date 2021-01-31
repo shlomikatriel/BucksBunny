@@ -5,9 +5,9 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expensespage.mvi.Chip" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.mvi.Chip" />
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment" />
 
         <import type="com.shlomikatriel.expensesmanager.BuildConfig" />
 
@@ -22,26 +22,13 @@
             type="NumberFormat" />
 
         <variable
-            name="sum"
+            name="total"
             type="java.lang.String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/balance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fragment_vertical_spacing"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="4362₪"
-            tools:textColor="@color/green" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/expenses_scroll_view"
@@ -52,7 +39,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/balance">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -107,7 +94,7 @@
                         android:onClick="@{() -> fragment.onCheckedChanged()}"
                         android:tag="@{Chip.X_OR_MORE}"
                         android:text="@{@string/expenses_page_chip_x_or_more(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
-                        tools:text="@string/expenses_page_chip_x_or_more_example" />
+                        tools:text="@string/expenses_page_chip_x_or_more" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip_less_then_x"
@@ -118,7 +105,7 @@
                         android:tag="@{Chip.LESS_THEN_X}"
                         android:text="@{@string/expenses_page_chip_less_then_x(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
                         tools:checked="true"
-                        tools:text="@string/expenses_page_chip_less_then_x_example" />
+                        tools:text="@string/expenses_page_chip_less_then_x" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -133,13 +120,13 @@
                     tools:listitem="@layout/expense_recycler_item" />
 
                 <TextView
-                    android:id="@+id/sum_view"
+                    android:id="@+id/total_view"
                     style="@style/Title"
-                    android:text="@{@string/expenses_page_sum(sum)}"
+                    android:text="@{@string/expenses_page_total(total)}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expenses_recycler"
-                    tools:text="@string/expenses_page_sum_example" />
+                    tools:text="Total: 530$" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

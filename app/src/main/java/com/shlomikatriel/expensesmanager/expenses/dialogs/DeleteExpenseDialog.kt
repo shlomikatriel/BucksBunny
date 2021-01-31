@@ -1,10 +1,11 @@
-package com.shlomikatriel.expensesmanager.ui.dialogs
+package com.shlomikatriel.expensesmanager.expenses.dialogs
 
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.shlomikatriel.expensesmanager.BaseDialog
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.DatabaseManager

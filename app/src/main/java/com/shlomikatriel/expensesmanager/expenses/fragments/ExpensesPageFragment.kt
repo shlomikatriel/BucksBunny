@@ -1,26 +1,26 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.fragments
+package com.shlomikatriel.expensesmanager.expenses.fragments
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
-import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
+import com.shlomikatriel.expensesmanager.navigation.navigate
+import com.shlomikatriel.expensesmanager.expenses.mvi.Chip
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageEvent
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewState
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPageRecyclerAdapter
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import java.text.NumberFormat
 import javax.inject.Inject
 import javax.inject.Named
@@ -41,7 +41,7 @@ class ExpensesPageFragment : Fragment() {
 
     private lateinit var binding: ExpensesPageFragmentBinding
 
-    private lateinit var model: ExpensesPageViewModel
+    private val model: ExpensesPageViewModel by viewModels()
 
     private lateinit var expensesRecyclerAdapter: ExpensesPageRecyclerAdapter
 
@@ -62,7 +62,10 @@ class ExpensesPageFragment : Fragment() {
             currencyFormat = currencyIntegerFormat
         }
 
-        initializeViewModel()
+        model.apply {
+            postEvent(ExpensesPageEvent.Initialize(args.month))
+            getViewState().observe(viewLifecycleOwner, { render(it) })
+        }
 
         configureRecycler()
 
@@ -83,46 +86,12 @@ class ExpensesPageFragment : Fragment() {
     fun onCheckedChanged() {
         val selectedChips = getSelectedChips()
         logInfo("Selected chips changed [selectedChips=$selectedChips]")
-        model.postEvent(ExpensesPageEvent.SelectedChipsChangedEvent(selectedChips))
-    }
-
-    private fun initializeViewModel() {
-        model = ViewModelProvider(
-            this,
-            ExpensesPageViewModelFactory(appContext, args.month)
-        ).get(args.pagePosition.toString(), ExpensesPageViewModel::class.java)
-            .apply {
-                postEvent(ExpensesPageEvent.InitializeEvent)
-                getViewState().observe(viewLifecycleOwner, { render(it) })
-            }
+        model.postEvent(ExpensesPageEvent.SelectedChipsChange(selectedChips))
     }
 
     private fun render(viewState: ExpensesPageViewState) {
-        val filteredExpenses = filterExpensesUsingChips(viewState.expenses, viewState.selectedChips)
-        expensesRecyclerAdapter.updateData(filteredExpenses)
-        val sum = calculateSum(filteredExpenses)
-        binding.sum = currencyFormat.format(sum)
-
-        viewState.balance?.let {
-            binding.balance.text = currencyFormat.format(viewState.balance)
-            @ColorRes val color = if (viewState.balance >= 0) R.color.green else R.color.red
-            binding.balance.setTextColor(ContextCompat.getColor(appContext, color))
-        }
-    }
-
-    private fun calculateSum(expenses: ArrayList<Expense>) = expenses.sumByDouble {
-        when (it) {
-            is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
-            is Expense.Payments -> (it.cost / it.payments).toDouble()
-        }
-    }
-
-    private fun filterExpensesUsingChips(
-        expenses: ArrayList<Expense>,
-        selectedChips: Set<Chip>
-    ): ArrayList<Expense> {
-        val newExpenses = expenses.filter { Chip.shouldShow(it, selectedChips) }.toTypedArray()
-        return arrayListOf(*newExpenses)
+        expensesRecyclerAdapter.updateData(viewState.expenses)
+        binding.total = currencyFormat.format(viewState.total)
     }
 
     private fun getSelectedChips() = binding.chipGroup.checkedChipIds

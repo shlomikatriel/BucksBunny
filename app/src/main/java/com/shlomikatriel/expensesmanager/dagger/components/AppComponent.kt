@@ -7,15 +7,16 @@ import com.shlomikatriel.expensesmanager.dagger.modules.DatabaseModule
 import com.shlomikatriel.expensesmanager.onboarding.OnboardingAnonymousDataFragment
 import com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment
 import com.shlomikatriel.expensesmanager.onboarding.OnboardingIncomeFragment
-import com.shlomikatriel.expensesmanager.ui.MainActivity
-import com.shlomikatriel.expensesmanager.ui.dialogs.AddExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog
-import com.shlomikatriel.expensesmanager.ui.dialogs.DeleteExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.dialogs.UpdateExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment
-import com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModel
+import com.shlomikatriel.expensesmanager.MainActivity
+import com.shlomikatriel.expensesmanager.expenses.dialogs.AddExpenseDialog
+import com.shlomikatriel.expensesmanager.settings.dialogs.ChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.expenses.dialogs.DeleteExpenseDialog
+import com.shlomikatriel.expensesmanager.expenses.dialogs.UpdateExpenseDialog
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragment
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -48,4 +49,6 @@ interface AppComponent {
     fun inject(onboardingIncomeFragment: OnboardingIncomeFragment)
 
     fun inject(onboardingAnonymousDataFragment: OnboardingAnonymousDataFragment)
+
+    fun inject(expensesMainViewModel: ExpensesMainViewModel)
 }

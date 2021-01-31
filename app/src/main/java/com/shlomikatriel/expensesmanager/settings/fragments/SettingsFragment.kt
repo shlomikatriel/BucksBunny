@@ -23,7 +23,7 @@ import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import com.shlomikatriel.expensesmanager.ui.configureToolbar
+import com.shlomikatriel.expensesmanager.configureToolbar
 import com.shlomikatriel.expensesmanager.settings.AppDataStore
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity

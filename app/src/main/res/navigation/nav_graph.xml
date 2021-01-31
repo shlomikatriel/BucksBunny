@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/expenses_main_fragment"
-        android:name="com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment"
+        android:name="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragment"
         android:label="expenses_main_fragment"
         tools:layout="@layout/expenses_main_fragment">
         <action
@@ -19,9 +19,6 @@
         <action
             android:id="@+id/open_delete_expense_dialog"
             app:destination="@id/delete_expense_dialog" />
-        <action
-            android:id="@+id/open_choose_income_dialog"
-            app:destination="@id/choose_income_dialog" />
         <action
             android:id="@+id/open_settings_fragment"
             app:destination="@id/settings_fragment"
@@ -41,7 +38,7 @@
 
     <fragment
         android:id="@+id/expenses_page_fragment"
-        android:name="com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment"
+        android:name="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment"
         tools:layout="@layout/expenses_page_fragment">
         <argument
             android:name="page_position"
@@ -76,7 +73,7 @@
 
     <dialog
         android:id="@+id/add_expense_dialog"
-        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.AddExpenseDialog"
+        android:name="com.shlomikatriel.expensesmanager.expenses.dialogs.AddExpenseDialog"
         android:label="add_expense_dialog"
         tools:layout="@layout/add_expense_dialog">
         <argument
@@ -86,7 +83,7 @@
 
     <dialog
         android:id="@+id/update_expense_dialog"
-        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.UpdateExpenseDialog"
+        android:name="com.shlomikatriel.expensesmanager.expenses.dialogs.UpdateExpenseDialog"
         android:label="update_expense_dialog"
         tools:layout="@layout/update_expense_dialog">
         <argument
@@ -102,7 +99,7 @@
 
     <dialog
         android:id="@+id/delete_expense_dialog"
-        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.DeleteExpenseDialog"
+        android:name="com.shlomikatriel.expensesmanager.expenses.dialogs.DeleteExpenseDialog"
         android:label="delete_expense_dialog"
         tools:layout="@layout/delete_expense_dialog">
         <argument
@@ -115,7 +112,7 @@
 
     <dialog
         android:id="@+id/choose_income_dialog"
-        android:name="com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog"
+        android:name="com.shlomikatriel.expensesmanager.settings.dialogs.ChooseIncomeDialog"
         android:label="choose_income_dialog"
         tools:layout="@layout/choose_income_dialog" />
 

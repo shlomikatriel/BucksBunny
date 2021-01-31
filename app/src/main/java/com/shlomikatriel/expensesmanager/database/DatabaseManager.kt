@@ -68,7 +68,7 @@ class DatabaseManager
     }
 
     @UiThread
-    fun getExpensesOfMonth(month: Int) = MediatorLiveData<List<Expense>>().apply {
+    fun getExpensesOfMonth(month: Int) = MediatorLiveData<ArrayList<Expense>>().apply {
         attachExpensesLiveDataSource(
             Expense.OneTime::class.java,
             { oneTimeExpenseDao.getExpensesOfMonth(month) },
@@ -86,14 +86,14 @@ class DatabaseManager
         )
     }
 
-    private fun <M, E : Expense> MediatorLiveData<List<Expense>>.attachExpensesLiveDataSource(
+    private fun <M, E : Expense> MediatorLiveData<ArrayList<Expense>>.attachExpensesLiveDataSource(
         expenseClass: Class<E>,
         getExpenses: () -> LiveData<List<M>>,
         convertToExpense: (M) -> Expense
     ) {
         addSource(getExpenses()) { models ->
             synchronized(this) {
-                val newExpenses = mutableListOf<Expense>()
+                val newExpenses = arrayListOf<Expense>()
                 newExpenses.addAll(models.map { convertToExpense(it) })
 
                 val oldExpenses = value
