@@ -5,26 +5,16 @@ import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.database.Expense
 
 data class ExpensesPageViewState(
-    val balance: Float? = null,
     val expenses: ArrayList<Expense> = arrayListOf(),
-    val selectedChips: Set<Chip> = Chip.values().toSet()
+    val total: Float? = null
 )
 
 sealed class ExpensesPageEvent {
-    object InitializeEvent : ExpensesPageEvent()
-    data class SelectedChipsChangedEvent(val chips: Set<Chip>) : ExpensesPageEvent()
+    data class Initialize(val month: Int) : ExpensesPageEvent()
+    data class SelectedChipsChange(val chips: Set<Chip>) : ExpensesPageEvent()
 }
 
-sealed class ExpensesPageResult {
-    data class IncomeChangedResult(val income: Float) : ExpensesPageResult()
-    data class ExpenseListChangedResult(
-        val expenses: List<Expense>
-    ) : ExpensesPageResult()
-
-    data class SelectedChipsChangedResult(
-        val chips: Set<Chip>
-    ) : ExpensesPageResult()
-}
+data class ExpensesPageResult(val expenses: ArrayList<Expense>)
 
 @Keep
 enum class Chip(private val predicate: (Expense) -> Boolean) {

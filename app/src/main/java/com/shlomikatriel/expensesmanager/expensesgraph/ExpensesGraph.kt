@@ -1,16 +1,22 @@
 package com.shlomikatriel.expensesmanager.expensesgraph
 
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.getColorOrThrow
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withTranslation
 import com.shlomikatriel.expensesmanager.R
@@ -71,7 +77,7 @@ class ExpensesGraph : View {
 
     // Progress from 0f to 1f
     private val progressAnimator = ValueAnimator().apply {
-        duration = 200L
+        duration = 1000L
         interpolator = DecelerateInterpolator()
         addUpdateListener {
             val progress = animatedValue as Float
@@ -103,29 +109,26 @@ class ExpensesGraph : View {
     private val minBarHeight = dpToPx(100f)
 
     // Paints
-    private val grayPaint = Paint().apply {
-        color = ContextCompat.getColor(context, android.R.color.darker_gray)
-    }
-    private val grayLabelPaint = Paint(grayPaint).apply {
-        textSize = labelTextSize
-        typeface = Typeface.SANS_SERIF
-    }
+    private lateinit var grayPaint: Paint
+    private lateinit var labelPaint: TextPaint
+    private lateinit var expensesValuePaint: TextPaint
+
     private val bluePaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.expenses_graph_base_color)
+        color = getColor(R.color.expenses_graph_base_color)
     }
     private val blueValuePaint = TextPaint(bluePaint).apply {
         textSize = valueTextSize
         typeface = Typeface.SANS_SERIF
     }
     private val greenPaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.green)
+        color = getColor(R.color.green)
     }
     private val greenValuePaint = TextPaint(greenPaint).apply {
         textSize = valueTextSize
         typeface = Typeface.SANS_SERIF
     }
     private val redPaint = Paint().apply {
-        color = ContextCompat.getColor(context, R.color.red)
+        color = getColor(R.color.red)
     }
     private val redValuePaint = TextPaint(redPaint).apply {
         textSize = valueTextSize
@@ -168,11 +171,38 @@ class ExpensesGraph : View {
                 recycle()
             }
         }
+        parseAndroidAttributes()
     }
 
-    @Suppress("unused")
+    @Suppress("SameParameterValue")
+    private fun parseAndroidAttributes() {
+        grayPaint = Paint().apply {
+            color = getColorFromAttribute(android.R.attr.colorControlNormal)
+        }
+        labelPaint = TextPaint(grayPaint).apply {
+            textSize = labelTextSize
+            typeface = Typeface.SANS_SERIF
+        }
+        expensesValuePaint = TextPaint(grayPaint).apply {
+            textSize = valueTextSize
+            typeface = Typeface.SANS_SERIF
+        }
+    }
+
+    @Suppress("SameParameterValue")
+    @ColorInt
+    private fun getColorFromAttribute(@AttrRes attr: Int): Int {
+        context.theme.obtainStyledAttributes(intArrayOf(attr)).apply {
+            try {
+                return getColorOrThrow(0)
+            } finally {
+                recycle()
+            }
+        }
+    }
+
     fun updateGraph(newIncome: Float, newExpenses: Float) {
-        if (newIncome <= 0 || newExpenses <= 0)
+        if (newIncome < 0 || newExpenses < 0)
             throw IllegalArgumentException("income and expenses must both be positive")
 
         progressAnimator.pause()
@@ -200,6 +230,7 @@ class ExpensesGraph : View {
         toBalanceBar = newBalance / maxValue
 
         progressAnimator.setFloatValues(0f, 1f)
+        progressAnimator.start()
     }
 
     private fun calculateCurrentValue(from: Float, to: Float, progress: Float): Float {
@@ -239,12 +270,15 @@ class ExpensesGraph : View {
 
     private fun Canvas.drawLabel(label: String) = drawText(
             label,
-            -(grayLabelPaint.measureText(label) / 2),
+            -(labelPaint.measureText(label) / 2),
             0f,
-            grayLabelPaint
+            labelPaint
     )
 
-    private fun Canvas.drawBaseLine() = withTranslation(x = paddingLeft.toFloat(), y = height - paddingBottom - labelTextSize - textMargin) {
+    private fun Canvas.drawBaseLine() = withTranslation(
+            x = paddingLeft.toFloat(),
+            y = height - paddingBottom - labelTextSize - textMargin
+    ) {
         val rectWidth = width - paddingLeft - paddingRight
         drawRoundRect(
                 0f,
@@ -253,30 +287,31 @@ class ExpensesGraph : View {
                 0f,
                 baseLineRadius,
                 baseLineRadius,
-                grayLabelPaint
+                labelPaint
         )
     }
 
-    private fun Canvas.drawGraphBars() = withTranslation(y = height - paddingBottom - labelTextSize - textMargin - baseLineThickness) {
-        val maxBarHeight =
-                height - paddingBottom - paddingTop - baseLineThickness - labelTextSize - valueTextSize - 2f * textMargin
-        val pxBetweenEdgeAndFirstBar = (width - paddingLeft - paddingRight) / 6f
+    private fun Canvas.drawGraphBars() =
+            withTranslation(y = height - paddingBottom - labelTextSize - textMargin - baseLineThickness) {
+                val maxBarHeight =
+                        height - paddingBottom - paddingTop - baseLineThickness - labelTextSize - valueTextSize - 2f * textMargin
+                val pxBetweenEdgeAndFirstBar = (width - paddingLeft - paddingRight) / 6f
 
-        // Draw income, expenses and balance (in this order) towards the layout direction
-        val incomeLocation = if (layoutDirection == LAYOUT_DIRECTION_RTL) 5 else 1
-        val balanceLocation = if (layoutDirection == LAYOUT_DIRECTION_RTL) 1 else 5
-        withTranslation(x = paddingLeft + incomeLocation * pxBetweenEdgeAndFirstBar) {
-            drawBar(bluePaint, incomeBar, blueValuePaint, income, maxBarHeight)
-        }
-        withTranslation(x = paddingLeft + 3 * pxBetweenEdgeAndFirstBar) {
-            drawBar(bluePaint, expensesBar, blueValuePaint, expenses, maxBarHeight)
-        }
-        withTranslation(x = paddingLeft + balanceLocation * pxBetweenEdgeAndFirstBar) {
-            val barPaint = if (balance >= 0) greenPaint else redPaint
-            val valuePaint = if (balance >= 0) greenValuePaint else redValuePaint
-            drawBar(barPaint, abs(balanceBar), valuePaint, balance, maxBarHeight)
-        }
-    }
+                // Draw income, expenses and balance (in this order) towards the layout direction
+                val incomeLocation = if (layoutDirection == LAYOUT_DIRECTION_RTL) 5 else 1
+                val balanceLocation = if (layoutDirection == LAYOUT_DIRECTION_RTL) 1 else 5
+                withTranslation(x = paddingLeft + incomeLocation * pxBetweenEdgeAndFirstBar) {
+                    drawBar(bluePaint, incomeBar, blueValuePaint, income, maxBarHeight)
+                }
+                withTranslation(x = paddingLeft + 3 * pxBetweenEdgeAndFirstBar) {
+                    drawBar(grayPaint, expensesBar, expensesValuePaint, expenses, maxBarHeight)
+                }
+                withTranslation(x = paddingLeft + balanceLocation * pxBetweenEdgeAndFirstBar) {
+                    val barPaint = if (balance >= 0) greenPaint else redPaint
+                    val valuePaint = if (balance >= 0) greenValuePaint else redValuePaint
+                    drawBar(barPaint, abs(balanceBar), valuePaint, balance, maxBarHeight)
+                }
+            }
 
     private fun Canvas.drawBar(
             barPaint: Paint,
@@ -341,9 +376,9 @@ class ExpensesGraph : View {
     }
 
     private fun getDesiredWidth(): Float {
-        val incomeLabelWidth = grayLabelPaint.measureText(incomeLabel)
-        val expensesLabelWidth = grayLabelPaint.measureText(expensesLabel)
-        val balanceLabelWidth = grayLabelPaint.measureText(balanceLabel)
+        val incomeLabelWidth = labelPaint.measureText(incomeLabel)
+        val expensesLabelWidth = labelPaint.measureText(expensesLabel)
+        val balanceLabelWidth = labelPaint.measureText(balanceLabel)
         val labelsWidth = incomeLabelWidth + expensesLabelWidth + balanceLabelWidth
         val barsWidth = 3 * barWidth
 
@@ -352,5 +387,19 @@ class ExpensesGraph : View {
 
     private fun getDesiredHeight(): Float {
         return 2 * textMargin + labelTextSize + baseLineThickness + valueTextSize + minBarHeight
+    }
+
+    /**
+     * In case we're in edit mode, the preview window cannot show colors that being fetched using
+     * [ContextCompat.getColor] ([Build.VERSION.SDK_INT] is 0 so the deprecated method is used).
+     *
+     * Therefore, in that case, we need to force use the newer method, while ignoring the lint warning.
+     * */
+    @SuppressLint("NewApi")
+    @ColorInt
+    private fun getColor(@ColorRes color: Int) = if (isInEditMode) {
+        context.getColor(color)
+    } else {
+        ContextCompat.getColor(context, color)
     }
 }

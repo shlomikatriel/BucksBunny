@@ -7,7 +7,7 @@
 
         <import type="com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment" />
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesViewModel" />
+        <import type="com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainViewModel" />
 
         <variable
             name="fragment"
@@ -15,7 +15,7 @@
 
         <variable
             name="model"
-            type="ExpensesViewModel" />
+            type="ExpensesMainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

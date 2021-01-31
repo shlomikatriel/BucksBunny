@@ -16,6 +16,7 @@ import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragm
 import com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment
 import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.ExpensesPageViewModel
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment
+import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -48,4 +49,6 @@ interface AppComponent {
     fun inject(onboardingIncomeFragment: OnboardingIncomeFragment)
 
     fun inject(onboardingAnonymousDataFragment: OnboardingAnonymousDataFragment)
+
+    fun inject(expensesMainViewModel: ExpensesMainViewModel)
 }
