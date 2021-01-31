@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.dialogs
+package com.shlomikatriel.expensesmanager.settings.dialogs
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.databinding.ChooseIncomeDialogBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
-import com.shlomikatriel.expensesmanager.ui.initialize
-import com.shlomikatriel.expensesmanager.ui.isInputValid
 import java.util.*
 import javax.inject.Inject
 

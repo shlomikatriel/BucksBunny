@@ -5,9 +5,9 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragment" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragment" />
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainViewModel" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel" />
 
         <variable
             name="fragment"
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="5 / 2020" />
 
-        <com.shlomikatriel.expensesmanager.expensesgraph.ExpensesGraph
+        <com.shlomikatriel.expensesmanager.expenses.components.ExpensesGraph
             android:id="@+id/expenses_graph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

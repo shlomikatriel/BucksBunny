@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.fragments
+package com.shlomikatriel.expensesmanager.expenses.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -15,9 +15,12 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.navigation.navigate
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.expensespage.mvi.*
-import com.shlomikatriel.expensesmanager.ui.expensespage.recyclers.ExpensesPageRecyclerAdapter
+import com.shlomikatriel.expensesmanager.expenses.mvi.Chip
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageEvent
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewState
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPageRecyclerAdapter
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
 import java.text.NumberFormat
 import javax.inject.Inject
 import javax.inject.Named

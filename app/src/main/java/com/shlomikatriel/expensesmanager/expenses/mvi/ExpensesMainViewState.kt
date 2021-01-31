@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expenses.mvi
+package com.shlomikatriel.expensesmanager.expenses.mvi
 
 data class ExpensesMainViewState(
     val time: Long? = null,

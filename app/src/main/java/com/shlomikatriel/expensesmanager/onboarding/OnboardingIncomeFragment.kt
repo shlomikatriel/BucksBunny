@@ -18,8 +18,8 @@ import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
-import com.shlomikatriel.expensesmanager.ui.initialize
-import com.shlomikatriel.expensesmanager.ui.isInputValid
+import com.shlomikatriel.expensesmanager.initialize
+import com.shlomikatriel.expensesmanager.isInputValid
 import java.util.*
 import javax.inject.Inject
 

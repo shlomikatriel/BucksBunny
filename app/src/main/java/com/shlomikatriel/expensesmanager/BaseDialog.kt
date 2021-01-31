@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.dialogs
+package com.shlomikatriel.expensesmanager
 
 import android.app.Dialog
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.shlomikatriel.expensesmanager.R
 
 abstract class BaseDialog : DialogFragment() {
 

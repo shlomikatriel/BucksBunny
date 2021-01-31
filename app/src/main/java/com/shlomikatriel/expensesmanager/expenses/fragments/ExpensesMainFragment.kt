@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expenses.fragments
+package com.shlomikatriel.expensesmanager.expenses.fragments
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -25,13 +25,13 @@ import com.shlomikatriel.expensesmanager.playcore.UpdateManager
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
-import com.shlomikatriel.expensesmanager.ui.configureToolbar
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openOnboardingFragment
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
-import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainEvent
-import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainViewModel
-import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesMainViewState
-import com.shlomikatriel.expensesmanager.ui.expensespage.pager.ExpensesPagePagerAdapter
+import com.shlomikatriel.expensesmanager.configureToolbar
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openOnboardingFragment
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainEvent
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewState
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPagePagerAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

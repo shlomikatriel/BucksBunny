@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui
+package com.shlomikatriel.expensesmanager
 
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
 import com.shlomikatriel.expensesmanager.firebase.logEvent
 import com.shlomikatriel.expensesmanager.logs.logDebug

@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.mvi
+package com.shlomikatriel.expensesmanager.expenses.mvi
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,6 @@ import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.ui.expenses.mvi.ExpensesBaseViewModel
 
 class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(application) {
 

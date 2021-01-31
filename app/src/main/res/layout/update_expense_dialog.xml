@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.ui.dialogs.UpdateExpenseDialog" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.dialogs.UpdateExpenseDialog" />
 
         <variable
             name="dialog"

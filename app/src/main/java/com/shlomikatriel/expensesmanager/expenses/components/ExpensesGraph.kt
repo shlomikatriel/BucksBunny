@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.expensesgraph
+package com.shlomikatriel.expensesmanager.expenses.components
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint

@@ -1,12 +1,12 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.pager
+package com.shlomikatriel.expensesmanager.expenses.components
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.Utils
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment
-import com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragmentArgs
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragmentArgs
 
 class ExpensesPagePagerAdapter(private val utils: Utils, fragment: Fragment) : FragmentStateAdapter(fragment) {
 

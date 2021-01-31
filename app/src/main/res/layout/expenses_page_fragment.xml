@@ -5,9 +5,9 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expensespage.mvi.Chip" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.mvi.Chip" />
 
-        <import type="com.shlomikatriel.expensesmanager.ui.expensespage.fragments.ExpensesPageFragment" />
+        <import type="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment" />
 
         <import type="com.shlomikatriel.expensesmanager.BuildConfig" />
 

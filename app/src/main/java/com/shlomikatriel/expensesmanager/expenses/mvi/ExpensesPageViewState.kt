@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.mvi
+package com.shlomikatriel.expensesmanager.expenses.mvi
 
 import androidx.annotation.Keep
 import com.shlomikatriel.expensesmanager.BuildConfig
