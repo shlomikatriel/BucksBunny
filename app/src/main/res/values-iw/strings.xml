@@ -3,9 +3,6 @@
     <!-- General -->
     <string name="delete">מחיקה</string>
     <string name="update">עדכון</string>
-    <string name="one_time_expense">חד פעמית</string>
-    <string name="monthly_expense">חודשית</string>
-    <string name="payments_expense">תשלומים</string>
     <string name="expense_name">שם ההוצאה</string>
     <string name="expense_cost">עלות ההוצאה</string>
     <string name="payments_count">מספר תשלומים</string>
@@ -40,8 +37,12 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">ביטול</string>
-    <string name="update_expense_dialog_title">עדכון הוצאה</string>
-    <string name="add_expense_dialog_title">הוספת הוצאה</string>
+    <string name="update_one_time_expense_dialog_title">עדכון הוצאה חד פעמית</string>
+    <string name="update_monthly_expense_dialog_title">עדכון הוצאה חודשית</string>
+    <string name="update_payments_expense_dialog_title">עדכון הוצאה בתשלומים</string>
+    <string name="add_one_time_expense_dialog_title">הוספת הוצאה חד פעמית</string>
+    <string name="add_monthly_expense_dialog_title">הוספת הוצאה חודשית</string>
+    <string name="add_payments_expense_dialog_title">הוספת הוצאה בתשלומים</string>
     <string name="add_expense_dialog_add">הוספה</string>
     <string name="delete_expense_dialog_title">מחיקת הוצאה</string>
     <string name="delete_expense_dialog_confirmation_text">האם אתם בטוחים שאתם רוצים למחוק את ההוצאה?</string>

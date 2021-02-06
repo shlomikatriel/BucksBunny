@@ -3,12 +3,14 @@ package com.shlomikatriel.expensesmanager.expenses.dialogs
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.UpdateExpenseDialogBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
@@ -40,11 +42,20 @@ class UpdateExpenseDialog : BaseDialog() {
 
     override fun bind(view: View) {
         binding = DataBindingUtil.bind<UpdateExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(currency.symbol)
+            inputsLayout.initialize(currency.symbol, args.type)
+            title.setText(getDialogTitle())
             dialog = this@UpdateExpenseDialog
         }
         populateFields()
     }
+
+    @StringRes
+    private fun getDialogTitle() = when (args.type) {
+        ExpenseType.ONE_TIME -> R.string.update_one_time_expense_dialog_title
+        ExpenseType.MONTHLY -> R.string.update_monthly_expense_dialog_title
+        ExpenseType.PAYMENTS -> R.string.update_payments_expense_dialog_title
+    }
+
 
     private fun populateFields() = thread(name = "PopulateUpdateExpenseDialogFields") {
         logDebug("Fetching expense to populate fields [$args]")
@@ -54,26 +65,20 @@ class UpdateExpenseDialog : BaseDialog() {
             binding.inputsLayout.apply {
                 when (expense) {
                     is Expense.OneTime -> {
-                        typeButtons.check(R.id.one_time_expense)
                         cost.setText(expense.cost.toString())
                         name.setText(expense.name)
                     }
                     is Expense.Monthly -> {
-                        typeButtons.check(R.id.monthly_expense)
                         cost.setText(expense.cost.toString())
                         name.setText(expense.name)
                     }
                     is Expense.Payments -> {
-                        typeButtons.check(R.id.payments_expense)
                         cost.setText(expense.cost.toString())
                         name.setText(expense.name)
                         paymentsLayout.visibility = View.VISIBLE
                         payments.setText(expense.payments.toString())
                     }
                 }
-                oneTimeExpense.isEnabled = false
-                monthlyExpense.isEnabled = false
-                paymentsExpense.isEnabled = false
             }
         }
     }
@@ -86,7 +91,7 @@ class UpdateExpenseDialog : BaseDialog() {
         val payments = paymentsString.toIntOrNull()
         logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsString=$paymentsString, type=${args.type}]")
 
-        if (binding.inputsLayout.isInputValid(appContext)) {
+        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
             updateExpense(name, cost!!, payments)
         }
     }
