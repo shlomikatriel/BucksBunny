@@ -77,6 +77,9 @@
         android:label="add_expense_dialog"
         tools:layout="@layout/add_expense_dialog">
         <argument
+            android:name="type"
+            app:argType="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
+        <argument
             android:name="month"
             app:argType="integer" />
     </dialog>

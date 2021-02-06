@@ -24,9 +24,15 @@
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
     <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>
+    <string name="add_one_time_button_title">הוצאה חד פעמית</string>
+    <string name="add_monthly_button_title">הוצאה חודשית</string>
+    <string name="add_payments_button_title">הוצאה בתשלומים</string>
 
     <!-- Content Descriptions -->
     <string name="add_button_description">הוספת הוצאה</string>
+    <string name="add_one_time_button_description">הוספת הוצאה חד פעמית</string>
+    <string name="add_monthly_button_description">הוספת הוצאה חודשית</string>
+    <string name="add_payments_button_description">הוספת הוצאה בתשלומים</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>

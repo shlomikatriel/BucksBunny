@@ -13,14 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.navigation.navigate
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPageRecyclerAdapter
 import com.shlomikatriel.expensesmanager.expenses.mvi.Chip
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageEvent
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewState
-import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPageRecyclerAdapter
-import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import java.text.NumberFormat
 import javax.inject.Inject
 import javax.inject.Named
@@ -97,10 +95,4 @@ class ExpensesPageFragment : Fragment() {
     private fun getSelectedChips() = binding.chipGroup.checkedChipIds
         .mapNotNull { binding.chipGroup.findViewById<View>(it).tag as Chip? }
         .toSet()
-
-
-    fun addExpenseClicked() {
-        logInfo("Add expense button clicked")
-        navigate(openAddExpenseDialog(args.month))
-    }
 }

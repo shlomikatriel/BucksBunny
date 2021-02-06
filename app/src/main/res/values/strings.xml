@@ -24,9 +24,15 @@
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
     <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
+    <string name="add_one_time_button_title">One Time Expense</string>
+    <string name="add_monthly_button_title">Monthly Expense</string>
+    <string name="add_payments_button_title">Payments Expense</string>
 
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
+    <string name="add_one_time_button_description">Add one time expense</string>
+    <string name="add_monthly_button_description">Add monthly expense</string>
+    <string name="add_payments_button_description">Add payments expense</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>

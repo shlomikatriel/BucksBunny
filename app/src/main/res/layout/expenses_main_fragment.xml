@@ -9,6 +9,8 @@
 
         <import type="com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel" />
 
+        <import type="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
+
         <variable
             name="fragment"
             type="ExpensesMainFragment" />
@@ -18,15 +20,18 @@
             type="ExpensesMainViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motion_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/fragment_padding">
+        app:currentState="@id/collapsed"
+        app:layoutDescription="@xml/expenses_main_fragment_scene">
 
         <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fragment_padding"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,18 +43,22 @@
             android:id="@+id/expenses_graph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fragment_padding"
+            android:layout_marginEnd="@dimen/fragment_padding"
             android:padding="8dp"
-            app:incomeLabel="@string/expenses_main_graph_income"
-            app:expensesLabel="@string/expenses_main_graph_expenses"
             app:balanceLabel="@string/expenses_main_graph_balance"
+            app:expensesLabel="@string/expenses_main_graph_expenses"
+            app:incomeLabel="@string/expenses_main_graph_income"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date"/>
+            app:layout_constraintTop_toBottomOf="@id/date" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginStart="@dimen/fragment_padding"
+            android:layout_marginEnd="@dimen/fragment_padding"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@id/dots"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,15 +66,68 @@
             app:layout_constraintTop_toBottomOf="@id/expenses_graph"
             tools:background="@android:color/darker_gray" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_one_time_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="@string/add_one_time_button_description"
+            android:minHeight="0dp"
+            android:onClick="@{() -> fragment.addExpenseClicked(ExpenseType.ONE_TIME)}"
+            android:text="@string/add_one_time_button_title" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_monthly_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="@string/add_monthly_button_description"
+            android:minHeight="0dp"
+            android:onClick="@{() -> fragment.addExpenseClicked(ExpenseType.MONTHLY)}"
+            android:text="@string/add_monthly_button_title" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_payments_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/add_payments_button_description"
+            android:minHeight="0dp"
+            android:onClick="@{() -> fragment.addExpenseClicked(ExpenseType.PAYMENTS)}"
+            android:text="@string/add_payments_button_title" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/add_button_description"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@id/dots"
+            app:layout_constraintRight_toRightOf="parent"
+            app:maxImageSize="32dp"
+            app:srcCompat="@drawable/add" />
+
+        <View
+            android:id="@+id/fab_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#aa000000"
+            android:elevation="1dp"
+            tools:ignore="KeyboardInaccessibleWidget" />
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/dots"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fragment_padding"
+            android:layout_marginEnd="@dimen/fragment_padding"
+            android:layout_marginBottom="@dimen/fragment_padding"
             app:chainUseRtl="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:tabBackground="@drawable/dot_selector"
             app:tabIndicatorHeight="0dp" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>
