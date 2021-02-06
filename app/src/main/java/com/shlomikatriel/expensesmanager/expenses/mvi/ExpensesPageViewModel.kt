@@ -4,12 +4,13 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.database.Expense
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 
 class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(application) {
 
-    private var selectedChips: Set<Chip> = hashSetOf()
+    private var selectedExpenseTypes: Set<ExpenseType> = hashSetOf()
 
     private val viewStateLiveData = MutableLiveData<ExpensesPageViewState>()
 
@@ -30,7 +31,8 @@ class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(ap
     }
 
     override fun onExpensesChanged(expenses: ArrayList<Expense>) {
-        val filteredExpenses = filterExpensesUsingChips(expenses, selectedChips).sorted()
+        val filteredExpenses =
+            filterExpensesUsingSelectedExpenseTypes(expenses, selectedExpenseTypes).sorted()
         resultToViewState(ExpensesPageResult(filteredExpenses))
     }
 
@@ -38,30 +40,37 @@ class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(ap
         logInfo("Processing event $expensesPageEvent")
         when (expensesPageEvent) {
             is ExpensesPageEvent.Initialize -> observeChanges(expensesPageEvent.month)
-            is ExpensesPageEvent.SelectedChipsChange -> handleChipsChanged(expensesPageEvent.chips)
+            is ExpensesPageEvent.SelectedExpenseTypesChange -> handleExpenseTypesChanged(
+                expensesPageEvent.expenseTypes
+            )
         }
     }
 
-    private fun handleChipsChanged(selectedChips: Set<Chip>) {
-        this.selectedChips = selectedChips
+    private fun handleExpenseTypesChanged(selectedExpenseTypes: Set<ExpenseType>) {
+        this.selectedExpenseTypes = selectedExpenseTypes
         val expenses = getExpenses()
-        val filteredExpenses = filterExpensesUsingChips(expenses, selectedChips).sorted()
+        val filteredExpenses =
+            filterExpensesUsingSelectedExpenseTypes(expenses, selectedExpenseTypes).sorted()
         resultToViewState(ExpensesPageResult(filteredExpenses))
     }
 
     private fun resultToViewState(result: ExpensesPageResult) {
         logDebug("Processing result $result")
         viewState = viewState.copy(
-                expenses = result.expenses,
-                total = calculateTotal(result.expenses).toFloat()
+            expenses = result.expenses,
+            total = calculateTotal(result.expenses).toFloat()
         )
     }
 
-    private fun filterExpensesUsingChips(
-            expenses: ArrayList<Expense>,
-            selectedChips: Set<Chip>
+    private fun filterExpensesUsingSelectedExpenseTypes(
+        expenses: ArrayList<Expense>,
+        selectedExpenseTypes: Set<ExpenseType>
     ): ArrayList<Expense> {
-        val newExpenses = expenses.filter { Chip.shouldShow(it, selectedChips) }.toTypedArray()
+        if (selectedExpenseTypes.isEmpty()) {
+            return expenses
+        }
+        val newExpenses = expenses.filter { selectedExpenseTypes.contains(it.getExpenseType()) }
+            .toTypedArray()
         return arrayListOf(*newExpenses)
     }
 

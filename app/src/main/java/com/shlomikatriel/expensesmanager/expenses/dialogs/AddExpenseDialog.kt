@@ -3,6 +3,7 @@ package com.shlomikatriel.expensesmanager.expenses.dialogs
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -41,22 +42,29 @@ class AddExpenseDialog : BaseDialog() {
 
     override fun bind(view: View) {
         binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(currency.symbol)
+            inputsLayout.initialize(currency.symbol, args.type)
+            title.setText(getDialogTitle())
             dialog = this@AddExpenseDialog
         }
     }
 
+    @StringRes
+    private fun getDialogTitle() = when (args.type) {
+        ExpenseType.ONE_TIME -> R.string.add_one_time_expense_dialog_title
+        ExpenseType.MONTHLY -> R.string.add_monthly_expense_dialog_title
+        ExpenseType.PAYMENTS -> R.string.add_payments_expense_dialog_title
+    }
+
     fun addClicked() {
-        val type = binding.inputsLayout.getSelectedExpenseType()
         val name = binding.inputsLayout.name.text.toString()
         val costAsString = binding.inputsLayout.cost.text.toString()
         val cost = costAsString.toFloatOrNull()
         val paymentsAsString = binding.inputsLayout.payments.text.toString()
         val payments = paymentsAsString.toIntOrNull()
-        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=$type]")
+        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=${args.type}]")
 
-        if (binding.inputsLayout.isInputValid(appContext)) {
-            addExpense(name, cost!!, payments, type)
+        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
+            addExpense(name, cost!!, payments, args.type)
         }
     }
 

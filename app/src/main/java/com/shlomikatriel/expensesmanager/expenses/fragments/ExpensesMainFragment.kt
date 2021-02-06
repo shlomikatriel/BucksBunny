@@ -16,8 +16,18 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.Utils
+import com.shlomikatriel.expensesmanager.configureToolbar
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.ExpensesMainFragmentBinding
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPagePagerAdapter
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openAddExpenseDialog
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openOnboardingFragment
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainEvent
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewState
 import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.playcore.AppReviewManager
@@ -25,13 +35,6 @@ import com.shlomikatriel.expensesmanager.playcore.UpdateManager
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
-import com.shlomikatriel.expensesmanager.configureToolbar
-import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openOnboardingFragment
-import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openSettingsFragment
-import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainEvent
-import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel
-import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewState
-import com.shlomikatriel.expensesmanager.expenses.components.ExpensesPagePagerAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -164,6 +167,17 @@ class ExpensesMainFragment : Fragment() {
         true
     } else {
         false
+    }
+
+    fun addExpenseClicked(expenseType: ExpenseType) {
+        val month = utils.getMonthOfPosition(binding.pager.currentItem)
+        logInfo("Add expense button clicked [expenseType=$expenseType, month=$month]")
+        navigate(openAddExpenseDialog(expenseType, month))
+        binding.motionLayout.post {
+            // navigation animation + collapse animation impact graphics
+            // to optimize, schedule collapse animation to start on the next main looper iteration
+            binding.motionLayout.transitionToState(R.id.collapsed)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

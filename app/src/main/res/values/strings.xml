@@ -3,9 +3,6 @@
     <!-- General -->
     <string name="delete">Delete</string>
     <string name="update">Update</string>
-    <string name="one_time_expense">One Time</string>
-    <string name="monthly_expense">Monthly</string>
-    <string name="payments_expense">Payments</string>
     <string name="expense_name">Expense Name</string>
     <string name="expense_cost">Expense Cost</string>
     <string name="payments_count">Payments Count</string>
@@ -18,15 +15,19 @@
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
-    <string name="expenses_page_chip_x_or_more">%s or more</string>
-    <string name="expenses_page_chip_less_then_x">Less Then %s</string>
     <string name="expenses_page_total">Total: %s</string>
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
     <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
+    <string name="add_one_time_button_title">One Time Expense</string>
+    <string name="add_monthly_button_title">Monthly Expense</string>
+    <string name="add_payments_button_title">Payments Expense</string>
 
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
+    <string name="add_one_time_button_description">Add one time expense</string>
+    <string name="add_monthly_button_description">Add monthly expense</string>
+    <string name="add_payments_button_description">Add payments expense</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -34,8 +35,12 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
-    <string name="update_expense_dialog_title">Update Expense</string>
-    <string name="add_expense_dialog_title">Add Expense</string>
+    <string name="update_one_time_expense_dialog_title">Update One Time Expense</string>
+    <string name="update_monthly_expense_dialog_title">Update Monthly Expense</string>
+    <string name="update_payments_expense_dialog_title">Update Payments Expense</string>
+    <string name="add_one_time_expense_dialog_title">Add One Time Expense</string>
+    <string name="add_monthly_expense_dialog_title">Add Monthly Expense</string>
+    <string name="add_payments_expense_dialog_title">Add Payments Expense</string>
     <string name="add_expense_dialog_add">Add</string>
     <string name="delete_expense_dialog_title">Delete Expense</string>
     <string name="delete_expense_dialog_confirmation_text">Are you sure you want to delete the expense?</string>

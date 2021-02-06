@@ -28,28 +28,20 @@ fun Fragment.hideToolbar() {
     }
 }
 
-fun DialogExpenseInputsBinding.initialize(currencySymbol: String) {
-    typeButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
-        paymentsLayout.visibility = if (checkedId == R.id.payments_expense && isChecked) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
+fun DialogExpenseInputsBinding.initialize(currencySymbol: String, type: ExpenseType) {
     costLayout.prefixText = currencySymbol
-}
-
-fun DialogExpenseInputsBinding.getSelectedExpenseType() = typeButtons.checkedButtonId.let {
-    root.findViewById<View>(it).tag as ExpenseType
+    if (type == ExpenseType.PAYMENTS) {
+        paymentsLayout.visibility = View.VISIBLE
+    }
 }
 
 /**
  * @return if all of the fields are valid
  * */
 fun DialogExpenseInputsBinding.isInputValid(
+    type: ExpenseType,
     context: Context
 ): Boolean {
-    val type = getSelectedExpenseType()
     val name = name.text.toString()
     val costAsString = cost.text.toString()
     val cost = costAsString.toFloatOrNull()

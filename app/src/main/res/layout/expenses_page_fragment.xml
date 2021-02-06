@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.shlomikatriel.expensesmanager.expenses.mvi.Chip" />
+        <import type="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
 
         <import type="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment" />
 
@@ -26,120 +26,83 @@
             type="java.lang.String" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/expenses_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/expenses_scroll_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:animateLayoutChanges="true">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/fragment_vertical_spacing"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_one_time"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> fragment.onCheckedChanged()}"
-                        android:tag="@{Chip.ONE_TIME}"
-                        android:text="@string/expenses_page_chip_one_time"
-                        tools:checked="true" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_monthly"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> fragment.onCheckedChanged()}"
-                        android:tag="@{Chip.MONTHLY}"
-                        android:text="@string/expenses_page_chip_monthly"
-                        tools:checked="true" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_payments"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> fragment.onCheckedChanged()}"
-                        android:tag="@{Chip.PAYMENTS}"
-                        android:text="@string/expenses_page_chip_payments" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_x_or_more"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> fragment.onCheckedChanged()}"
-                        android:tag="@{Chip.X_OR_MORE}"
-                        android:text="@{@string/expenses_page_chip_x_or_more(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
-                        tools:text="@string/expenses_page_chip_x_or_more" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_less_then_x"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> fragment.onCheckedChanged()}"
-                        android:tag="@{Chip.LESS_THEN_X}"
-                        android:text="@{@string/expenses_page_chip_less_then_x(currencyFormat.format(BuildConfig.CHIP_FILTER_THRESHOLD))}"
-                        tools:checked="true"
-                        tools:text="@string/expenses_page_chip_less_then_x" />
-
-                </com.google.android.material.chip.ChipGroup>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/expenses_recycler"
-                    style="@style/Recycler"
-                    android:layout_marginTop="@dimen/fragment_vertical_spacing"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/chip_group"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/expense_recycler_item" />
-
-                <TextView
-                    android:id="@+id/total_view"
-                    style="@style/Title"
-                    android:text="@{@string/expenses_page_total(total)}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/expenses_recycler"
-                    tools:text="Total: 530$" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:contentDescription="@string/add_button_description"
-            android:onClick="@{() -> fragment.addExpenseClicked()}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/add" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:animateLayoutChanges="true">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fragment_vertical_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_one_time"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> fragment.onCheckedChanged()}"
+                    android:tag="@{ExpenseType.ONE_TIME}"
+                    android:text="@string/expenses_page_chip_one_time"
+                    tools:checked="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_monthly"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> fragment.onCheckedChanged()}"
+                    android:tag="@{ExpenseType.MONTHLY}"
+                    android:text="@string/expenses_page_chip_monthly"
+                    tools:checked="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_payments"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> fragment.onCheckedChanged()}"
+                    android:tag="@{ExpenseType.PAYMENTS}"
+                    android:text="@string/expenses_page_chip_payments" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/expenses_recycler"
+                style="@style/Recycler"
+                android:layout_marginTop="@dimen/fragment_vertical_spacing"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/chip_group"
+                tools:itemCount="4"
+                tools:listitem="@layout/expense_recycler_item" />
+
+            <TextView
+                android:id="@+id/total_view"
+                style="@style/Title"
+                android:padding="16dp"
+                android:text="@{@string/expenses_page_total(total)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expenses_recycler"
+                tools:text="Total: 530$" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>
