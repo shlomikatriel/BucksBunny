@@ -15,8 +15,6 @@
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
-    <string name="expenses_page_chip_x_or_more">%s או יותר</string>
-    <string name="expenses_page_chip_less_then_x">פחות מ-%s</string>
     <string name="expenses_page_total">סך הכל: %s</string>
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
