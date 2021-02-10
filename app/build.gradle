@@ -17,8 +17,10 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        resConfigs "en", "iw"
+        def languageCodes = ["en", "iw"]
+        resConfigs languageCodes
 
+        buildConfigField "String[]", "LANGUAGE_CODES", "{${languageCodes.collect { "\"$it\"" }.join(",")}}"
         buildConfigField "String", "LOG_TAG", '"ExpensesManager"'
         buildConfigField "int", "MAX_MONTHS_OFFSET", "${rootProject.ext.maxMonthsOffset}"
         buildConfigField "int", "MONTHS_COUNT", "${rootProject.ext.maxMonthsOffset * 2 + 1}"
@@ -28,8 +30,8 @@ android {
 
         javaCompileOptions.annotationProcessorOptions {
             arguments += [
-                    "room.incremental":"true",
-                    "room.schemaLocation":"$projectDir/schemas".toString()
+                    "room.incremental"   : "true",
+                    "room.schemaLocation": "$projectDir/schemas".toString()
             ]
         }
     }

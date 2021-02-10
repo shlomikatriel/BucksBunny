@@ -10,17 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.databinding.OnboardingIncomeFragmentBinding
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
-import com.shlomikatriel.expensesmanager.initialize
-import com.shlomikatriel.expensesmanager.isInputValid
-import java.util.*
 import javax.inject.Inject
 
 class OnboardingIncomeFragment : Fragment() {
@@ -32,7 +28,7 @@ class OnboardingIncomeFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     @Inject
-    lateinit var currency: Currency
+    lateinit var localizationManager: LocalizationManager
 
     lateinit var binding: OnboardingIncomeFragmentBinding
 
@@ -55,7 +51,7 @@ class OnboardingIncomeFragment : Fragment() {
     private fun configureIncomeInput() = binding.incomeInputLayout.apply {
         val currentIncome = sharedPreferences.getFloat(FloatKey.INCOME)
 
-        initialize(currency.symbol, currentIncome)
+        initialize(localizationManager.getCurrencySymbol(), currentIncome)
 
         income.addTextChangedListener {
             val valid = isInputValid(appContext)

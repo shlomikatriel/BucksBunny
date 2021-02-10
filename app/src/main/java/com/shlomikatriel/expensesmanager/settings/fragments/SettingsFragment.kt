@@ -10,28 +10,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.shlomikatriel.expensesmanager.BuildConfig
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.navigation.navigate
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
-import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import com.shlomikatriel.expensesmanager.configureToolbar
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.settings.AppDataStore
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
+import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
+import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -40,6 +40,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     companion object {
         const val KEY_DARK_MODE = "dark_mode"
+        const val CURRENCY = "currency"
         const val MONTHLY_INCOME_KEY = "monthly_income"
         const val ANONYMOUS_CRASH_REPORTS_KEY = "anonymous_crash_reports"
         const val ANONYMOUS_USAGE_DATA_KEY = "anonymous_usage_data"
@@ -67,6 +68,12 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     @Inject
     lateinit var appDataStore: AppDataStore
 
+    @Inject
+    lateinit var localizationManager: LocalizationManager
+
+    @Inject
+    lateinit var firebaseCrashlytics: FirebaseCrashlytics
+
     private var job: Job? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -75,6 +82,8 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         preferenceManager.preferenceDataStore = appDataStore
 
         setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        populateLocalizationEntries()
 
         updateMonthlyIncomeSummary()
     }
@@ -99,6 +108,20 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         }
     }
 
+    private fun populateLocalizationEntries() {
+        preferenceManager.findPreference<ListPreference>(CURRENCY)?.let { it ->
+            val supportedLocales = localizationManager.getAllSupportedLocales()
+            it.entries = mutableListOf(getString(R.string.settings_system_default)).apply {
+                addAll(supportedLocales.map { locale ->
+                    "${Currency.getInstance(locale).symbol} (${locale.displayLanguage}, ${locale.displayCountry})"
+                })
+            }.toTypedArray()
+            it.entryValues = mutableListOf("").apply {
+                addAll(supportedLocales.map { locale -> locale.toString() })
+            }.toTypedArray()
+        }
+    }
+
     private fun updateMonthlyIncomeSummary() {
         preferenceManager.findPreference<Preference>(MONTHLY_INCOME_KEY)?.summary =
             DecimalFormat.getCurrencyInstance().format(sharedPreferences.getFloat(FloatKey.INCOME))
@@ -119,6 +142,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             return true
         } catch (e: Exception) {
             logError("Failed to process preference ${preference?.key} click", e)
+            firebaseCrashlytics.recordException(e)
             return false
         }
     }
@@ -166,6 +190,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         startActivity(intent)
     } catch (e: Exception) {
         logError("Failed to open application info", e)
+        firebaseCrashlytics.recordException(e)
     }
 
     private fun openWebPage(url: String) {

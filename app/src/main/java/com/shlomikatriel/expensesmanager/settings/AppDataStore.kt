@@ -21,6 +21,7 @@ class AppDataStore
         logVerbose("Get string [key=$key, defValue=$defValue]")
         val value = when (key) {
             SettingsFragment.KEY_DARK_MODE -> sharedPreferences.getInt(IntKey.DARK_MODE).toString()
+            SettingsFragment.CURRENCY -> sharedPreferences.getString(StringKey.CURRENCY) ?: ""
             else -> super.getString(key, defValue)
         }
         logVerbose("Got value: $value")
@@ -34,6 +35,10 @@ class AppDataStore
                 val valueAsInt = value?.toIntOrNull() ?: AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
                 sharedPreferences.putInt(IntKey.DARK_MODE, valueAsInt)
                 AppCompatDelegate.setDefaultNightMode(valueAsInt)
+            }
+            SettingsFragment.CURRENCY -> {
+                val newValue = if (value.isNullOrEmpty()) null else value
+                sharedPreferences.putString(StringKey.CURRENCY, newValue)
             }
             else -> super.putString(key, value)
         }

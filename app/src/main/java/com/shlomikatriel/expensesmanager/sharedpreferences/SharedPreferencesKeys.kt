@@ -53,7 +53,8 @@ enum class BooleanKey(private val key: String, private val default: Boolean) : B
 
 enum class StringKey(private val key: String, private val default: String?) : BaseKey<String> {
 
-    LATEST_VERSION_NAME("latest_version_name", null);
+    LATEST_VERSION_NAME("latest_version_name", null),
+    CURRENCY("currency", null);
 
     override fun getKey() = key
 

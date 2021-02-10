@@ -19,13 +19,19 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withTranslation
+import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
 import java.text.DecimalFormat
+import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
 class ExpensesGraph : View {
+
+    @Inject
+    lateinit var localizationManager: LocalizationManager
 
     constructor(context: Context) : this(context, null)
 
@@ -96,8 +102,6 @@ class ExpensesGraph : View {
         }
     }
 
-    private val currencyFormat = DecimalFormat.getCurrencyInstance()
-
     // Dimensions
     private val textMargin = dpToPx(4f) // 4
     private val labelTextSize = spToPx(14f)
@@ -136,6 +140,10 @@ class ExpensesGraph : View {
     }
 
     private fun init(attrs: AttributeSet?) {
+        if (!isInEditMode) {
+            (context.applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        }
+
         context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.ExpensesGraph,
@@ -199,6 +207,12 @@ class ExpensesGraph : View {
                 recycle()
             }
         }
+    }
+
+    private fun getCurrencyFormat() = if (isInEditMode) {
+        DecimalFormat.getCurrencyInstance()
+    } else {
+        localizationManager.getCurrencyFormat()
     }
 
     fun updateGraph(newIncome: Float, newExpenses: Float) {
@@ -332,7 +346,7 @@ class ExpensesGraph : View {
             drawRoundRect(left, top, right, bottom, barRadius, barRadius, barPaint)
         }
 
-        val formattedValue = currencyFormat.format(value)
+        val formattedValue = getCurrencyFormat().format(value)
         drawText(
                 formattedValue,
                 -(valuePaint.measureText(formattedValue) / 2),

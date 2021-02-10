@@ -12,6 +12,7 @@ import com.google.android.play.core.install.model.ActivityResult
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.startUpdateFlowForResult
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
@@ -19,7 +20,10 @@ import com.shlomikatriel.expensesmanager.logs.logWarning
 import javax.inject.Inject
 
 class UpdateManager
-@Inject constructor(private val context: Context) {
+@Inject constructor(
+    private val context: Context,
+    private val firebaseCrashlytics: FirebaseCrashlytics
+    ) {
 
     companion object {
         const val UPDATE_REQUEST_CODE = 1000
@@ -66,7 +70,8 @@ class UpdateManager
             snackbar?.takeUnless { it.isShown }?.show()
         }
     } catch (e: Exception) {
-        logError("Failed to show app update snackbar", e)
+        logError("Failed to show check up update is available", e)
+        firebaseCrashlytics.recordException(e)
     }
 
     private fun startUpdateProcess(
@@ -83,6 +88,7 @@ class UpdateManager
         )
     } catch (e: Exception) {
         logError("Failed to start in app update flow", e)
+        firebaseCrashlytics.recordException(e)
     }
 
     fun processResult(requestCode: Int, resultCode: Int) {

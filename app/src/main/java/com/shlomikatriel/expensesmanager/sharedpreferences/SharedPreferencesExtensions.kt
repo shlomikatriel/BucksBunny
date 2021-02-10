@@ -19,6 +19,6 @@ fun SharedPreferences.putBoolean(key: BooleanKey, value: Boolean) = edit { putBo
 
 fun SharedPreferences.getBoolean(key: BooleanKey) = getBoolean(key.getKey(), key.getDefault())
 
-fun SharedPreferences.putString(key: StringKey, value: String) = edit { putString(key.getKey(), value) }
+fun SharedPreferences.putString(key: StringKey, value: String?) = edit { putString(key.getKey(), value) }
 
 fun SharedPreferences.getString(key: StringKey) = getString(key.getKey(), key.getDefault())
