@@ -14,6 +14,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.logDebug
@@ -69,6 +70,9 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     @Inject
     lateinit var localizationManager: LocalizationManager
+
+    @Inject
+    lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
     private var job: Job? = null
 
@@ -138,6 +142,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             return true
         } catch (e: Exception) {
             logError("Failed to process preference ${preference?.key} click", e)
+            firebaseCrashlytics.recordException(e)
             return false
         }
     }
@@ -185,6 +190,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         startActivity(intent)
     } catch (e: Exception) {
         logError("Failed to open application info", e)
+        firebaseCrashlytics.recordException(e)
     }
 
     private fun openWebPage(url: String) {

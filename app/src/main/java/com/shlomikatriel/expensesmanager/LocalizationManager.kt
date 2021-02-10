@@ -1,6 +1,8 @@
 package com.shlomikatriel.expensesmanager
 
 import android.content.SharedPreferences
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.StringKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getString
@@ -11,7 +13,8 @@ import javax.inject.Inject
 
 class LocalizationManager
 @Inject constructor(
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
+    private val firebaseCrashlytics: FirebaseCrashlytics
 ) {
 
     /**
@@ -48,8 +51,20 @@ class LocalizationManager
         return locale
     }
 
-    fun getCurrencySymbol(): String = Currency.getInstance(getLocaleForCurrency()).symbol
+    fun getCurrencySymbol(): String = try {
+        Currency.getInstance(getLocaleForCurrency()).symbol
+    } catch (e: Exception) {
+        logError("Failed to fetch currency symbol", e)
+        firebaseCrashlytics.recordException(e)
+        Currency.getInstance(Locale.getDefault()).symbol
+    }
 
-    fun getCurrencyFormat(): NumberFormat = DecimalFormat.getCurrencyInstance(getLocaleForCurrency())
+    fun getCurrencyFormat(): NumberFormat = try {
+        DecimalFormat.getCurrencyInstance(getLocaleForCurrency())
+    } catch (e: Exception) {
+        logError("Failed to fetch currency format", e)
+        firebaseCrashlytics.recordException(e)
+        DecimalFormat.getCurrencyInstance(Locale.getDefault())
+    }
 
 }
