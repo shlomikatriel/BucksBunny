@@ -54,11 +54,12 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
+    <string name="settings_system_default">System default</string>
+    <string name="settings_appearance_title">Appearance</string>
     <string name="settings_dark_mode_title">Dark Mode</string>
-    <string name="settings_dark_mode_entry_system_default">System default</string>
     <string name="settings_dark_mode_entry_always">Always</string>
     <string name="settings_dark_mode_entry_never">Never</string>
-    <string name="settings_graphics_title">Graphics</string>
+    <string name="settings_currency">Currency</string>
     <string name="settings_functionality_title">Functionality</string>
     <string name="settings_general_title">General</string>
     <string name="settings_monthly_income">Monthly Income</string>
@@ -68,7 +69,7 @@
     <string name="settings_bug_report_content">Describe the bug:\n</string>
     <string name="settings_application_info">App Info</string>
     <string name="settings_anonymous_reports_category_title">Anonymous Reports</string>
-    <string name="settings_anonymous_reports_category_summary">These reports do not personal or sensitive data</string>
+    <string name="settings_anonymous_reports_category_summary">Personal or sensitive data is not reported</string>
     <string name="settings_anonymous_crash_reports_title">Anonymous Crash Reports</string>
     <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
     <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>

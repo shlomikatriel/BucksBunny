@@ -9,17 +9,9 @@
 
         <import type="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment" />
 
-        <import type="com.shlomikatriel.expensesmanager.BuildConfig" />
-
-        <import type="java.text.NumberFormat" />
-
         <variable
             name="fragment"
             type="ExpensesPageFragment" />
-
-        <variable
-            name="currencyFormat"
-            type="NumberFormat" />
 
         <variable
             name="total"

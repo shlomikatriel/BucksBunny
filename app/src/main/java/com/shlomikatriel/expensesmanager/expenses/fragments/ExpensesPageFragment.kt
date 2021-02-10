@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.ExpensesPageFragmentBinding
@@ -19,9 +20,7 @@ import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageEvent
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewState
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import java.text.NumberFormat
 import javax.inject.Inject
-import javax.inject.Named
 
 class ExpensesPageFragment : Fragment() {
 
@@ -29,11 +28,7 @@ class ExpensesPageFragment : Fragment() {
     lateinit var appContext: Context
 
     @Inject
-    lateinit var currencyFormat: NumberFormat
-
-    @Inject
-    @Named("integer")
-    lateinit var currencyIntegerFormat: NumberFormat
+    lateinit var localizationManager: LocalizationManager
 
     private val args: ExpensesPageFragmentArgs by navArgs()
 
@@ -57,7 +52,6 @@ class ExpensesPageFragment : Fragment() {
             false
         ).apply {
             fragment = this@ExpensesPageFragment
-            currencyFormat = currencyIntegerFormat
         }
 
         model.apply {
@@ -75,7 +69,7 @@ class ExpensesPageFragment : Fragment() {
         expensesRecyclerAdapter = ExpensesPageRecyclerAdapter(
             requireContext(),
             this@ExpensesPageFragment,
-            currencyFormat,
+            localizationManager.getCurrencyFormat(),
             args.month
         )
         adapter = expensesRecyclerAdapter
@@ -89,7 +83,7 @@ class ExpensesPageFragment : Fragment() {
 
     private fun render(viewState: ExpensesPageViewState) {
         expensesRecyclerAdapter.updateData(viewState.expenses)
-        binding.total = currencyFormat.format(viewState.total)
+        binding.total = localizationManager.getCurrencyFormat().format(viewState.total)
     }
 
     private fun getSelectedExpenseTypes() = binding.chipGroup.checkedChipIds

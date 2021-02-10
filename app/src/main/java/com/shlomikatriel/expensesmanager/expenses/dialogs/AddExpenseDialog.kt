@@ -27,7 +27,7 @@ class AddExpenseDialog : BaseDialog() {
     lateinit var databaseManager: DatabaseManager
 
     @Inject
-    lateinit var currency: Currency
+    lateinit var localizationManager: LocalizationManager
 
     lateinit var binding: AddExpenseDialogBinding
 
@@ -42,7 +42,7 @@ class AddExpenseDialog : BaseDialog() {
 
     override fun bind(view: View) {
         binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(currency.symbol, args.type)
+            inputsLayout.initialize(localizationManager.getCurrencySymbol(), args.type)
             title.setText(getDialogTitle())
             dialog = this@AddExpenseDialog
         }

@@ -1,22 +1,23 @@
 package com.shlomikatriel.expensesmanager.dagger.components
 
 import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.MainActivity
 import com.shlomikatriel.expensesmanager.dagger.modules.AppModule
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.dagger.modules.DatabaseModule
-import com.shlomikatriel.expensesmanager.onboarding.OnboardingAnonymousDataFragment
-import com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment
-import com.shlomikatriel.expensesmanager.onboarding.OnboardingIncomeFragment
-import com.shlomikatriel.expensesmanager.MainActivity
+import com.shlomikatriel.expensesmanager.expenses.components.ExpensesGraph
 import com.shlomikatriel.expensesmanager.expenses.dialogs.AddExpenseDialog
-import com.shlomikatriel.expensesmanager.settings.dialogs.ChooseIncomeDialog
 import com.shlomikatriel.expensesmanager.expenses.dialogs.DeleteExpenseDialog
 import com.shlomikatriel.expensesmanager.expenses.dialogs.UpdateExpenseDialog
 import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragment
 import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment
-import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
-import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesMainViewModel
+import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
+import com.shlomikatriel.expensesmanager.onboarding.OnboardingAnonymousDataFragment
+import com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment
+import com.shlomikatriel.expensesmanager.onboarding.OnboardingIncomeFragment
+import com.shlomikatriel.expensesmanager.settings.dialogs.ChooseIncomeDialog
+import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -51,4 +52,6 @@ interface AppComponent {
     fun inject(onboardingAnonymousDataFragment: OnboardingAnonymousDataFragment)
 
     fun inject(expensesMainViewModel: ExpensesMainViewModel)
+
+    fun inject(expensesGraph: ExpensesGraph)
 }

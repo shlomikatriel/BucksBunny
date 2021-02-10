@@ -54,11 +54,12 @@
 
     <!-- Settings -->
     <string name="settings_title">הגדרות</string>
+    <string name="settings_system_default">ברירת המחדל של המערכת</string>
+    <string name="settings_appearance_title">מראה</string>
     <string name="settings_dark_mode_title">מצב כהה</string>
-    <string name="settings_dark_mode_entry_system_default">ברירת המחדל של המערכת</string>
     <string name="settings_dark_mode_entry_always">תמיד</string>
     <string name="settings_dark_mode_entry_never">לעולם לא</string>
-    <string name="settings_graphics_title">גרפיקה</string>
+    <string name="settings_currency">מטבע</string>
     <string name="settings_functionality_title">פונקציונליות</string>
     <string name="settings_general_title">כללי</string>
     <string name="settings_monthly_income">הכנסה חודשית</string>
@@ -68,7 +69,7 @@
     <string name="settings_bug_report_content">תיאור הבאג:\n</string>
     <string name="settings_application_info">פרטי יישום</string>
     <string name="settings_anonymous_reports_category_title">דיווחים אנונימיים</string>
-    <string name="settings_anonymous_reports_category_summary">דוחות אלו אינם מכילים שום מידע אישי או רגיש</string>
+    <string name="settings_anonymous_reports_category_summary">מידע אישי או רגיש לא מדווח</string>
     <string name="settings_anonymous_crash_reports_title">דוחות קריסה אנונימיים</string>
     <string name="settings_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
     <string name="settings_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>

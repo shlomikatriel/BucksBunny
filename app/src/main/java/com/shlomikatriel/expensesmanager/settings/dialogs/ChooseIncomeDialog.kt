@@ -25,7 +25,7 @@ class ChooseIncomeDialog : BaseDialog() {
     lateinit var sharedPreferences: SharedPreferences
 
     @Inject
-    lateinit var currency: Currency
+    lateinit var localizationManager: LocalizationManager
 
     private lateinit var binding: ChooseIncomeDialogBinding
 
@@ -40,7 +40,7 @@ class ChooseIncomeDialog : BaseDialog() {
         binding = DataBindingUtil.bind<ChooseIncomeDialogBinding>(view)!!.apply {
             dialog = this@ChooseIncomeDialog
             incomeInputLayout.initialize(
-                currency.symbol,
+                localizationManager.getCurrencySymbol(),
                 sharedPreferences.getFloat(FloatKey.INCOME)
             )
         }
