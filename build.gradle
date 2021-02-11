@@ -43,7 +43,7 @@ ext {
     versions = [
             room: "2.2.6",
             navigation: "2.3.3",
-            dagger: "2.31.2"
+            dagger: "2.32"
     ]
     println("Libraries versions: $versions")
 

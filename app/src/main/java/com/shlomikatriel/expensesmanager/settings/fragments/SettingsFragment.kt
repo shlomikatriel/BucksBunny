@@ -77,7 +77,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     private var job: Job? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         preferenceManager.preferenceDataStore = appDataStore
 

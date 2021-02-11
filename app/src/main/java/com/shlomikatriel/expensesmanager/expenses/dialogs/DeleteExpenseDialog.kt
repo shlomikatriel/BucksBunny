@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.BaseDialog
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
@@ -27,7 +27,7 @@ class DeleteExpenseDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
     }
 
     override fun layout() = R.layout.delete_expense_dialog

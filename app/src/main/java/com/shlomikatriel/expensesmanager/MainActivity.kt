@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding = DataBindingUtil.setContentView(
             this,
