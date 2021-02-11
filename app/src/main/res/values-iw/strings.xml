@@ -78,12 +78,12 @@
     <string name="settings_apache_license_title">רישיון Apache 2.0</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_next">הבא בתור</string>
+    <string name="onboarding_next">המשך</string>
     <string name="onboarding_lets_get_started">בואו נתחיל</string>
     <string name="onboarding_welcome">ברוכים הבאים ל:</string>
     <string name="onboarding_expenses_slogan">תשלטו בהוצאות שלכם!</string>
     <string name="onboarding_income_input_info">על מנת לשמור על פרטיותכם, מידע אישי או רגיש לעולם לא יצאו מהאפליקציה וישמר בבטחה</string>
-    <string name="onboarding_welcome_instructions">הקישו \'הבא בתור\' על מנת להגדיר את האפליקציה</string>
+    <string name="onboarding_welcome_instructions">הקישו \'המשך\' על מנת להגדיר את האפליקציה</string>
 
     <!-- App Update -->
     <string name="app_update_instructions">גרסה חדשה זמינה, עדכנו כדי להנות מתכונות חדשות ונפלאות</string>

@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.StringKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getString
 import java.text.DecimalFormat
@@ -47,7 +48,7 @@ class LocalizationManager
         } else {
             Locale.forLanguageTag(currencyLocaleCode.replace('_', '-'))
         }
-        logInfo("Fetched locale for currency format: $locale")
+        logVerbose("Fetched locale for currency format: $locale")
         return locale
     }
 
