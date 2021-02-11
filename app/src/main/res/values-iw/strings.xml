@@ -8,7 +8,6 @@
     <string name="payments_count">מספר תשלומים</string>
 
     <!-- Fragments -->
-    <string name="app_name">מנהל ההוצאות</string>
     <string name="expenses_main_graph_income">הכנסות</string>
     <string name="expenses_main_graph_expenses">הוצאות</string>
     <string name="expenses_main_graph_balance">יתרה</string>
@@ -81,8 +80,7 @@
     <!-- Onboarding -->
     <string name="onboarding_next">הבא בתור</string>
     <string name="onboarding_lets_get_started">בואו נתחיל</string>
-    <string name="onboarding_welcome">ברוכים הבאים</string>
-    <string name="onboarding_expenses_manager">למנהל ההוצאות</string>
+    <string name="onboarding_welcome">ברוכים הבאים ל:</string>
     <string name="onboarding_expenses_slogan">תשלטו בהוצאות שלכם!</string>
     <string name="onboarding_income_input_info">על מנת לשמור על פרטיותכם, מידע אישי או רגיש לעולם לא יצאו מהאפליקציה וישמר בבטחה</string>
     <string name="onboarding_welcome_instructions">הקישו \'הבא בתור\' על מנת להגדיר את האפליקציה</string>

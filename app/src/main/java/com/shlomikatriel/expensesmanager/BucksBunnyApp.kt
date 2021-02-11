@@ -14,7 +14,7 @@ import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
 import javax.inject.Inject
 
-class ExpensesManagerApp : Application() {
+class BucksBunnyApp : Application() {
 
     lateinit var appComponent: AppComponent
 

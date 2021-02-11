@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- General -->
+    <string name="app_name" translatable="false">Bucks Bunny</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
     <string name="expense_name">Expense Name</string>
@@ -8,7 +9,6 @@
     <string name="payments_count">Payments Count</string>
 
     <!-- Fragments -->
-    <string name="app_name">Expenses Manager</string>
     <string name="expenses_main_graph_income">Income</string>
     <string name="expenses_main_graph_expenses">Expenses</string>
     <string name="expenses_main_graph_balance">Balance</string>
@@ -82,7 +82,6 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_lets_get_started">Let\'s get started</string>
     <string name="onboarding_welcome">Welcome to</string>
-    <string name="onboarding_expenses_manager">Expenses Manager</string>
     <string name="onboarding_expenses_slogan">Control your expenses!</string>
     <string name="onboarding_income_input_info">To keep your privacy, personal or sensitive data will never leave the app and will be stored safely</string>
     <string name="onboarding_welcome_instructions">Tap \'Next\' to configure app</string>

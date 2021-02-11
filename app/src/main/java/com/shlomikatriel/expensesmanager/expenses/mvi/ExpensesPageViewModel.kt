@@ -2,7 +2,7 @@ package com.shlomikatriel.expensesmanager.expenses.mvi
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.logs.logDebug
@@ -23,7 +23,7 @@ class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(ap
     fun getViewState() = viewStateLiveData
 
     init {
-        (application as ExpensesManagerApp).appComponent.inject(this)
+        (application as BucksBunnyApp).appComponent.inject(this)
     }
 
     override fun onIncomeChanged(income: Float) {

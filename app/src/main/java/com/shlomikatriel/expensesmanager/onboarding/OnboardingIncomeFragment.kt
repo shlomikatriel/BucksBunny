@@ -38,7 +38,7 @@ class OnboardingIncomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.onboarding_income_fragment, container, false)

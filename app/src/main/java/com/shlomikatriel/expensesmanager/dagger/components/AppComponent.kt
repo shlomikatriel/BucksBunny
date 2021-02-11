@@ -1,6 +1,6 @@
 package com.shlomikatriel.expensesmanager.dagger.components
 
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.MainActivity
 import com.shlomikatriel.expensesmanager.dagger.modules.AppModule
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
@@ -43,7 +43,7 @@ interface AppComponent {
 
     fun inject(updateExpenseDialog: UpdateExpenseDialog)
 
-    fun inject(expensesManagerApp: ExpensesManagerApp)
+    fun inject(bucksBunnyApp: BucksBunnyApp)
 
     fun inject(onboardingFragment: OnboardingFragment)
 
