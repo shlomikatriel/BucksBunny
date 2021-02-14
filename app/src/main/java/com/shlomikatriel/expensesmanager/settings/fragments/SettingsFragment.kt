@@ -46,14 +46,9 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         const val ANONYMOUS_USAGE_DATA_KEY = "anonymous_usage_data"
         const val APPLICATION_INFO_KEY = "application_info"
         const val REPORT_BUG_KEY = "report_bug"
-        const val GITHUB_KEY = "github"
-        const val APACHE_LICENSE_KEY = "apache_license"
         const val OPEN_SOURCE_LICENSES_KEY = "open_source_licenses"
 
         const val MAIL_ADDRESS = "shlomikatriel@gmail.com"
-        const val GITHUB_URL = "https://github.com/shlomikatriel/ExpensesManager"
-        const val APACHE_LICENSE_URL =
-            "https://raw.githubusercontent.com/shlomikatriel/ExpensesManager/develop/LICENSE"
     }
 
     @Inject
@@ -134,8 +129,6 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
                 MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
                 REPORT_BUG_KEY -> handleReportBugClick()
                 APPLICATION_INFO_KEY -> handleApplicationInfoClicked()
-                GITHUB_KEY -> openWebPage(GITHUB_URL)
-                APACHE_LICENSE_KEY -> openWebPage(APACHE_LICENSE_URL)
                 OPEN_SOURCE_LICENSES_KEY -> navigate(openOpenSourceLicensesActivity())
                 else -> return super.onPreferenceTreeClick(preference)
             }
@@ -191,11 +184,6 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     } catch (e: Exception) {
         logError("Failed to open application info", e)
         firebaseCrashlytics.recordException(e)
-    }
-
-    private fun openWebPage(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
     }
 
     override fun onStop() {

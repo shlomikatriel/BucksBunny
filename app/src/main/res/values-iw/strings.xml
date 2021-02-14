@@ -73,9 +73,6 @@
     <string name="settings_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
     <string name="settings_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>
     <string name="settings_anonymous_usage_data_reports_summary">נתוני שימוש משומשים לניתוח תבניות שימוש ושיפור חווית המשתמש</string>
-    <string name="settings_about_category_title">אודות האפליקציה</string>
-    <string name="settings_github_title">קוד המקור ב-GitHub</string>
-    <string name="settings_apache_license_title">רישיון Apache 2.0</string>
 
     <!-- Onboarding -->
     <string name="onboarding_next">המשך</string>
