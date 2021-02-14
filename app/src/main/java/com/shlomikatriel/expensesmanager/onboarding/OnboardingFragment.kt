@@ -11,11 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
+import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.OnboardingFragmentBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.hideToolbar
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.hideToolbar
 import javax.inject.Inject
 
 class OnboardingFragment : Fragment() {
@@ -30,7 +31,7 @@ class OnboardingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding = DataBindingUtil.inflate<OnboardingFragmentBinding>(
             inflater,
@@ -51,7 +52,7 @@ class OnboardingFragment : Fragment() {
     fun nextClicked() {
         val currentPosition = binding.pager.currentItem
         val isLast = currentPosition == OnboardingStage.values().size - 1
-        Logger.i("User clicked Next [currentPosition=$currentPosition, isLast=$isLast]")
+        logInfo("User clicked Next [currentPosition=$currentPosition, isLast=$isLast]")
         if (isLast) {
             findNavController().popBackStack()
         } else {
@@ -73,7 +74,7 @@ class OnboardingFragment : Fragment() {
 
         binding.pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                Logger.d("Onboarding stage $position selected")
+                logDebug("Onboarding stage $position selected")
                 val isLast = position == OnboardingStage.values().size - 1
                 binding.next.setText(if (isLast) R.string.onboarding_lets_get_started else R.string.onboarding_next)
             }

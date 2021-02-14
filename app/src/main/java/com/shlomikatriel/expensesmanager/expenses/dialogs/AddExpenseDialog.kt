@@ -1,21 +1,19 @@
-package com.shlomikatriel.expensesmanager.ui.dialogs
+package com.shlomikatriel.expensesmanager.expenses.dialogs
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.getSelectedExpenseType
-import com.shlomikatriel.expensesmanager.ui.initialize
-import com.shlomikatriel.expensesmanager.ui.isInputValid
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.thread
@@ -29,7 +27,7 @@ class AddExpenseDialog : BaseDialog() {
     lateinit var databaseManager: DatabaseManager
 
     @Inject
-    lateinit var currency: Currency
+    lateinit var localizationManager: LocalizationManager
 
     lateinit var binding: AddExpenseDialogBinding
 
@@ -37,29 +35,36 @@ class AddExpenseDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
     }
 
     override fun layout() = R.layout.add_expense_dialog
 
     override fun bind(view: View) {
         binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(currency.symbol)
+            inputsLayout.initialize(localizationManager.getCurrencySymbol(), args.type)
+            title.setText(getDialogTitle())
             dialog = this@AddExpenseDialog
         }
     }
 
+    @StringRes
+    private fun getDialogTitle() = when (args.type) {
+        ExpenseType.ONE_TIME -> R.string.add_one_time_expense_dialog_title
+        ExpenseType.MONTHLY -> R.string.add_monthly_expense_dialog_title
+        ExpenseType.PAYMENTS -> R.string.add_payments_expense_dialog_title
+    }
+
     fun addClicked() {
-        val type = binding.inputsLayout.getSelectedExpenseType()
         val name = binding.inputsLayout.name.text.toString()
         val costAsString = binding.inputsLayout.cost.text.toString()
         val cost = costAsString.toFloatOrNull()
         val paymentsAsString = binding.inputsLayout.payments.text.toString()
         val payments = paymentsAsString.toIntOrNull()
-        Logger.d("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=$type]")
+        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=${args.type}]")
 
-        if (binding.inputsLayout.isInputValid(appContext)) {
-            addExpense(name, cost!!, payments, type)
+        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
+            addExpense(name, cost!!, payments, args.type)
         }
     }
 
@@ -94,7 +99,7 @@ class AddExpenseDialog : BaseDialog() {
     }
 
     fun cancelClicked() {
-        Logger.i("Canceling add expense")
+        logInfo("Canceling add expense")
         findNavController().popBackStack()
     }
 }

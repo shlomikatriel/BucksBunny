@@ -3,31 +3,30 @@
     <!-- General -->
     <string name="delete">מחיקה</string>
     <string name="update">עדכון</string>
-    <string name="one_time_expense">חד פעמית</string>
-    <string name="monthly_expense">חודשית</string>
-    <string name="payments_expense">תשלומים</string>
     <string name="expense_name">שם ההוצאה</string>
     <string name="expense_cost">עלות ההוצאה</string>
     <string name="payments_count">מספר תשלומים</string>
 
     <!-- Fragments -->
-    <string name="app_name">מנהל ההוצאות</string>
+    <string name="expenses_main_graph_income">הכנסות</string>
+    <string name="expenses_main_graph_expenses">הוצאות</string>
+    <string name="expenses_main_graph_balance">יתרה</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
-    <string name="expenses_page_chip_x_or_more">%s או יותר</string>
-    <string name="expenses_page_chip_less_then_x">פחות מ-%s</string>
-    <string name="expenses_page_chip_x_or_more_example">100 ₪ או יותר</string>
-    <string name="expenses_page_chip_less_then_x_example">פחות מ-100 ₪</string>
-    <string name="expenses_page_sum">סך הכל: %s</string>
-    <string name="expenses_page_sum_example">סך הכל: 430 ₪</string>
-    <string name="expenses_page_recycler_item_name_example">מסעדה</string>
+    <string name="expenses_page_total">סך הכל: %s</string>
     <string name="expenses_page_recycler_item_menu_description">תפריט</string>
     <string name="expenses_page_recycler_item_monthly">%s בכל חודש</string>
     <string name="expenses_page_recycler_item_payments">%1$s תשלום %2$d מתוך %3$d</string>
+    <string name="add_one_time_button_title">הוצאה חד פעמית</string>
+    <string name="add_monthly_button_title">הוצאה חודשית</string>
+    <string name="add_payments_button_title">הוצאה בתשלומים</string>
 
     <!-- Content Descriptions -->
     <string name="add_button_description">הוספת הוצאה</string>
+    <string name="add_one_time_button_description">הוספת הוצאה חד פעמית</string>
+    <string name="add_monthly_button_description">הוספת הוצאה חודשית</string>
+    <string name="add_payments_button_description">הוספת הוצאה בתשלומים</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>
@@ -35,8 +34,12 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">ביטול</string>
-    <string name="update_expense_dialog_title">עדכון הוצאה</string>
-    <string name="add_expense_dialog_title">הוספת הוצאה</string>
+    <string name="update_one_time_expense_dialog_title">עדכון הוצאה חד פעמית</string>
+    <string name="update_monthly_expense_dialog_title">עדכון הוצאה חודשית</string>
+    <string name="update_payments_expense_dialog_title">עדכון הוצאה בתשלומים</string>
+    <string name="add_one_time_expense_dialog_title">הוספת הוצאה חד פעמית</string>
+    <string name="add_monthly_expense_dialog_title">הוספת הוצאה חודשית</string>
+    <string name="add_payments_expense_dialog_title">הוספת הוצאה בתשלומים</string>
     <string name="add_expense_dialog_add">הוספה</string>
     <string name="delete_expense_dialog_title">מחיקת הוצאה</string>
     <string name="delete_expense_dialog_confirmation_text">האם אתם בטוחים שאתם רוצים למחוק את ההוצאה?</string>
@@ -50,11 +53,12 @@
 
     <!-- Settings -->
     <string name="settings_title">הגדרות</string>
+    <string name="settings_system_default">ברירת המחדל של המערכת</string>
+    <string name="settings_appearance_title">מראה</string>
     <string name="settings_dark_mode_title">מצב כהה</string>
-    <string name="settings_dark_mode_entry_system_default">ברירת המחדל של המערכת</string>
     <string name="settings_dark_mode_entry_always">תמיד</string>
     <string name="settings_dark_mode_entry_never">לעולם לא</string>
-    <string name="settings_graphics_title">גרפיקה</string>
+    <string name="settings_currency">מטבע</string>
     <string name="settings_functionality_title">פונקציונליות</string>
     <string name="settings_general_title">כללי</string>
     <string name="settings_monthly_income">הכנסה חודשית</string>
@@ -64,7 +68,7 @@
     <string name="settings_bug_report_content">תיאור הבאג:\n</string>
     <string name="settings_application_info">פרטי יישום</string>
     <string name="settings_anonymous_reports_category_title">דיווחים אנונימיים</string>
-    <string name="settings_anonymous_reports_category_summary">דוחות אלו אינם מכילים שום מידע אישי או רגיש</string>
+    <string name="settings_anonymous_reports_category_summary">מידע אישי או רגיש לא מדווח</string>
     <string name="settings_anonymous_crash_reports_title">דוחות קריסה אנונימיים</string>
     <string name="settings_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
     <string name="settings_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>
@@ -74,11 +78,14 @@
     <string name="settings_apache_license_title">רישיון Apache 2.0</string>
 
     <!-- Onboarding -->
-    <string name="onboarding_next">הבא בתור</string>
+    <string name="onboarding_next">המשך</string>
     <string name="onboarding_lets_get_started">בואו נתחיל</string>
-    <string name="onboarding_welcome">ברוכים הבאים</string>
-    <string name="onboarding_expenses_manager">למנהל ההוצאות</string>
-    <string name="onboarding_expenses_slogen">תשלטו בהוצאות שלכם!</string>
+    <string name="onboarding_welcome">ברוכים הבאים ל:</string>
+    <string name="onboarding_expenses_slogan">תשלטו בהוצאות שלכם!</string>
     <string name="onboarding_income_input_info">על מנת לשמור על פרטיותכם, מידע אישי או רגיש לעולם לא יצאו מהאפליקציה וישמר בבטחה</string>
-    <string name="onboarding_welcome_instructions">הקישו \'הבא בתור\' על מנת להגדיר את האפליקציה</string>
+    <string name="onboarding_welcome_instructions">הקישו \'המשך\' על מנת להגדיר את האפליקציה</string>
+
+    <!-- App Update -->
+    <string name="app_update_instructions">גרסה חדשה זמינה, עדכנו כדי להנות מתכונות חדשות ונפלאות</string>
+    <string name="app_update_button">עדכון</string>
 </resources>

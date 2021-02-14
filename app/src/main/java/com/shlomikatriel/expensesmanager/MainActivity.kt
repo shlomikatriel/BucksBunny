@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui
+package com.shlomikatriel.expensesmanager
 
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
@@ -10,11 +10,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
 import com.shlomikatriel.expensesmanager.firebase.logEvent
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
 import javax.inject.Inject
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        (applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding = DataBindingUtil.setContentView(
             this,
@@ -48,20 +47,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleOrientationLock() {
         if (!resources.getBoolean(R.bool.is_tablet)) {
-            Logger.d("Locking orientation")
+            logDebug("Locking orientation")
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 
     private fun attachDestinationChangedListener() = findNavController(R.id.nav_host_fragment)
         .addOnDestinationChangedListener { _, destination, _ ->
-            Logger.i("User navigated to ${destination.label}")
+            logInfo("User navigated to ${destination.label}")
             firebaseAnalytics.logEvent("${destination.label}_opened")
         }
 
     private fun configureDarkMode() {
         val mode = sharedPreferences.getInt(IntKey.DARK_MODE)
-        Logger.i("Dark mode: $mode")
+        logInfo("Dark mode: $mode")
         if (mode != AppCompatDelegate.MODE_NIGHT_UNSPECIFIED) {
             AppCompatDelegate.setDefaultNightMode(mode)
         }

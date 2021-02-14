@@ -8,7 +8,8 @@ import com.shlomikatriel.expensesmanager.database.dao.MonthlyExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.OneTimeExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.PaymentsExpenseDao
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logWarning
 import javax.inject.Inject
 
 class DatabaseManager
@@ -25,7 +26,7 @@ class DatabaseManager
 
     @WorkerThread
     fun insert(expense: Expense) {
-        Logger.d("Inserting expense: $expense")
+        logDebug("Inserting expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.insert(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.insert(expense.toModel())
@@ -36,10 +37,10 @@ class DatabaseManager
     @WorkerThread
     fun update(expense: Expense) {
         if (expense.databaseId == null) {
-            Logger.w("Can't update expense with no id")
+            logWarning("Can't update expense with no id")
             return
         }
-        Logger.d("Updating expense: $expense")
+        logDebug("Updating expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.update(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.update(expense.toModel())
@@ -48,7 +49,7 @@ class DatabaseManager
     }
 
     fun delete(expense: Expense) {
-        Logger.d("Deleting expense: $expense")
+        logDebug("Deleting expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.delete(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.delete(expense.toModel())
@@ -58,7 +59,7 @@ class DatabaseManager
 
     @WorkerThread
     fun getExpense(id: Long, type: ExpenseType): Expense {
-        Logger.d("Selecting expense id $id from type $type")
+        logDebug("Selecting expense id $id from type $type")
         return when (type) {
             ExpenseType.ONE_TIME -> oneTimeExpenseDao.getExpenseById(id).toExpense()
             ExpenseType.MONTHLY -> monthlyExpenseDao.getExpenseById(id).toExpense()
@@ -67,7 +68,7 @@ class DatabaseManager
     }
 
     @UiThread
-    fun getExpensesOfMonth(month: Int) = MediatorLiveData<List<Expense>>().apply {
+    fun getExpensesOfMonth(month: Int) = MediatorLiveData<ArrayList<Expense>>().apply {
         attachExpensesLiveDataSource(
             Expense.OneTime::class.java,
             { oneTimeExpenseDao.getExpensesOfMonth(month) },
@@ -85,14 +86,14 @@ class DatabaseManager
         )
     }
 
-    private fun <M, E : Expense> MediatorLiveData<List<Expense>>.attachExpensesLiveDataSource(
+    private fun <M, E : Expense> MediatorLiveData<ArrayList<Expense>>.attachExpensesLiveDataSource(
         expenseClass: Class<E>,
         getExpenses: () -> LiveData<List<M>>,
         convertToExpense: (M) -> Expense
     ) {
         addSource(getExpenses()) { models ->
             synchronized(this) {
-                val newExpenses = mutableListOf<Expense>()
+                val newExpenses = arrayListOf<Expense>()
                 newExpenses.addAll(models.map { convertToExpense(it) })
 
                 val oldExpenses = value
@@ -103,5 +104,13 @@ class DatabaseManager
                 value = newExpenses
             }
         }
+    }
+
+    fun countExpenses(): Int {
+        val oneTime = oneTimeExpenseDao.count()
+        val monthly = monthlyExpenseDao.count()
+        val payments = paymentsExpenseDao.count()
+        logDebug("Counting expenses [oneTime=$oneTime, monthly=$monthly, payments=$payments]")
+        return oneTime + monthly + payments
     }
 }

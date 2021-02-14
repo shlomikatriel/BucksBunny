@@ -10,26 +10,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.shlomikatriel.expensesmanager.BuildConfig
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.navigation.navigate
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.logs.LogManager
-import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
-import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import com.shlomikatriel.expensesmanager.ui.configureToolbar
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logError
+import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.navigation.navigate
 import com.shlomikatriel.expensesmanager.settings.AppDataStore
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openChooseIncomeDialog
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
+import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
+import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -38,6 +40,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     companion object {
         const val KEY_DARK_MODE = "dark_mode"
+        const val CURRENCY = "currency"
         const val MONTHLY_INCOME_KEY = "monthly_income"
         const val ANONYMOUS_CRASH_REPORTS_KEY = "anonymous_crash_reports"
         const val ANONYMOUS_USAGE_DATA_KEY = "anonymous_usage_data"
@@ -65,35 +68,57 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     @Inject
     lateinit var appDataStore: AppDataStore
 
+    @Inject
+    lateinit var localizationManager: LocalizationManager
+
+    @Inject
+    lateinit var firebaseCrashlytics: FirebaseCrashlytics
+
     private var job: Job? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         preferenceManager.preferenceDataStore = appDataStore
 
         setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        populateLocalizationEntries()
 
         updateMonthlyIncomeSummary()
     }
 
     override fun onResume() {
         super.onResume()
-        Logger.d("Settings fragment resumed, registering fragment for shared preferences changes")
+        logDebug("Settings fragment resumed, registering fragment for shared preferences changes")
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
     }
 
     override fun onPause() {
         super.onPause()
-        Logger.d("Settings fragment paused, unregistering fragment for shared preferences changes")
+        logDebug("Settings fragment paused, unregistering fragment for shared preferences changes")
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == FloatKey.INCOME.getKey()) {
-            Logger.i("Monthly income changed, updating summary")
+            logInfo("Monthly income changed, updating summary")
             updateMonthlyIncomeSummary()
+        }
+    }
+
+    private fun populateLocalizationEntries() {
+        preferenceManager.findPreference<ListPreference>(CURRENCY)?.let { it ->
+            val supportedLocales = localizationManager.getAllSupportedLocales()
+            it.entries = mutableListOf(getString(R.string.settings_system_default)).apply {
+                addAll(supportedLocales.map { locale ->
+                    "${Currency.getInstance(locale).symbol} (${locale.displayLanguage}, ${locale.displayCountry})"
+                })
+            }.toTypedArray()
+            it.entryValues = mutableListOf("").apply {
+                addAll(supportedLocales.map { locale -> locale.toString() })
+            }.toTypedArray()
         }
     }
 
@@ -103,7 +128,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     }
 
     override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        Logger.i("Preference ${preference?.key} clicked")
+        logInfo("Preference ${preference?.key} clicked")
         try {
             when (preference?.key) {
                 MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
@@ -116,7 +141,8 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             }
             return true
         } catch (e: Exception) {
-            Logger.e("Failed to process preference ${preference?.key} click", e)
+            logError("Failed to process preference ${preference?.key} click", e)
+            firebaseCrashlytics.recordException(e)
             return false
         }
     }
@@ -126,14 +152,14 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Logger.d("Creating settings fragment view")
+        logDebug("Creating settings fragment view")
         configureToolbar(R.string.settings_title, true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     private fun handleReportBugClick() {
         if (job?.isCompleted != false) {
-            Logger.i("Starting log collection job")
+            logInfo("Starting log collection job")
             job = GlobalScope.launch {
                 val file = logManager.collectLogs()
                 val intent = Intent(Intent.ACTION_SEND).apply {
@@ -149,10 +175,10 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
                     putExtra(Intent.EXTRA_STREAM, uri)
                 }
                 startActivity(Intent.createChooser(intent, getString(R.string.settings_bug_report)))
-                Logger.i("Log collection job done")
+                logInfo("Log collection job done")
             }
         } else {
-            Logger.i("Active log collection job is not complete [completed=${job?.isCompleted}]")
+            logInfo("Active log collection job is not complete [completed=${job?.isCompleted}]")
         }
     }
 
@@ -163,7 +189,8 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         }
         startActivity(intent)
     } catch (e: Exception) {
-        Logger.e("Failed to open application info", e)
+        logError("Failed to open application info", e)
+        firebaseCrashlytics.recordException(e)
     }
 
     private fun openWebPage(url: String) {
@@ -173,7 +200,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
 
     override fun onStop() {
         super.onStop()
-        Logger.i("Settings fragment stopped [isJobCompleted=${job?.isCompleted}]")
+        logInfo("Settings fragment stopped [isJobCompleted=${job?.isCompleted}]")
         job?.takeIf { !it.isCompleted }?.cancel(CancellationException("Settings fragment stopped"))
     }
 }

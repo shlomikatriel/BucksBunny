@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <PreferenceCategory android:title="@string/settings_graphics_title">
+    <PreferenceCategory android:title="@string/settings_appearance_title">
         <ListPreference
             android:entries="@array/settings_dark_mode_entries"
             android:entryValues="@array/settings_dark_mode_entry_values"
@@ -12,6 +12,12 @@
             app:useSimpleSummaryProvider="true"
             tools:summary="@string/settings_dark_mode_entry_always"
             tools:useSimpleSummaryProvider="false" />
+        <ListPreference
+            android:key="currency"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/settings_currency"
+            tools:summary="$ (English, United States)"
+            tools:useSimpleSummaryProvider="false"  />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/settings_functionality_title">
         <Preference

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        android:id="@+id/expand"
+        app:constraintSetEnd="@id/expanded"
+        app:constraintSetStart="@id/collapsed"
+        app:duration="@android:integer/config_mediumAnimTime"
+        app:motionInterpolator="easeOut">
+        <OnClick
+            app:clickAction="toggle"
+            app:targetId="@id/add_expense" />
+
+        <KeyFrameSet>
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_one_time_expense"
+                app:percentX="0.533"
+                app:percentY="0.87" />
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_monthly_expense"
+                app:percentX="0.575"
+                app:percentY="0.886" />
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_payments_expense"
+                app:percentX="0.611"
+                app:percentY="0.893" />
+        </KeyFrameSet>
+    </Transition>
+    <Transition
+        android:id="@+id/collapse"
+        app:constraintSetEnd="@id/collapsed"
+        app:constraintSetStart="@id/expanded"
+        app:duration="@android:integer/config_mediumAnimTime"
+        app:motionInterpolator="easeOut">
+        <OnClick
+            app:clickAction="transitionToEnd"
+            app:targetId="@id/fab_mask" />
+        <KeyFrameSet>
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_one_time_expense"
+                app:percentX="0.533"
+                app:percentY="0.87" />
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_monthly_expense"
+                app:percentX="0.575"
+                app:percentY="0.886" />
+            <KeyPosition
+                app:framePosition="50"
+                app:keyPositionType="parentRelative"
+                app:motionTarget="@id/add_payments_expense"
+                app:percentX="0.611"
+                app:percentY="0.893" />
+        </KeyFrameSet>
+    </Transition>
+
+    <ConstraintSet android:id="@+id/collapsed">
+        <Constraint
+            android:id="@id/add_one_time_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/add_expense"
+            app:layout_constraintLeft_toLeftOf="@id/add_expense"
+            app:layout_constraintRight_toRightOf="@id/add_expense"
+            app:layout_constraintTop_toTopOf="@id/add_expense" />
+        <Constraint
+            android:id="@id/add_monthly_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/add_expense"
+            app:layout_constraintLeft_toLeftOf="@id/add_expense"
+            app:layout_constraintRight_toRightOf="@id/add_expense"
+            app:layout_constraintTop_toTopOf="@id/add_expense" />
+        <Constraint
+            android:id="@id/add_payments_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/add_expense"
+            app:layout_constraintLeft_toLeftOf="@id/add_expense"
+            app:layout_constraintRight_toRightOf="@id/add_expense"
+            app:layout_constraintTop_toTopOf="@id/add_expense" />
+        <Constraint
+            android:id="@id/fab_mask"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/expanded">
+        <Constraint
+            android:id="@id/add_one_time_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/add_monthly_expense"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@id/add_monthly_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/add_payments_expense"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@id/add_payments_expense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:scaleX="1"
+            android:scaleY="1"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@id/add_expense"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@id/fab_mask"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </ConstraintSet>
+</MotionScene>

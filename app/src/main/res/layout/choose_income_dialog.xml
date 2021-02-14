@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.shlomikatriel.expensesmanager.ui.dialogs.ChooseIncomeDialog" />
+        <import type="com.shlomikatriel.expensesmanager.settings.dialogs.ChooseIncomeDialog" />
 
         <variable
             name="dialog"

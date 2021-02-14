@@ -8,12 +8,13 @@ import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
 import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
 import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.logs.LogManager
-import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
-import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.logs.logVerbose
+import com.shlomikatriel.expensesmanager.sharedpreferences.*
 import javax.inject.Inject
 
-class ExpensesManagerApp : Application() {
+class BucksBunnyApp : Application() {
 
     lateinit var appComponent: AppComponent
 
@@ -31,12 +32,18 @@ class ExpensesManagerApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         createObjectGraph()
         appComponent.inject(this)
         logManager.initialize()
-        Logger.i("Creating Application")
+
+        logInfo("Creating Application")
+
         initializeFirebaseServices()
-        Logger.i("Application created")
+
+        checkForUpdate()
+
+        logInfo("Application created")
     }
 
     private fun createObjectGraph() {
@@ -50,8 +57,31 @@ class ExpensesManagerApp : Application() {
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED))
     }
 
+    private fun checkForUpdate() {
+        val latestVersionCode = sharedPreferences.getInt(IntKey.LATEST_VERSION_CODE)
+        when {
+            latestVersionCode == IntKey.LATEST_VERSION_CODE.getDefault() -> {
+                logDebug("Initial version: ${BuildConfig.VERSION_NAME}")
+                updateVersion()
+            }
+            BuildConfig.VERSION_CODE > latestVersionCode -> {
+                val latestVersionName = sharedPreferences.getString(StringKey.LATEST_VERSION_NAME)
+                logDebug("Version update: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
+                updateVersion()
+            }
+            BuildConfig.VERSION_CODE == latestVersionCode -> {
+                logVerbose("No update")
+            }
+        }
+    }
+
+    private fun updateVersion() {
+        sharedPreferences.putInt(IntKey.LATEST_VERSION_CODE, BuildConfig.VERSION_CODE)
+        sharedPreferences.putString(StringKey.LATEST_VERSION_NAME, BuildConfig.VERSION_NAME)
+    }
+
     override fun onLowMemory() {
         super.onLowMemory()
-        Logger.i("Low memory")
+        logInfo("Low memory")
     }
 }

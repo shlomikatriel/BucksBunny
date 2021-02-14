@@ -17,20 +17,21 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
-        resConfigs "en", "iw"
+        def languageCodes = ["en", "iw"]
+        resConfigs languageCodes
 
+        buildConfigField "String[]", "LANGUAGE_CODES", "{${languageCodes.collect { "\"$it\"" }.join(",")}}"
         buildConfigField "String", "LOG_TAG", '"ExpensesManager"'
         buildConfigField "int", "MAX_MONTHS_OFFSET", "${rootProject.ext.maxMonthsOffset}"
         buildConfigField "int", "MONTHS_COUNT", "${rootProject.ext.maxMonthsOffset * 2 + 1}"
         buildConfigField "String", "SHARED_PREFERNCES_FILE_NAME", '"shared_preferences"'
-        buildConfigField "int", "CHIP_FILTER_THRESHOLD", "200"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions.annotationProcessorOptions {
             arguments += [
-                    "room.incremental":"true",
-                    "room.schemaLocation":"$projectDir/schemas".toString()
+                    "room.incremental"   : "true",
+                    "room.schemaLocation": "$projectDir/schemas".toString()
             ]
         }
     }
@@ -86,8 +87,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    androidTestImplementation 'junit:junit:4.13'
+    implementation 'com.google.android.material:material:1.3.0'
+    androidTestImplementation 'junit:junit:4.13.1'
     androidTestImplementation "androidx.room:room-testing:2.2.6"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -96,7 +97,7 @@ dependencies {
 
     // Logging
     implementation 'com.github.bosphere.android-filelogger:filelogger:1.0.7'
-    implementation 'net.lingala.zip4j:zip4j:2.6.2'
+    implementation 'net.lingala.zip4j:zip4j:2.6.4'
 
     // Room
     implementation "androidx.room:room-runtime:${versions.room}"
@@ -117,8 +118,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     // Firebase Analytics
-    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'
 
     // Firebase Crashlytics
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.3.1'
+
+    // Play Core
+    implementation 'com.google.android.play:core:1.9.1'
+    implementation 'com.google.android.play:core-ktx:1.8.1'
 }

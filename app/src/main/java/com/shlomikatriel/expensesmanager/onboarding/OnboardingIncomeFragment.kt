@@ -10,16 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.shlomikatriel.expensesmanager.ExpensesManagerApp
-import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.databinding.OnboardingIncomeFragmentBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
-import com.shlomikatriel.expensesmanager.ui.initialize
-import com.shlomikatriel.expensesmanager.ui.isInputValid
-import java.util.*
 import javax.inject.Inject
 
 class OnboardingIncomeFragment : Fragment() {
@@ -31,7 +28,7 @@ class OnboardingIncomeFragment : Fragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     @Inject
-    lateinit var currency: Currency
+    lateinit var localizationManager: LocalizationManager
 
     lateinit var binding: OnboardingIncomeFragmentBinding
 
@@ -41,7 +38,7 @@ class OnboardingIncomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        (requireContext().applicationContext as ExpensesManagerApp).appComponent.inject(this)
+        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.onboarding_income_fragment, container, false)
@@ -54,11 +51,11 @@ class OnboardingIncomeFragment : Fragment() {
     private fun configureIncomeInput() = binding.incomeInputLayout.apply {
         val currentIncome = sharedPreferences.getFloat(FloatKey.INCOME)
 
-        initialize(currency.symbol, currentIncome)
+        initialize(localizationManager.getCurrencySymbol(), currentIncome)
 
         income.addTextChangedListener {
             val valid = isInputValid(appContext)
-            Logger.v("Input text changed. [valid=$valid]")
+            logVerbose("Input text changed. [valid=$valid]")
         }
 
         // Color title
@@ -68,7 +65,7 @@ class OnboardingIncomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         val valid = binding.incomeInputLayout.isInputValid(appContext)
-        Logger.i("Onboarding input fragment paused, storing income if valid [valid=$valid]")
+        logInfo("Onboarding input fragment paused, storing income if valid [valid=$valid]")
         if (valid) {
             sharedPreferences.putFloat(
                 FloatKey.INCOME,

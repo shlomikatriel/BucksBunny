@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui.expensespage.recyclers
+package com.shlomikatriel.expensesmanager.expenses.components
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,10 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.databinding.ExpenseRecyclerItemBinding
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openDeleteExpenseDialog
+import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragmentDirections.Companion.openUpdateExpenseDialog
+import com.shlomikatriel.expensesmanager.logs.logDebug
+import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.navigation.navigate
-import com.shlomikatriel.expensesmanager.logs.Logger
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openDeleteExpenseDialog
-import com.shlomikatriel.expensesmanager.ui.expenses.fragments.ExpensesMainFragmentDirections.Companion.openUpdateExpenseDialog
 import java.text.NumberFormat
 import java.util.*
 
@@ -73,7 +74,7 @@ class ExpensesPageRecyclerAdapter(
             }
             val popupMenu = createPopupMenu(holder.binding.menu, data)
             holder.binding.menu.setOnClickListener {
-                Logger.d("Showing expense #${data.databaseId} context menu")
+                logDebug("Showing expense #${data.databaseId} context menu")
                 popupMenu.show()
             }
         }
@@ -85,13 +86,13 @@ class ExpensesPageRecyclerAdapter(
             setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.update -> {
-                        Logger.i("Showing item #${item.databaseId} update dialog")
+                        logInfo("Showing item #${item.databaseId} update dialog")
                         fragment.navigate(
                             openUpdateExpenseDialog(item.databaseId!!, item.getExpenseType(), month)
                         )
                     }
                     R.id.delete -> {
-                        Logger.i("Showing item #${item.databaseId} delete dialog")
+                        logInfo("Showing item #${item.databaseId} delete dialog")
                         fragment.navigate(
                             openDeleteExpenseDialog(item.databaseId!!, item.getExpenseType())
                         )

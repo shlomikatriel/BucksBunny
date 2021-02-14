@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- General -->
+    <string name="app_name" translatable="false">Bucks Bunny</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
-    <string name="one_time_expense">One Time</string>
-    <string name="monthly_expense">Monthly</string>
-    <string name="payments_expense">Payments</string>
     <string name="expense_name">Expense Name</string>
     <string name="expense_cost">Expense Cost</string>
     <string name="payments_count">Payments Count</string>
 
     <!-- Fragments -->
-    <string name="app_name">Expenses Manager</string>
+    <string name="expenses_main_graph_income">Income</string>
+    <string name="expenses_main_graph_expenses">Expenses</string>
+    <string name="expenses_main_graph_balance">Balance</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
-    <string name="expenses_page_chip_x_or_more">%s or more</string>
-    <string name="expenses_page_chip_less_then_x">Less Then %s</string>
-    <string name="expenses_page_chip_x_or_more_example">100 $ or more</string>
-    <string name="expenses_page_chip_less_then_x_example">Less Then 100 $</string>
-    <string name="expenses_page_sum">Total: %s</string>
-    <string name="expenses_page_sum_example">Total: 430$</string>
-    <string name="expenses_page_recycler_item_name_example">Restaurant</string>
+    <string name="expenses_page_total">Total: %s</string>
     <string name="expenses_page_recycler_item_menu_description">Menu</string>
     <string name="expenses_page_recycler_item_monthly">%s each month</string>
     <string name="expenses_page_recycler_item_payments" tools:ignore="PluralsCandidate">%1$s payment %2$d out of %3$d</string>
+    <string name="add_one_time_button_title">One Time Expense</string>
+    <string name="add_monthly_button_title">Monthly Expense</string>
+    <string name="add_payments_button_title">Payments Expense</string>
 
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
+    <string name="add_one_time_button_description">Add one time expense</string>
+    <string name="add_monthly_button_description">Add monthly expense</string>
+    <string name="add_payments_button_description">Add payments expense</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -35,8 +35,12 @@
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
-    <string name="update_expense_dialog_title">Update Expense</string>
-    <string name="add_expense_dialog_title">Add Expense</string>
+    <string name="update_one_time_expense_dialog_title">Update One Time Expense</string>
+    <string name="update_monthly_expense_dialog_title">Update Monthly Expense</string>
+    <string name="update_payments_expense_dialog_title">Update Payments Expense</string>
+    <string name="add_one_time_expense_dialog_title">Add One Time Expense</string>
+    <string name="add_monthly_expense_dialog_title">Add Monthly Expense</string>
+    <string name="add_payments_expense_dialog_title">Add Payments Expense</string>
     <string name="add_expense_dialog_add">Add</string>
     <string name="delete_expense_dialog_title">Delete Expense</string>
     <string name="delete_expense_dialog_confirmation_text">Are you sure you want to delete the expense?</string>
@@ -50,11 +54,12 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
+    <string name="settings_system_default">System default</string>
+    <string name="settings_appearance_title">Appearance</string>
     <string name="settings_dark_mode_title">Dark Mode</string>
-    <string name="settings_dark_mode_entry_system_default">System default</string>
     <string name="settings_dark_mode_entry_always">Always</string>
     <string name="settings_dark_mode_entry_never">Never</string>
-    <string name="settings_graphics_title">Graphics</string>
+    <string name="settings_currency">Currency</string>
     <string name="settings_functionality_title">Functionality</string>
     <string name="settings_general_title">General</string>
     <string name="settings_monthly_income">Monthly Income</string>
@@ -64,7 +69,7 @@
     <string name="settings_bug_report_content">Describe the bug:\n</string>
     <string name="settings_application_info">App Info</string>
     <string name="settings_anonymous_reports_category_title">Anonymous Reports</string>
-    <string name="settings_anonymous_reports_category_summary">These reports do not personal or sensitive data</string>
+    <string name="settings_anonymous_reports_category_summary">Personal or sensitive data is not reported</string>
     <string name="settings_anonymous_crash_reports_title">Anonymous Crash Reports</string>
     <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
     <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
@@ -77,8 +82,11 @@
     <string name="onboarding_next">Next</string>
     <string name="onboarding_lets_get_started">Let\'s get started</string>
     <string name="onboarding_welcome">Welcome to</string>
-    <string name="onboarding_expenses_manager">Expenses Manager</string>
-    <string name="onboarding_expenses_slogen">Control your expenses!</string>
+    <string name="onboarding_expenses_slogan">Control your expenses!</string>
     <string name="onboarding_income_input_info">To keep your privacy, personal or sensitive data will never leave the app and will be stored safely</string>
     <string name="onboarding_welcome_instructions">Tap \'Next\' to configure app</string>
+
+    <!-- App Update -->
+    <string name="app_update_instructions">New version available, update to enjoy great new features</string>
+    <string name="app_update_button">Update</string>
 </resources>

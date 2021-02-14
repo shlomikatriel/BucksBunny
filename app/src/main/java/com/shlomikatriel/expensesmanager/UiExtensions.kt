@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.ui
+package com.shlomikatriel.expensesmanager
 
 import android.content.Context
 import android.view.View
@@ -6,18 +6,17 @@ import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputLayout
-import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.DialogExpenseInputsBinding
 import com.shlomikatriel.expensesmanager.databinding.IncomeInputLayoutBinding
-import com.shlomikatriel.expensesmanager.logs.Logger
+import com.shlomikatriel.expensesmanager.logs.logError
 
 fun Fragment.configureToolbar(@StringRes title: Int, navigateUpEnabled: Boolean = false) {
     if (activity is MainActivity) {
         setHasOptionsMenu(true)
         (activity as MainActivity).configureToolbar(title, navigateUpEnabled)
     } else {
-        Logger.e("Can't configure toolbar, main activity is null for fragment '${javaClass.simpleName}'")
+        logError("Can't configure toolbar, main activity is null for fragment '${javaClass.simpleName}'")
     }
 }
 
@@ -25,32 +24,24 @@ fun Fragment.hideToolbar() {
     if (activity is MainActivity) {
         (activity as MainActivity).hideToolbar()
     } else {
-        Logger.e("Can't hide toolbar, main activity is null for fragment '${javaClass.simpleName}'")
+        logError("Can't hide toolbar, main activity is null for fragment '${javaClass.simpleName}'")
     }
 }
 
-fun DialogExpenseInputsBinding.initialize(currencySymbol: String) {
-    typeButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
-        paymentsLayout.visibility = if (checkedId == R.id.payments_expense && isChecked) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-    }
+fun DialogExpenseInputsBinding.initialize(currencySymbol: String, type: ExpenseType) {
     costLayout.prefixText = currencySymbol
-}
-
-fun DialogExpenseInputsBinding.getSelectedExpenseType() = typeButtons.checkedButtonId.let {
-    root.findViewById<View>(it).tag as ExpenseType
+    if (type == ExpenseType.PAYMENTS) {
+        paymentsLayout.visibility = View.VISIBLE
+    }
 }
 
 /**
  * @return if all of the fields are valid
  * */
 fun DialogExpenseInputsBinding.isInputValid(
+    type: ExpenseType,
     context: Context
 ): Boolean {
-    val type = getSelectedExpenseType()
     val name = name.text.toString()
     val costAsString = cost.text.toString()
     val cost = costAsString.toFloatOrNull()

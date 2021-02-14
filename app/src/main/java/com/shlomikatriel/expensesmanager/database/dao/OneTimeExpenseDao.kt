@@ -16,4 +16,7 @@ interface OneTimeExpenseDao : BaseDao<OneTimeExpenseModel> {
 
     @Query("SELECT * FROM one_time_expense where :id=id")
     fun getExpenseById(id: Long): OneTimeExpenseModel
+
+    @Query("SELECT COUNT(*) FROM one_time_expense")
+    fun count(): Int
 }

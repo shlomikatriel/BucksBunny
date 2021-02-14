@@ -14,4 +14,6 @@
     <color name="launcher_foreground">@android:color/white</color>
 
     <color name="colored_text">@color/colorPrimary</color>
+
+    <color name="expenses_graph_base_color">@color/colorPrimary</color>
 </resources>
