@@ -21,7 +21,7 @@ android {
         resConfigs languageCodes
 
         buildConfigField "String[]", "LANGUAGE_CODES", "{${languageCodes.collect { "\"$it\"" }.join(",")}}"
-        buildConfigField "String", "LOG_TAG", '"ExpensesManager"'
+        buildConfigField "String", "LOG_TAG", '"BucksBunny"'
         buildConfigField "int", "MAX_MONTHS_OFFSET", "${rootProject.ext.maxMonthsOffset}"
         buildConfigField "int", "MONTHS_COUNT", "${rootProject.ext.maxMonthsOffset * 2 + 1}"
         buildConfigField "String", "SHARED_PREFERNCES_FILE_NAME", '"shared_preferences"'
