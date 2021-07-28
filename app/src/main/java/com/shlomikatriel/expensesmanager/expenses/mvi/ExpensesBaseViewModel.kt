@@ -54,7 +54,7 @@ abstract class ExpensesBaseViewModel(
 
     private fun List<Expense>.transformToArrayList() = arrayListOf(*(toTypedArray()))
 
-    protected fun calculateTotal(expenses: ArrayList<Expense>) = expenses.sumByDouble {
+    protected fun calculateTotal(expenses: ArrayList<Expense>) = expenses.sumOf {
         when (it) {
             is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
             is Expense.Payments -> (it.cost / it.payments).toDouble()

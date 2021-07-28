@@ -1,5 +1,6 @@
 package com.shlomikatriel.expensesmanager.expenses.components
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -102,6 +103,7 @@ class ExpensesPageRecyclerAdapter(
             }
         }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateData(data: ArrayList<Expense>) {
         this.data.clear()
         this.data.addAll(data)

@@ -1,5 +1,6 @@
 package com.shlomikatriel.expensesmanager
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -8,12 +9,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
 import com.shlomikatriel.expensesmanager.firebase.logEvent
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.navigation.findNavController
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
 import javax.inject.Inject
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         configureDarkMode()
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     private fun toggleOrientationLock() {
         if (!resources.getBoolean(R.bool.is_tablet)) {
             logDebug("Locking orientation")
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun attachDestinationChangedListener() = findNavController(R.id.nav_host_fragment)
+    private fun attachDestinationChangedListener() = findNavController()
         .addOnDestinationChangedListener { _, destination, _ ->
             logInfo("User navigated to ${destination.label}")
             firebaseAnalytics.logEvent("${destination.label}_opened")
@@ -75,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(navigateUpEnabled)
         if (navigateUpEnabled) {
             binding.appBar.setNavigationOnClickListener {
-                findNavController(R.id.nav_host_fragment).popBackStack()
+                findNavController().popBackStack()
             }
         } else {
             binding.appBar.setNavigationOnClickListener(null)
