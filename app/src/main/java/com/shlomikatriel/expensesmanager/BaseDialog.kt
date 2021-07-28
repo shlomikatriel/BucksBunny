@@ -15,8 +15,8 @@ abstract class BaseDialog : DialogFragment() {
      *
      * [Stack Overflow](https://stackoverflow.com/questions/57462884/navigation-architecture-component-transition-animations-not-working-for-dialog)
      * */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         dialog?.window?.attributes?.windowAnimations = R.style.DialogAnimation
     }
 

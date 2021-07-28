@@ -181,7 +181,6 @@ class ExpensesMainFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         updateManager.processResult(requestCode, resultCode)
     }
 }
