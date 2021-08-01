@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.dagger.modules
+package com.shlomikatriel.expensesmanager.hilt
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -6,9 +6,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 class AppModule {
 
     companion object {
@@ -16,14 +19,12 @@ class AppModule {
     }
 
     @Provides
-    fun provideSharedPreferences(context: Context): SharedPreferences =
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
         context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
 
-    @Singleton
     @Provides
     fun provideFirebaseCrashlytics() = FirebaseCrashlytics.getInstance()
 
-    @Singleton
     @Provides
-    fun provideFirebaseAnalytics(context: Context) = FirebaseAnalytics.getInstance(context)
+    fun provideFirebaseAnalytics(@ApplicationContext context: Context) = FirebaseAnalytics.getInstance(context)
 }

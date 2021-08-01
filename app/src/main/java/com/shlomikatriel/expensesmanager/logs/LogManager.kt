@@ -6,6 +6,7 @@ import com.bosphere.filelogger.FL
 import com.bosphere.filelogger.FLConfig
 import com.bosphere.filelogger.FLConst
 import com.shlomikatriel.expensesmanager.BuildConfig
+import dagger.hilt.android.qualifiers.ApplicationContext
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
 import net.lingala.zip4j.model.enums.CompressionLevel
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 class LogManager
 @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val emptyLogger: EmptyLogger,
     private val logFileFormatter: LogFileFormatter
 ) {

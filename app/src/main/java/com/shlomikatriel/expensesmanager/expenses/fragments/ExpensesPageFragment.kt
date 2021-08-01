@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
@@ -20,10 +19,14 @@ import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageEvent
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewModel
 import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesPageViewState
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ExpensesPageFragment : Fragment() {
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -43,8 +46,6 @@ class ExpensesPageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-
         binding = DataBindingUtil.inflate<ExpensesPageFragmentBinding>(
             inflater,
             R.layout.expenses_page_fragment,

@@ -2,7 +2,6 @@ package com.shlomikatriel.expensesmanager.settings.dialogs
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
@@ -13,11 +12,15 @@ import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ChooseIncomeDialog : BaseDialog() {
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -28,11 +31,6 @@ class ChooseIncomeDialog : BaseDialog() {
     lateinit var localizationManager: LocalizationManager
 
     private lateinit var binding: ChooseIncomeDialogBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-    }
 
     override fun layout() = R.layout.choose_income_dialog
 

@@ -1,7 +1,6 @@
 package com.shlomikatriel.expensesmanager.expenses.dialogs
 
 import android.content.Context
-import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
@@ -14,12 +13,16 @@ import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.thread
 
+@AndroidEntryPoint
 class AddExpenseDialog : BaseDialog() {
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -32,11 +35,6 @@ class AddExpenseDialog : BaseDialog() {
     lateinit var binding: AddExpenseDialogBinding
 
     private val args: AddExpenseDialogArgs by navArgs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-    }
 
     override fun layout() = R.layout.add_expense_dialog
 

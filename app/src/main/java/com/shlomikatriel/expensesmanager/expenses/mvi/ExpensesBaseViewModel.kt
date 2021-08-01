@@ -1,27 +1,20 @@
 package com.shlomikatriel.expensesmanager.expenses.mvi
 
-import android.app.Application
 import android.content.SharedPreferences
 import androidx.annotation.CallSuper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import javax.inject.Inject
 
 abstract class ExpensesBaseViewModel(
-        application: Application
-) : AndroidViewModel(application), Observer<ArrayList<Expense>>, SharedPreferences.OnSharedPreferenceChangeListener {
-
-    @Inject
-    lateinit var databaseManager: DatabaseManager
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    private val databaseManager: DatabaseManager,
+    protected val sharedPreferences: SharedPreferences
+) : ViewModel(), Observer<ArrayList<Expense>>, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private var expenseItemsLiveData: LiveData<ArrayList<Expense>>? = null
 

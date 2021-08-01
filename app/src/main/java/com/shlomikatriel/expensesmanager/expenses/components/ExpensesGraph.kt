@@ -19,15 +19,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.getColorOrThrow
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withTranslation
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
+@AndroidEntryPoint
 class ExpensesGraph : View {
 
     @Inject
@@ -140,10 +141,6 @@ class ExpensesGraph : View {
     }
 
     private fun init(attrs: AttributeSet?) {
-        if (!isInEditMode) {
-            (context.applicationContext as BucksBunnyApp).appComponent.inject(this)
-        }
-
         context.theme.obtainStyledAttributes(
                 attrs,
                 R.styleable.ExpensesGraph,
