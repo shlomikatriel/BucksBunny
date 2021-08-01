@@ -11,14 +11,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.OnboardingFragmentBinding
+import com.shlomikatriel.expensesmanager.hideToolbar
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.hideToolbar
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class OnboardingFragment : Fragment() {
 
     @Inject
@@ -31,8 +32,6 @@ class OnboardingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-
         binding = DataBindingUtil.inflate<OnboardingFragmentBinding>(
             inflater,
             R.layout.onboarding_fragment,

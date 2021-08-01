@@ -17,8 +17,10 @@ import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.navigation.findNavController
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     @Inject
@@ -31,8 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        (applicationContext as BucksBunnyApp).appComponent.inject(this)
 
         binding = DataBindingUtil.setContentView(
             this,

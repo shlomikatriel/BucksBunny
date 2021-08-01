@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.Utils
 import com.shlomikatriel.expensesmanager.configureToolbar
@@ -35,12 +34,16 @@ import com.shlomikatriel.expensesmanager.playcore.UpdateManager
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.putBoolean
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ExpensesMainFragment : Fragment() {
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -68,8 +71,6 @@ class ExpensesMainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-
         binding = DataBindingUtil.inflate<ExpensesMainFragmentBinding>(
             inflater,
             R.layout.expenses_main_fragment,

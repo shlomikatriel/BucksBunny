@@ -1,29 +1,27 @@
 package com.shlomikatriel.expensesmanager.expenses.mvi
 
-import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import com.shlomikatriel.expensesmanager.BuildConfig
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
 import com.shlomikatriel.expensesmanager.Utils
+import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
-class ExpensesMainViewModel(application: Application) : ExpensesBaseViewModel(application) {
-
-    @Inject
-    lateinit var utils: Utils
+@HiltViewModel
+class ExpensesMainViewModel @Inject constructor(
+    val utils: Utils,
+    databaseManager: DatabaseManager,
+    sharedPreferences: SharedPreferences
+) : ExpensesBaseViewModel(databaseManager, sharedPreferences) {
 
     private val viewStateLiveData = MutableLiveData<ExpensesMainViewState>()
-
-    init {
-        (application as BucksBunnyApp).appComponent.inject(this)
-    }
 
     private var viewState = ExpensesMainViewState()
         set(value) {
@@ -75,20 +73,20 @@ class ExpensesMainViewModel(application: Application) : ExpensesBaseViewModel(ap
         logDebug("Processing result $result")
         viewState = when (result) {
             is ExpensesMainResult.Initialize -> viewState.copy(
-                    time = transformPositionToMonthMillis(result.position),
-                    forceSelectPage = result.position,
-                    income = result.income,
-                    expenses = result.expenses
+                time = transformPositionToMonthMillis(result.position),
+                forceSelectPage = result.position,
+                income = result.income,
+                expenses = result.expenses
             )
             is ExpensesMainResult.MonthChange -> viewState.copy(
-                    time = transformPositionToMonthMillis(result.newPosition),
-                    forceSelectPage = null
+                time = transformPositionToMonthMillis(result.newPosition),
+                forceSelectPage = null
             )
             is ExpensesMainResult.IncomeChange -> viewState.copy(
-                    income = result.income
+                income = result.income
             )
             is ExpensesMainResult.ExpensesChange -> viewState.copy(
-                    expenses = result.expenses
+                expenses = result.expenses
             )
         }
     }

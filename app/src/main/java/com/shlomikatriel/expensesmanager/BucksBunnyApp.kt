@@ -4,19 +4,16 @@ import android.app.Application
 import android.content.SharedPreferences
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
-import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
-import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
+import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
+@HiltAndroidApp
 class BucksBunnyApp : Application() {
-
-    lateinit var appComponent: AppComponent
 
     @Inject
     lateinit var logManager: LogManager
@@ -33,8 +30,6 @@ class BucksBunnyApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        createObjectGraph()
-        appComponent.inject(this)
         logManager.initialize()
 
         logInfo("Creating Application")
@@ -44,12 +39,6 @@ class BucksBunnyApp : Application() {
         checkForUpdate()
 
         logInfo("Application created")
-    }
-
-    private fun createObjectGraph() {
-        appComponent = DaggerAppComponent.builder()
-            .contextModule(ContextModule(this))
-            .build()
     }
 
     private fun initializeFirebaseServices() {

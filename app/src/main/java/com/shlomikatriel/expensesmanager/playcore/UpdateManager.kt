@@ -17,11 +17,12 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logWarning
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class UpdateManager
 @Inject constructor(
-    private val context: Context,
+    @ApplicationContext private val context: Context,
     private val firebaseCrashlytics: FirebaseCrashlytics
     ) {
 

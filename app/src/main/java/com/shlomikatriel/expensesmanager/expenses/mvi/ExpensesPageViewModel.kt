@@ -1,14 +1,20 @@
 package com.shlomikatriel.expensesmanager.expenses.mvi
 
-import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
+import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(application) {
+@HiltViewModel
+class ExpensesPageViewModel @Inject constructor(
+    databaseManager: DatabaseManager,
+    sharedPreferences: SharedPreferences
+) : ExpensesBaseViewModel(databaseManager, sharedPreferences) {
 
     private var selectedExpenseTypes: Set<ExpenseType> = hashSetOf()
 
@@ -21,10 +27,6 @@ class ExpensesPageViewModel(application: Application) : ExpensesBaseViewModel(ap
         }
 
     fun getViewState() = viewStateLiveData
-
-    init {
-        (application as BucksBunnyApp).appComponent.inject(this)
-    }
 
     override fun onIncomeChanged(income: Float) {
         // Not needed in pages

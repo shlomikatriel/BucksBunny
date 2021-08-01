@@ -26,6 +26,8 @@ import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDire
 import com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragmentDirections.Companion.openOpenSourceLicensesActivity
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -34,7 +36,7 @@ import java.text.DecimalFormat
 import java.util.*
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceFragmentCompat() {
 
@@ -51,6 +53,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         const val MAIL_ADDRESS = "shlomikatriel@gmail.com"
     }
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -72,8 +75,6 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
     private var job: Job? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-
         preferenceManager.preferenceDataStore = appDataStore
 
         setPreferencesFromResource(R.xml.preferences, rootKey)

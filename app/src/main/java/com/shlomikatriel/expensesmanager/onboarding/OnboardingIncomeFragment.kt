@@ -10,17 +10,24 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.shlomikatriel.expensesmanager.*
+import com.shlomikatriel.expensesmanager.LocalizationManager
+import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.databinding.OnboardingIncomeFragmentBinding
+import com.shlomikatriel.expensesmanager.initialize
+import com.shlomikatriel.expensesmanager.isInputValid
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class OnboardingIncomeFragment : Fragment() {
 
+    @ApplicationContext
     @Inject
     lateinit var appContext: Context
 
@@ -37,9 +44,6 @@ class OnboardingIncomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-
         binding =
             DataBindingUtil.inflate(inflater, R.layout.onboarding_income_fragment, container, false)
 
