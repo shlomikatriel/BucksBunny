@@ -80,18 +80,16 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.0'
+        kotlinCompilerExtensionVersion '1.0.1'
     }
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    // Inspection is disabled since we are forced to use the Kotlin version of compsoe
-    //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'com.google.android.material:material:1.4.0'
     androidTestImplementation 'junit:junit:4.13.2'
@@ -125,28 +123,29 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
 
     // Firebase Crashlytics
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.1'
 
     // Play Core
     implementation 'com.google.android.play:core:1.10.0'
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
     // Compose
-    implementation 'androidx.compose.ui:ui:1.0.0'
+    implementation 'androidx.compose.ui:ui:1.0.1'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.0'
+    implementation 'androidx.compose.ui:ui-tooling:1.0.1'
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation 'androidx.compose.foundation:foundation:1.0.0'
+    implementation 'androidx.compose.foundation:foundation:1.0.1'
     // Material Design
-    implementation 'androidx.compose.material:material:1.0.0'
+    implementation 'androidx.compose.material:material:1.0.1'
     // Material design icons
-    implementation 'androidx.compose.material:material-icons-core:1.0.0'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0'
+    implementation 'androidx.compose.material:material-icons-core:1.0.1'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.1'
     // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.3.0'
+    implementation 'androidx.activity:activity-compose:1.3.1'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.1'
     // View Pager
-    implementation 'com.google.accompanist:accompanist-pager:0.15.0'
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.15.0"
+    implementation 'com.google.accompanist:accompanist-pager:0.16.1'
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.16.1"
 }

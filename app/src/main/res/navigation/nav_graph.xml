@@ -68,8 +68,7 @@
     <fragment
         android:id="@+id/onboarding_fragment"
         android:name="com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment"
-        android:label="onboarding_fragment"
-        tools:layout="@layout/onboarding_fragment" />
+        android:label="onboarding_fragment"/>
 
     <dialog
         android:id="@+id/add_expense_dialog"
