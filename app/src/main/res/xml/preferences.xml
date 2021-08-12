@@ -46,9 +46,20 @@
             android:icon="@drawable/bug_report"
             android:key="report_bug"
             android:title="@string/settings_bug_report" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/settings_about_category_title">
+        <Preference
+            android:icon="@drawable/open_in_browser"
+            android:key="github"
+            android:title="@string/settings_github_title" />
+        <Preference
+            android:icon="@drawable/open_in_browser"
+            android:key="apache_license"
+            android:title="@string/settings_apache_license_title" />
         <Preference
             android:key="open_source_licenses"
             android:title="@string/settings_open_source_licenses" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
