@@ -16,9 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -26,9 +25,9 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppPagerIndicator
-import com.shlomikatriel.expensesmanager.compose.AppText
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppPagerIndicator
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.hideToolbar
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
@@ -96,7 +95,7 @@ class OnboardingFragment : Fragment() {
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(Dp(16f))
+                    .padding(16.dp)
             )
 
             // Creates a coroutine scope, which is bound to the composable lifecycle.
@@ -120,7 +119,7 @@ class OnboardingFragment : Fragment() {
                 } else {
                     R.string.onboarding_next
                 }
-                AppText(stringResource(textRes))
+                AppText(textRes)
             }
         }
     }

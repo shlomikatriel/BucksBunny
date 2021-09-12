@@ -28,13 +28,11 @@ abstract class ExpensesBaseViewModel(
     }
 
     override fun onChanged(expenses: ArrayList<Expense>?) {
-        logInfo("Expenses changed")
-        expenses?.let { onExpensesChanged(it.transformToArrayList()) }
+        expenses?.let { onExpensesChanged(it) }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         if (key == FloatKey.INCOME.getKey()) {
-            logInfo("Income changed")
             onIncomeChanged(this.sharedPreferences.getFloat(FloatKey.INCOME))
         }
     }
@@ -43,9 +41,8 @@ abstract class ExpensesBaseViewModel(
 
     abstract fun onExpensesChanged(expenses: ArrayList<Expense>)
 
-    protected fun getExpenses() = expenseItemsLiveData?.value?.transformToArrayList() ?: arrayListOf()
-
-    private fun List<Expense>.transformToArrayList() = arrayListOf(*(toTypedArray()))
+    protected fun getExpenses() =
+        expenseItemsLiveData?.value ?: arrayListOf()
 
     protected fun calculateTotal(expenses: ArrayList<Expense>) = expenses.sumOf {
         when (it) {

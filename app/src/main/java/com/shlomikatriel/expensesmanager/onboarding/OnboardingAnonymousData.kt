@@ -13,7 +13,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,9 +21,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.AppText
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.composables.Permission
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
@@ -120,12 +119,12 @@ private fun AnonymousDataContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppText(
-            text = stringResource(R.string.settings_anonymous_reports_category_title),
+            text = R.string.settings_anonymous_reports_category_title,
             style = MaterialTheme.typography.h5,
-            colored = true,
+            color = MaterialTheme.colors.primary,
             bold = true
         )
-        AppInfoText(stringResource(R.string.settings_anonymous_reports_category_summary))
+        AppInfoText(R.string.settings_anonymous_reports_category_summary)
         Permission(
             title = R.string.settings_anonymous_crash_reports_title,
             description = R.string.settings_anonymous_crash_reports_summary,

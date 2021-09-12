@@ -8,12 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.AppText
-import com.shlomikatriel.expensesmanager.compose.AppTextField
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 
 @Preview(
@@ -41,22 +37,22 @@ fun IncomeInput(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement =  Arrangement.spacedBy(dimensionResource(R.dimen.dialog_vertical_spacing))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.dialog_vertical_spacing))
     ) {
         AppText(
-            text = stringResource(R.string.choose_income_dialog_title),
+            text = R.string.choose_income_dialog_title,
             style = MaterialTheme.typography.h5,
-            colored = isOnboarding,
+            color = if (isOnboarding) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
             bold = true
         )
 
         AppText(
-            text = stringResource(R.string.choose_income_dialog_description),
+            text = R.string.choose_income_dialog_description,
             style = MaterialTheme.typography.body1
         )
 
         if (isOnboarding) {
-            AppInfoText(text = stringResource(R.string.hint_income_can_be_changed_in_settings))
+            AppInfoText(R.string.hint_income_can_be_changed_in_settings)
         }
 
         var input by remember { mutableStateOf(initialIncome.toString()) }

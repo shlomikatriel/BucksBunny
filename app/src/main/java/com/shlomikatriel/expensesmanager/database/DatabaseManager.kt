@@ -4,10 +4,13 @@ import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.database.dao.MonthlyExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.OneTimeExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.PaymentsExpenseDao
-import com.shlomikatriel.expensesmanager.database.model.ExpenseType
+import com.shlomikatriel.expensesmanager.database.model.MonthlyExpenseModel
+import com.shlomikatriel.expensesmanager.database.model.OneTimeExpenseModel
+import com.shlomikatriel.expensesmanager.database.model.PaymentsExpenseModel
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logWarning
 import javax.inject.Inject
@@ -24,14 +27,25 @@ class DatabaseManager
     @Inject
     lateinit var paymentsExpenseDao: PaymentsExpenseDao
 
+    @Inject
+    lateinit var localizationManager: LocalizationManager
+
     @WorkerThread
-    fun insert(expense: Expense) {
-        logDebug("Inserting expense: $expense")
-        when (expense) {
-            is Expense.OneTime -> oneTimeExpenseDao.insert(expense.toModel())
-            is Expense.Monthly -> monthlyExpenseDao.insert(expense.toModel())
-            is Expense.Payments -> paymentsExpenseDao.insert(expense.toModel())
-        }
+    fun insert(expenseModel: OneTimeExpenseModel) {
+        logDebug("Inserting expense: $expenseModel")
+        oneTimeExpenseDao.insert(expenseModel)
+    }
+
+    @WorkerThread
+    fun insert(expenseModel: MonthlyExpenseModel) {
+        logDebug("Inserting expense: $expenseModel")
+        monthlyExpenseDao.insert(expenseModel)
+    }
+
+    @WorkerThread
+    fun insert(expenseModel: PaymentsExpenseModel) {
+        logDebug("Inserting expense: $expenseModel")
+        paymentsExpenseDao.insert(expenseModel)
     }
 
     @WorkerThread
@@ -57,32 +71,23 @@ class DatabaseManager
         }
     }
 
-    @WorkerThread
-    fun getExpense(id: Long, type: ExpenseType): Expense {
-        logDebug("Selecting expense id $id from type $type")
-        return when (type) {
-            ExpenseType.ONE_TIME -> oneTimeExpenseDao.getExpenseById(id).toExpense()
-            ExpenseType.MONTHLY -> monthlyExpenseDao.getExpenseById(id).toExpense()
-            ExpenseType.PAYMENTS -> paymentsExpenseDao.getExpenseById(id).toExpense()
-        }
-    }
-
     @UiThread
     fun getExpensesOfMonth(month: Int) = MediatorLiveData<ArrayList<Expense>>().apply {
+        val format = localizationManager.getCurrencyFormat()
         attachExpensesLiveDataSource(
             Expense.OneTime::class.java,
             { oneTimeExpenseDao.getExpensesOfMonth(month) },
-            { it.toExpense() }
+            { it.toExpense(format) }
         )
         attachExpensesLiveDataSource(
             Expense.Monthly::class.java,
             { monthlyExpenseDao.getMonthlyExpenses() },
-            { it.toExpense() }
+            { it.toExpense(format) }
         )
         attachExpensesLiveDataSource(
             Expense.Payments::class.java,
             { paymentsExpenseDao.getExpensesOfMonth(month) },
-            { it.toExpense() }
+            { it.toExpense(format) }
         )
     }
 

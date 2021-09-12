@@ -11,12 +11,10 @@ import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppText
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 
 @Preview(
@@ -34,7 +32,7 @@ import com.shlomikatriel.expensesmanager.compose.AppTheme
 private fun PermissionPreview() = AppTheme {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Dp(8f))
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Permission(
             title = R.string.settings_anonymous_crash_reports_title,
@@ -57,20 +55,20 @@ fun Permission(
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
-    horizontalArrangement = Arrangement.spacedBy(Dp(4f))
+    horizontalArrangement = Arrangement.spacedBy(4.dp)
 ) {
     Column(
         modifier = modifier.weight(1f, false),
-        verticalArrangement = Arrangement.spacedBy(Dp(4f))
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         AppText(
-            text = stringResource(title),
+            text = title,
             style = MaterialTheme.typography.body1,
             bold = true,
             textAlign = TextAlign.Start
         )
         AppText(
-            text = stringResource(description),
+            text = description,
             style = MaterialTheme.typography.body2,
             textAlign = TextAlign.Start
         )

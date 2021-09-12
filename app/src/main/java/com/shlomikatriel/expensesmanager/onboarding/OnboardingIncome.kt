@@ -11,7 +11,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,8 +18,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppInfoText
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
 import com.shlomikatriel.expensesmanager.compose.composables.IncomeInput
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
@@ -95,7 +94,7 @@ private fun OnboardingIncomeContent(
 ) {
     IncomeInput(true, symbol, income, onIncomeChanged)
     AppInfoText(
-        text = stringResource(R.string.onboarding_income_input_info),
+        text = R.string.onboarding_income_input_info,
         colored = true,
         bold = true
     )

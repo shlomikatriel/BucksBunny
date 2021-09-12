@@ -8,8 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shlomikatriel.expensesmanager.*
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
-import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.database.model.ExpenseType
+import com.shlomikatriel.expensesmanager.database.model.*
 import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
@@ -68,30 +67,41 @@ class AddExpenseDialog : BaseDialog() {
 
     private fun addExpense(name: String, cost: Float, payments: Int?, type: ExpenseType) {
         thread(name = "AddExpenseThread") {
-            val expense = when (type) {
-                ExpenseType.ONE_TIME -> Expense.OneTime(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost,
-                    month = args.month
+            when (type) {
+                ExpenseType.ONE_TIME -> databaseManager.insert(
+                    expenseModel = OneTimeExpenseModel(
+                        id = null,
+                        details = ExpenseDetails(
+                            timeStamp = System.currentTimeMillis(),
+                            name = name,
+                            cost = cost,
+                        ),
+                        month = args.month
+                    )
                 )
-                ExpenseType.MONTHLY -> Expense.Monthly(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost
+                ExpenseType.MONTHLY -> databaseManager.insert(
+                    expenseModel = MonthlyExpenseModel(
+                        id = null,
+                        details = ExpenseDetails(
+                            timeStamp = System.currentTimeMillis(),
+                            name = name,
+                            cost = cost,
+                        )
+                    )
                 )
-                ExpenseType.PAYMENTS -> Expense.Payments(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost,
-                    month = args.month,
-                    payments = payments!!
+                ExpenseType.PAYMENTS -> databaseManager.insert(
+                    expenseModel = PaymentsExpenseModel(
+                        id = null,
+                        details = ExpenseDetails(
+                            timeStamp = System.currentTimeMillis(),
+                            name = name,
+                            cost = cost,
+                        ),
+                        month = args.month,
+                        payments = payments!!
+                    )
                 )
             }
-            databaseManager.insert(expense)
         }
         findNavController().popBackStack()
     }

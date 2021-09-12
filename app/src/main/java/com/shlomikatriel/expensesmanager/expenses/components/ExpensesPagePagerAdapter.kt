@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.Utils
-import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment
 import com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragmentArgs
+import com.shlomikatriel.expensesmanager.logs.logInfo
 
 class ExpensesPagePagerAdapter(private val utils: Utils, fragment: Fragment) : FragmentStateAdapter(fragment) {
 
@@ -21,7 +21,7 @@ class ExpensesPagePagerAdapter(private val utils: Utils, fragment: Fragment) : F
         logInfo("Creating new fragment for page $position")
         val fragment = ExpensesPageFragment().apply {
             val month = utils.getMonthOfPosition(position)
-            arguments = ExpensesPageFragmentArgs(position, month).toBundle()
+            arguments = ExpensesPageFragmentArgs(month).toBundle()
         }
         fragments[position] = fragment
         return fragment

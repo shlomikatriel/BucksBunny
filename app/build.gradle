@@ -80,7 +80,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.0.1'
+        kotlinCompilerExtensionVersion '1.0.2'
     }
 }
 
@@ -120,32 +120,33 @@ dependencies {
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     // Firebase Analytics
-    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.1'
 
     // Firebase Crashlytics
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.1'
 
     // Play Core
-    implementation 'com.google.android.play:core:1.10.0'
+    implementation 'com.google.android.play:core:1.10.1'
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
     // Compose
-    implementation 'androidx.compose.ui:ui:1.0.1'
+    implementation 'androidx.compose.ui:ui:1.0.2'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.0.1'
+    implementation 'androidx.compose.ui:ui-tooling:1.0.2'
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-    implementation 'androidx.compose.foundation:foundation:1.0.1'
+    implementation 'androidx.compose.foundation:foundation:1.0.2'
     // Material Design
-    implementation 'androidx.compose.material:material:1.0.1'
+    implementation 'androidx.compose.material:material:1.0.2'
     // Material design icons
-    implementation 'androidx.compose.material:material-icons-core:1.0.1'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.1'
+    implementation 'androidx.compose.material:material-icons-core:1.0.2'
+    implementation 'androidx.compose.material:material-icons-extended:1.0.2'
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.3.1'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.0.1'
+    implementation 'androidx.compose.runtime:runtime-livedata:1.0.2'
     // View Pager
-    implementation 'com.google.accompanist:accompanist-pager:0.16.1'
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.16.1"
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist_version"
 }

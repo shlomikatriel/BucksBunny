@@ -8,7 +8,8 @@
     <string name="expense_cost">Expense Cost</string>
     <string name="payments_count">Payments Count</string>
 
-    <!-- Fragments -->
+    <!-- Expenses -->
+    <string name="expense_menu_delete_description">Expense delete</string>
     <string name="expenses_main_graph_income">Income</string>
     <string name="expenses_main_graph_expenses">Expenses</string>
     <string name="expenses_main_graph_balance">Balance</string>

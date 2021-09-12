@@ -7,12 +7,14 @@ sealed class Expense {
     abstract val timeStamp: Long
     abstract val name: String
     abstract val cost: Float
+    abstract val costFormatted: String
 
     data class OneTime(
         override val databaseId: Long?,
         override val timeStamp: Long,
         override val name: String,
         override val cost: Float,
+        override val costFormatted: String,
         val month: Int // This value is the months that passed since year 0
     ) : Expense() {
         fun toModel() = OneTimeExpenseModel(databaseId, toDetails(), month)
@@ -22,7 +24,8 @@ sealed class Expense {
         override val databaseId: Long?,
         override val timeStamp: Long,
         override val name: String,
-        override val cost: Float
+        override val cost: Float,
+        override val costFormatted: String,
     ) : Expense() {
         fun toModel() = MonthlyExpenseModel(databaseId, toDetails())
     }
@@ -32,10 +35,12 @@ sealed class Expense {
         override val timeStamp: Long,
         override val name: String,
         override val cost: Float,
+        override val costFormatted: String,
         val month: Int, // This value is the months that passed since year 0
         val payments: Int
     ) : Expense() {
         fun toModel() = PaymentsExpenseModel(databaseId, toDetails(), month, payments)
+        fun copyPayments(payments: Int) = copy(payments = payments)
     }
 
     fun toDetails() = ExpenseDetails(timeStamp, name, cost)
@@ -44,5 +49,17 @@ sealed class Expense {
         is OneTime -> ExpenseType.ONE_TIME
         is Monthly -> ExpenseType.MONTHLY
         is Payments -> ExpenseType.PAYMENTS
+    }
+
+    fun copyName(name: String) = when (this) {
+        is OneTime -> copy(name = name)
+        is Monthly -> copy(name = name)
+        is Payments -> copy(name = name)
+    }
+
+    fun copyCost(cost: Float) = when (this) {
+        is OneTime -> copy(cost = cost)
+        is Monthly -> copy(cost = cost)
+        is Payments -> copy(cost = cost)
     }
 }

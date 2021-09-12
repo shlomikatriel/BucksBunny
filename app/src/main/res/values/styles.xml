@@ -11,19 +11,6 @@
 
     <style name="AppTheme" parent="BaseTheme" />
 
-    <style name="Title">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:layout_marginTop">@dimen/fragment_vertical_spacing</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Recycler">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
     <style name="DialogTitle">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>

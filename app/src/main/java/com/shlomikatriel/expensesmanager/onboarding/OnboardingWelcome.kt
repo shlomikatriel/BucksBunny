@@ -2,7 +2,6 @@ package com.shlomikatriel.expensesmanager.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.material.MaterialTheme
@@ -13,16 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.AppText
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppImage
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
 
 @Preview(
     name = "Normal",
@@ -51,16 +48,15 @@ fun OnboardingWelcomeScreen() = Column(
     Box(
         modifier = Modifier
             .wrapContentSize()
-            .padding(Dp(20f)),
+            .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(R.drawable.launcher_foreground),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(colorResource(R.color.launcher_background)),
+        AppImage(
+            image = R.drawable.launcher_foreground,
+            color = colorResource(R.color.launcher_background),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(Dp(400f))
+                .height(400.dp)
                 .clip(AbsoluteCutCornerShape(50))
                 .alpha(0.4f)
                 .scale(1.3f)
@@ -70,20 +66,20 @@ fun OnboardingWelcomeScreen() = Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AppText(
-                text = stringResource(R.string.onboarding_welcome),
+                text = R.string.onboarding_welcome,
                 style = MaterialTheme.typography.h5
             )
             AppText(
-                text = stringResource(R.string.app_name),
+                text = R.string.app_name,
                 style = MaterialTheme.typography.h4,
                 bold = true,
-                colored = true
+                color = MaterialTheme.colors.primary
             )
             AnimatedSlogan()
         }
     }
     AppText(
-        text = stringResource(R.string.onboarding_welcome_instructions),
+        text = R.string.onboarding_welcome_instructions,
         style = MaterialTheme.typography.body2
     )
 }
@@ -101,12 +97,12 @@ private fun AnimatedSlogan() {
             )
     )
     AppText(
-        text = stringResource(R.string.onboarding_expenses_slogan),
+        text = R.string.onboarding_expenses_slogan,
         modifier = Modifier
             .wrapContentSize()
-            .padding(top = Dp(16f))
+            .padding(top = 16.dp)
             .scale(scale),
         style = MaterialTheme.typography.h5,
-        colored = true
+        color = MaterialTheme.colors.primary
     )
 }

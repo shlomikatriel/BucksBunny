@@ -6,6 +6,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.shlomikatriel.expensesmanager.database.Expense
+import java.text.NumberFormat
 
 @Keep
 @Entity(tableName = "one_time_expense")
@@ -14,7 +15,14 @@ data class OneTimeExpenseModel(
     @Embedded val details: ExpenseDetails,
     val month: Int // This value is the months that passed since year 0
 ) {
-    fun toExpense() = Expense.OneTime(id!!, details.timeStamp, details.name, details.cost, month)
+    fun toExpense(format: NumberFormat) = Expense.OneTime(
+        id!!,
+        details.timeStamp,
+        details.name,
+        details.cost,
+        format.format(details.cost),
+        month
+    )
 }
 
 @Keep
@@ -23,7 +31,13 @@ data class MonthlyExpenseModel(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     @Embedded val details: ExpenseDetails
 ) {
-    fun toExpense() = Expense.Monthly(id!!, details.timeStamp, details.name, details.cost)
+    fun toExpense(format: NumberFormat) = Expense.Monthly(
+        id!!,
+        details.timeStamp,
+        details.name,
+        details.cost,
+        format.format(details.cost)
+    )
 }
 
 @Keep
@@ -34,8 +48,16 @@ data class PaymentsExpenseModel(
     val month: Int, // This value is the months that passed since year 0
     val payments: Int
 ) {
-    fun toExpense() =
-        Expense.Payments(id!!, details.timeStamp, details.name, details.cost, month, payments)
+    fun toExpense(format: NumberFormat) =
+        Expense.Payments(
+            id!!,
+            details.timeStamp,
+            details.name,
+            details.cost,
+            format.format(details.cost / payments),
+            month,
+            payments
+        )
 }
 
 @Keep
