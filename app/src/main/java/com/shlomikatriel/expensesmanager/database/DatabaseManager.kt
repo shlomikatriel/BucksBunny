@@ -4,7 +4,7 @@ import androidx.annotation.UiThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.shlomikatriel.expensesmanager.LocalizationManager
+import androidx.lifecycle.Transformations
 import com.shlomikatriel.expensesmanager.database.dao.MonthlyExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.OneTimeExpenseDao
 import com.shlomikatriel.expensesmanager.database.dao.PaymentsExpenseDao
@@ -27,25 +27,14 @@ class DatabaseManager
     @Inject
     lateinit var paymentsExpenseDao: PaymentsExpenseDao
 
-    @Inject
-    lateinit var localizationManager: LocalizationManager
-
     @WorkerThread
-    fun insert(expenseModel: OneTimeExpenseModel) {
-        logDebug("Inserting expense: $expenseModel")
-        oneTimeExpenseDao.insert(expenseModel)
-    }
-
-    @WorkerThread
-    fun insert(expenseModel: MonthlyExpenseModel) {
-        logDebug("Inserting expense: $expenseModel")
-        monthlyExpenseDao.insert(expenseModel)
-    }
-
-    @WorkerThread
-    fun insert(expenseModel: PaymentsExpenseModel) {
-        logDebug("Inserting expense: $expenseModel")
-        paymentsExpenseDao.insert(expenseModel)
+    fun insert(expense: Expense) {
+        logDebug("Inserting expense: $expense")
+        when (expense) {
+            is Expense.OneTime -> oneTimeExpenseDao.insert(expense.toModel())
+            is Expense.Monthly -> monthlyExpenseDao.insert(expense.toModel())
+            is Expense.Payments -> paymentsExpenseDao.insert(expense.toModel())
+        }
     }
 
     @WorkerThread
@@ -73,40 +62,19 @@ class DatabaseManager
 
     @UiThread
     fun getExpensesOfMonth(month: Int) = MediatorLiveData<ArrayList<Expense>>().apply {
-        val format = localizationManager.getCurrencyFormat()
-        attachExpensesLiveDataSource(
-            Expense.OneTime::class.java,
-            { oneTimeExpenseDao.getExpensesOfMonth(month) },
-            { it.toExpense(format) }
-        )
-        attachExpensesLiveDataSource(
-            Expense.Monthly::class.java,
-            { monthlyExpenseDao.getMonthlyExpenses() },
-            { it.toExpense(format) }
-        )
-        attachExpensesLiveDataSource(
-            Expense.Payments::class.java,
-            { paymentsExpenseDao.getExpensesOfMonth(month) },
-            { it.toExpense(format) }
-        )
-    }
-
-    private fun <M, E : Expense> MediatorLiveData<ArrayList<Expense>>.attachExpensesLiveDataSource(
-        expenseClass: Class<E>,
-        getExpenses: () -> LiveData<List<M>>,
-        convertToExpense: (M) -> Expense
-    ) {
-        addSource(getExpenses()) { models ->
+        addSource(oneTimeExpenseDao.getExpensesOfMonth(month).asOneTimeExpenseList()) {
             synchronized(this) {
-                val newExpenses = arrayListOf<Expense>()
-                newExpenses.addAll(models.map { convertToExpense(it) })
-
-                val oldExpenses = value
-                if (oldExpenses != null) {
-                    newExpenses.addAll(oldExpenses.filter { it.javaClass != expenseClass })
-                }
-
-                value = newExpenses
+                updateExpenses(it, Expense.OneTime::class.java)
+            }
+        }
+        addSource(monthlyExpenseDao.getMonthlyExpenses().asMonthlyExpenseList()) {
+            synchronized(this) {
+                updateExpenses(it, Expense.Monthly::class.java)
+            }
+        }
+        addSource(paymentsExpenseDao.getExpensesOfMonth(month).asPaymentsExpenseList()) {
+            synchronized(this) {
+                updateExpenses(it, Expense.Payments::class.java)
             }
         }
     }
@@ -117,5 +85,34 @@ class DatabaseManager
         val payments = paymentsExpenseDao.count()
         logDebug("Counting expenses [oneTime=$oneTime, monthly=$monthly, payments=$payments]")
         return oneTime + monthly + payments
+    }
+
+    private fun <E : Expense> MediatorLiveData<ArrayList<Expense>>.updateExpenses(expenses: List<Expense>, expenseClass: Class<E>) {
+        val newExpenses = arrayListOf<Expense>()
+        newExpenses.addAll(expenses)
+
+        val oldExpenses = value
+        if (oldExpenses != null) {
+            newExpenses.addAll(oldExpenses.filter { it.javaClass != expenseClass })
+        }
+        value = newExpenses
+    }
+
+    private fun LiveData<List<OneTimeExpenseModel>>.asOneTimeExpenseList(): LiveData<List<Expense>> {
+        return Transformations.map(this) { modelList ->
+            modelList.map { it.toExpense() }
+        }
+    }
+
+    private fun LiveData<List<MonthlyExpenseModel>>.asMonthlyExpenseList(): LiveData<List<Expense>> {
+        return Transformations.map(this) { modelList ->
+            modelList.map { it.toExpense() }
+        }
+    }
+
+    private fun LiveData<List<PaymentsExpenseModel>>.asPaymentsExpenseList(): LiveData<List<Expense>> {
+        return Transformations.map(this) { modelList ->
+            modelList.map { it.toExpense() }
+        }
     }
 }

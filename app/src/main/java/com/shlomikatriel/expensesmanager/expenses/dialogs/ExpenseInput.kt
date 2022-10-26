@@ -6,10 +6,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
+import java.util.*
 
 @Preview(
     "Without Payments",
@@ -18,7 +20,6 @@ import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
 @Composable
 private fun ExpenseInputPreviewWithoutPayments() = AppTheme {
     ExpenseInput(
-        "$",
         false,
         {},
         {},
@@ -33,7 +34,6 @@ private fun ExpenseInputPreviewWithoutPayments() = AppTheme {
 @Composable
 private fun ExpenseInputPreviewWithPayments() = AppTheme {
     ExpenseInput(
-        "$",
         true,
         {},
         {},
@@ -46,11 +46,10 @@ private fun ExpenseInputPreviewWithPayments() = AppTheme {
 
 @Composable
 fun ExpenseInput(
-    currencySymbol: String,
     showPayments: Boolean,
-    onNameChanged: (name: String) -> Unit,
-    onCostChanged: (cost: Float) -> Unit,
-    onPaymentsChanged: (payments: Int) -> Unit,
+    onNameChanged: (name: String?) -> Unit,
+    onCostChanged: (cost: Float?) -> Unit,
+    onPaymentsChanged: (payments: Int?) -> Unit,
     modifier: Modifier = Modifier,
     initialName: String? = null,
     initialCost: Float? = null,
@@ -64,17 +63,10 @@ fun ExpenseInput(
         var name by remember { mutableStateOf(initialName ?: "") }
         AppTextField(
             value = name,
-            label = R.string.choose_income_dialog_hint,
+            label = R.string.expense_name,
             onValueChange = { value ->
                 name = value
                 onNameChanged(value)
-            },
-            valueValidator = {
-                if (it.isBlank()) {
-                    R.string.error_empty_value
-                } else {
-                    null
-                }
             }
         )
         var cost by remember { mutableStateOf(initialCost?.toString() ?: "") }
@@ -83,16 +75,18 @@ fun ExpenseInput(
             label = R.string.expense_cost,
             onValueChange = { value ->
                 cost = value
-                value.toFloatOrNull()?.let(onCostChanged)
+                onCostChanged(value.toFloatOrNull())
             },
             valueValidator = {
                 when {
-                    it.isBlank() -> R.string.error_empty_value
+                    it.isBlank() -> null
                     it.toFloatOrNull() == null -> R.string.error_number_illegal
+                    it.toFloat() <= 0 -> R.string.error_must_be_positive
                     else -> null
                 }
             },
-            trailingIcon = currencySymbol
+            keyboardType = KeyboardType.Number,
+            trailingIcon = Currency.getInstance(Locale.getDefault()).symbol
         )
         if (showPayments) {
             var payments by remember { mutableStateOf(initialPayments?.toString() ?: "") }
@@ -101,15 +95,17 @@ fun ExpenseInput(
                 label = R.string.payments_count,
                 onValueChange = { value ->
                     payments = value
-                    value.toIntOrNull()?.let(onPaymentsChanged)
+                    onPaymentsChanged(value.toIntOrNull())
                 },
                 valueValidator = {
                     when {
-                        it.isBlank() -> R.string.error_empty_value
+                        it.isBlank() -> null
                         it.toIntOrNull() == null -> R.string.error_number_illegal
+                        it.toInt() <= 0 -> R.string.error_must_be_positive
                         else -> null
                     }
-                }
+                },
+                keyboardType = KeyboardType.Decimal,
             )
         }
     }

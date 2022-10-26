@@ -78,8 +78,9 @@ fun AppTextField(
     value: String,
     @StringRes label: Int,
     onValueChange: (String) -> Unit,
-    valueValidator: (input: String) -> Int?,
     modifier: Modifier = Modifier,
+    valueValidator: (input: String) -> Int? = { null },
+    keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: String? = null
 ) = Column(
     modifier = modifier,
@@ -92,7 +93,7 @@ fun AppTextField(
         label = { AppText(label) },
         colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colors.onBackground),
         isError = errorStringRes != null,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         trailingIcon = { trailingIcon?.let { AppText(text = it) } },
         singleLine = true
     )

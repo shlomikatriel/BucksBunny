@@ -16,7 +16,10 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.shlomikatriel.expensesmanager.*
+import com.shlomikatriel.expensesmanager.BuildConfig
+import com.shlomikatriel.expensesmanager.LocalizationManager
+import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.configureToolbar
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logError
@@ -128,10 +131,10 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             DecimalFormat.getCurrencyInstance().format(sharedPreferences.getFloat(FloatKey.INCOME))
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        logInfo("Preference ${preference?.key} clicked")
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        logInfo("Preference ${preference.key} clicked")
         try {
-            when (preference?.key) {
+            when (preference.key) {
                 MONTHLY_INCOME_KEY -> navigate(openChooseIncomeDialog())
                 REPORT_BUG_KEY -> handleReportBugClick()
                 APPLICATION_INFO_KEY -> handleApplicationInfoClicked()
@@ -142,7 +145,7 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
             }
             return true
         } catch (e: Exception) {
-            logError("Failed to process preference ${preference?.key} click", e)
+            logError("Failed to process preference ${preference.key} click", e)
             firebaseCrashlytics.recordException(e)
             return false
         }
@@ -152,9 +155,9 @@ class SettingsFragment : SharedPreferences.OnSharedPreferenceChangeListener,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         logDebug("Creating settings fragment view")
-        configureToolbar(R.string.settings_title, true)
+        configureToolbar()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

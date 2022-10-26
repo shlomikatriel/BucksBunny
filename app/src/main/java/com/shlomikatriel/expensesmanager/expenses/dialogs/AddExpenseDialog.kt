@@ -1,113 +1,87 @@
 package com.shlomikatriel.expensesmanager.expenses.dialogs
 
-import android.content.Context
-import android.view.View
-import androidx.annotation.StringRes
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.*
-import com.shlomikatriel.expensesmanager.database.DatabaseManager
-import com.shlomikatriel.expensesmanager.database.model.*
-import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.logDebug
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.*
-import javax.inject.Inject
-import kotlin.concurrent.thread
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.LayoutDirection
+import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
+import com.shlomikatriel.expensesmanager.database.model.ExpenseType
+import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
+import com.shlomikatriel.expensesmanager.expenses.utils.getAddDialogTitle
 
-@AndroidEntryPoint
-class AddExpenseDialog : BaseDialog() {
-
-    @ApplicationContext
-    @Inject
-    lateinit var appContext: Context
-
-    @Inject
-    lateinit var databaseManager: DatabaseManager
-
-    @Inject
-    lateinit var localizationManager: LocalizationManager
-
-    lateinit var binding: AddExpenseDialogBinding
-
-    private val args: AddExpenseDialogArgs by navArgs()
-
-    override fun layout() = R.layout.add_expense_dialog
-
-    override fun bind(view: View) {
-        binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(localizationManager.getCurrencySymbol(), args.type)
-            title.setText(getDialogTitle())
-            dialog = this@AddExpenseDialog
-        }
-    }
-
-    @StringRes
-    private fun getDialogTitle() = when (args.type) {
-        ExpenseType.ONE_TIME -> R.string.add_one_time_expense_dialog_title
-        ExpenseType.MONTHLY -> R.string.add_monthly_expense_dialog_title
-        ExpenseType.PAYMENTS -> R.string.add_payments_expense_dialog_title
-    }
-
-    fun addClicked() {
-        val name = binding.inputsLayout.name.text.toString()
-        val costAsString = binding.inputsLayout.cost.text.toString()
-        val cost = costAsString.toFloatOrNull()
-        val paymentsAsString = binding.inputsLayout.payments.text.toString()
-        val payments = paymentsAsString.toIntOrNull()
-        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=${args.type}]")
-
-        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
-            addExpense(name, cost!!, payments, args.type)
-        }
-    }
-
-    private fun addExpense(name: String, cost: Float, payments: Int?, type: ExpenseType) {
-        thread(name = "AddExpenseThread") {
-            when (type) {
-                ExpenseType.ONE_TIME -> databaseManager.insert(
-                    expenseModel = OneTimeExpenseModel(
-                        id = null,
-                        details = ExpenseDetails(
-                            timeStamp = System.currentTimeMillis(),
-                            name = name,
-                            cost = cost,
-                        ),
-                        month = args.month
-                    )
-                )
-                ExpenseType.MONTHLY -> databaseManager.insert(
-                    expenseModel = MonthlyExpenseModel(
-                        id = null,
-                        details = ExpenseDetails(
-                            timeStamp = System.currentTimeMillis(),
-                            name = name,
-                            cost = cost,
-                        )
-                    )
-                )
-                ExpenseType.PAYMENTS -> databaseManager.insert(
-                    expenseModel = PaymentsExpenseModel(
-                        id = null,
-                        details = ExpenseDetails(
-                            timeStamp = System.currentTimeMillis(),
-                            name = name,
-                            cost = cost,
-                        ),
-                        month = args.month,
-                        payments = payments!!
-                    )
-                )
+@Composable
+fun AddExpenseDialog(
+    expenseType: ExpenseType,
+    onConfirm: (expenseType: ExpenseType, name: String, cost: Float, payments: Int?) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    var name by remember { mutableStateOf(null as String?) }
+    var cost by remember { mutableStateOf(null as Float?) }
+    var payments by remember { mutableStateOf(null as Int?) }
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        buttons = {
+            // Force ltr to pin the OK button to the right
+            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = dimensionResource(id = R.dimen.dialog_padding))
+                ) {
+                    OutlinedButton(
+                        onClick = onDismissRequest
+                    ) {
+                        AppText(R.string.dialog_cancel)
+                    }
+                    Button(
+                        onClick = {
+                            if (ExpensesUtils.isInputValid(expenseType, name, cost, payments)) {
+                                onDismissRequest()
+                                onConfirm(expenseType, name!!, cost!!, payments)
+                            }
+                        },
+                        enabled = ExpensesUtils.isInputValid(expenseType, name, cost, payments)
+                    ) {
+                        AppText(R.string.add_expense_dialog_add)
+                    }
+                }
             }
+        },
+        title = {
+            AppText(
+                expenseType.getAddDialogTitle(),
+                style = MaterialTheme.typography.h6,
+                bold = true
+            )
+        },
+        text = {
+            ExpenseInput(
+                showPayments = expenseType == ExpenseType.PAYMENTS,
+                onNameChanged = {
+                    name = it
+                },
+                onCostChanged = {
+                    cost = it
+                },
+                onPaymentsChanged = {
+                    if (expenseType == ExpenseType.PAYMENTS) {
+                        payments = it
+                    }
+                }
+            )
         }
-        findNavController().popBackStack()
-    }
-
-    fun cancelClicked() {
-        logInfo("Canceling add expense")
-        findNavController().popBackStack()
-    }
+    )
 }

@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dot">@color/colorPrimaryDark</color>
-    <color name="dot_background">#88005b9f</color>
+    <color name="primary">#00695c</color>
 
     <color name="green">#00600f</color>
     <color name="red">#9a0007</color>
 
     <color name="launcher_background">@color/colorPrimaryDark</color>
     <color name="launcher_foreground">@android:color/black</color>
-
-    <color name="expenses_graph_base_color">@color/colorPrimaryDark</color>
 </resources>

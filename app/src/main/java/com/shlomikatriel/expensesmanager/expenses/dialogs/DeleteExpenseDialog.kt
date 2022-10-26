@@ -15,64 +15,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.composables.AppText
-import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
-
-
-@HiltViewModel
-private class DeleteExpenseViewModel
-@Inject constructor(
-    private val databaseManager: DatabaseManager
-) : ViewModel() {
-
-    private var initialized = false
-
-    private lateinit var expense: Expense
-
-    fun initialize(expense: Expense) {
-        if (!initialized) {
-            logInfo("Initializing delete expense view model")
-            this.expense = expense
-        }
-    }
-
-    fun onConfirmed() = viewModelScope.launch(context = Dispatchers.IO) {
-        logInfo("Deleting expense")
-        databaseManager.delete(expense)
-    }
-}
 
 @Composable
 fun DeleteExpenseDialog(
     expense: Expense,
-    dismiss: () -> Unit
-) {
-    val model: DeleteExpenseViewModel = viewModel()
-    model.initialize(expense)
-    DeleteExpenseContent(
-        onConfirmed = model::onConfirmed,
-        dismiss = dismiss
-    )
-}
-
-@Composable
-private fun DeleteExpenseContent(
-    onConfirmed: () -> Unit,
-    dismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    onConfirm: (expense: Expense) -> Unit,
+    onDismissRequest: () -> Unit
 ) {
     AlertDialog(
-        onDismissRequest = dismiss,
+        onDismissRequest = onDismissRequest,
         buttons = {
             // Force ltr to pin the OK button to the right
             CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -84,15 +38,15 @@ private fun DeleteExpenseContent(
                         .padding(bottom = dimensionResource(id = R.dimen.dialog_padding))
                 ) {
                     OutlinedButton(
-                        onClick = dismiss
+                        onClick = onDismissRequest
                     ) {
                         AppText(R.string.dialog_cancel)
                     }
 
                     Button(
                         onClick = {
-                            onConfirmed()
-                            dismiss()
+                            onConfirm(expense)
+                            onDismissRequest()
                         }
                     ) {
                         AppText(R.string.delete)
@@ -100,7 +54,6 @@ private fun DeleteExpenseContent(
                 }
             }
         },
-        modifier = modifier,
         title = {
             AppText(
                 R.string.delete_expense_dialog_title,

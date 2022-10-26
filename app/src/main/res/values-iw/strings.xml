@@ -8,10 +8,13 @@
     <string name="payments_count">מספר תשלומים</string>
 
     <!-- Expenses -->
+    <string name="expense_menu_update_description">עדכון הוצאה</string>
     <string name="expense_menu_delete_description">מחיקת הוצאה</string>
     <string name="expenses_main_graph_income">הכנסות</string>
     <string name="expenses_main_graph_expenses">הוצאות</string>
     <string name="expenses_main_graph_balance">יתרה</string>
+    <string name="expenses_page_title">הוצאות:</string>
+    <string name="expenses_page_search">חיפוש</string>
     <string name="expenses_page_chip_one_time">חד פעמיות</string>
     <string name="expenses_page_chip_monthly">חודשיות</string>
     <string name="expenses_page_chip_payments">תשלומים</string>
@@ -25,13 +28,12 @@
 
     <!-- Content Descriptions -->
     <string name="add_button_description">הוספת הוצאה</string>
-    <string name="add_one_time_button_description">הוספת הוצאה חד פעמית</string>
-    <string name="add_monthly_button_description">הוספת הוצאה חודשית</string>
-    <string name="add_payments_button_description">הוספת הוצאה בתשלומים</string>
+    <string name="collapse_expenses_description">מזעור רשימת ההוצאות</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>
     <string name="error_number_illegal">מספר לא חוקי</string>
+    <string name="error_must_be_positive">הערך חייב להיות חיובי</string>
 
     <!-- Dialogs -->
     <string name="dialog_cancel">ביטול</string>

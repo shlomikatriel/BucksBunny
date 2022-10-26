@@ -9,10 +9,13 @@
     <string name="payments_count">Payments Count</string>
 
     <!-- Expenses -->
+    <string name="expense_menu_update_description">Expense update</string>
     <string name="expense_menu_delete_description">Expense delete</string>
     <string name="expenses_main_graph_income">Income</string>
     <string name="expenses_main_graph_expenses">Expenses</string>
     <string name="expenses_main_graph_balance">Balance</string>
+    <string name="expenses_page_title">Expenses</string>
+    <string name="expenses_page_search">Search</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
@@ -26,13 +29,12 @@
 
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
-    <string name="add_one_time_button_description">Add one time expense</string>
-    <string name="add_monthly_button_description">Add monthly expense</string>
-    <string name="add_payments_button_description">Add payments expense</string>
+    <string name="collapse_expenses_description">Collapse expense list</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
     <string name="error_number_illegal">Illegal number</string>
+    <string name="error_must_be_positive">Value must be positive</string>
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>

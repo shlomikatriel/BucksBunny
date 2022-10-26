@@ -7,27 +7,32 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val appLightColors = lightColors(
-    primary = Color(0xff0288d1),
-    primaryVariant = Color(0xff01579b),
-    secondary = Color(0xff9c27b0),
-    secondaryVariant = Color(0xff7b1fa2),
-    onBackground = Color.DarkGray,
+private val Teal400 = Color(0xff26a69a)
+private val Teal500 = Color(0xff009688)
+private val Teal700 = Color(0xff00796b)
+private val Teal800 = Color(0xff00695c)
+
+private val Cyan400 = Color(0xff26c6da)
+private val Cyan600 = Color(0xff00acc1)
+
+private val LightColors = lightColors(
+    primary = Teal500,
+    primaryVariant = Teal400,
+    secondary = Cyan400,
+    secondaryVariant = Cyan400
 )
 
-private val appDarkColors = darkColors(
-    primary = Color(0xff005b9f),
-    primaryVariant = Color(0xff002f6c),
-    secondary = Color(0xff6a0080),
-    secondaryVariant = Color(0xff4a0072),
-    onBackground = Color.LightGray,
+private val DarkColors = darkColors(
+    primary = Teal800,
+    primaryVariant = Teal700,
+    secondary = Cyan600,
+    secondaryVariant = Cyan600
 )
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
-    val darkTheme = isSystemInDarkTheme()
     MaterialTheme(
-        colors = if (darkTheme) appDarkColors else appLightColors,
+        colors = if (isSystemInDarkTheme()) DarkColors else LightColors,
         content = content
     )
 }

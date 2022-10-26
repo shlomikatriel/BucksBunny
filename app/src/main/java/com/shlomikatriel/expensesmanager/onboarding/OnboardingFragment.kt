@@ -86,8 +86,8 @@ class OnboardingFragment : Fragment() {
             val pageArray = OnboardingPage.values()
             val totalPages = pageArray.size
 
-            val pagerState = rememberPagerState(pageCount = totalPages)
-            HorizontalPager(state = pagerState, modifier = Modifier.weight(1f, true)) { page ->
+            val pagerState = rememberPagerState()
+            HorizontalPager(totalPages, state = pagerState, modifier = Modifier.weight(1f, true)) { page ->
                 logDebug("Onboarding page $page selected")
                 pageArray[page].Page()
             }

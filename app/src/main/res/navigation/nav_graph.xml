@@ -7,12 +7,8 @@
 
     <fragment
         android:id="@+id/expenses_main_fragment"
-        android:name="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesMainFragment"
-        android:label="expenses_main_fragment"
-        tools:layout="@layout/expenses_main_fragment">
-        <action
-            android:id="@+id/open_add_expense_dialog"
-            app:destination="@id/add_expense_dialog" />
+        android:name="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesFragment"
+        android:label="@string/app_name">
         <action
             android:id="@+id/open_settings_fragment"
             app:destination="@id/settings_fragment"
@@ -31,17 +27,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/expenses_page_fragment"
-        android:name="com.shlomikatriel.expensesmanager.expenses.fragments.ExpensesPageFragment">
-        <argument
-            android:name="month"
-            app:argType="integer" />
-    </fragment>
-
-    <fragment
         android:id="@+id/settings_fragment"
         android:name="com.shlomikatriel.expensesmanager.settings.fragments.SettingsFragment"
-        android:label="settings_fragment">
+        android:label="@string/settings_title">
         <action
             android:id="@+id/open_choose_income_dialog"
             app:destination="@id/choose_income_dialog" />
@@ -59,19 +47,6 @@
         android:id="@+id/onboarding_fragment"
         android:name="com.shlomikatriel.expensesmanager.onboarding.OnboardingFragment"
         android:label="onboarding_fragment" />
-
-    <dialog
-        android:id="@+id/add_expense_dialog"
-        android:name="com.shlomikatriel.expensesmanager.expenses.dialogs.AddExpenseDialog"
-        android:label="add_expense_dialog"
-        tools:layout="@layout/add_expense_dialog">
-        <argument
-            android:name="type"
-            app:argType="com.shlomikatriel.expensesmanager.database.model.ExpenseType" />
-        <argument
-            android:name="month"
-            app:argType="integer" />
-    </dialog>
 
     <dialog
         android:id="@+id/choose_income_dialog"

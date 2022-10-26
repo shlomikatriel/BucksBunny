@@ -7,14 +7,12 @@ sealed class Expense {
     abstract val timeStamp: Long
     abstract val name: String
     abstract val cost: Float
-    abstract val costFormatted: String
 
     data class OneTime(
         override val databaseId: Long?,
         override val timeStamp: Long,
         override val name: String,
         override val cost: Float,
-        override val costFormatted: String,
         val month: Int // This value is the months that passed since year 0
     ) : Expense() {
         fun toModel() = OneTimeExpenseModel(databaseId, toDetails(), month)
@@ -24,8 +22,7 @@ sealed class Expense {
         override val databaseId: Long?,
         override val timeStamp: Long,
         override val name: String,
-        override val cost: Float,
-        override val costFormatted: String,
+        override val cost: Float
     ) : Expense() {
         fun toModel() = MonthlyExpenseModel(databaseId, toDetails())
     }
@@ -35,7 +32,6 @@ sealed class Expense {
         override val timeStamp: Long,
         override val name: String,
         override val cost: Float,
-        override val costFormatted: String,
         val month: Int, // This value is the months that passed since year 0
         val payments: Int
     ) : Expense() {

@@ -5,10 +5,11 @@ import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.StringRes
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
 import com.shlomikatriel.expensesmanager.firebase.logEvent
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
         binding = DataBindingUtil.setContentView(
             this,
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         attachDestinationChangedListener()
         toggleOrientationLock()
         configureDarkMode()
+        binding.appBar.setupWithNavController(findNavController())
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -68,20 +71,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun configureToolbar(
-        @StringRes title: Int,
-        navigateUpEnabled: Boolean
-    ) {
+    fun showToolbar() {
         binding.appBar.visibility = View.VISIBLE
-        supportActionBar!!.title = getString(title)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(navigateUpEnabled)
-        if (navigateUpEnabled) {
-            binding.appBar.setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
-        } else {
-            binding.appBar.setNavigationOnClickListener(null)
-        }
     }
 
     fun hideToolbar() {

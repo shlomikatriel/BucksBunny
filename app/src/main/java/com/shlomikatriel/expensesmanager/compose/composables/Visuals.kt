@@ -11,7 +11,7 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +42,7 @@ import com.shlomikatriel.expensesmanager.compose.AppTheme
 @ExperimentalPagerApi
 @Composable
 private fun AppPagerIndicatorPreview() = AppTheme {
-    AppPagerIndicator(PagerState(6, 4), Modifier.padding(all = 8.dp))
+    AppPagerIndicator(PagerState(6), Modifier.padding(all = 8.dp))
 }
 
 @ExperimentalPagerApi
@@ -94,7 +94,7 @@ private fun ChipPreview() = AppTheme {
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Chip(
-            R.string.add_one_time_button_description,
+            R.string.common_google_play_services_enable_title,
             true,
             {}
         )
@@ -115,7 +115,7 @@ private fun ChipPreview() = AppTheme {
 @Composable
 private fun SingleChipPreview() = AppTheme {
     Chip(
-        R.string.add_one_time_button_description,
+        R.string.common_google_play_services_enable_title,
         false,
         {},
         Modifier.padding(4.dp)
@@ -125,23 +125,21 @@ private fun SingleChipPreview() = AppTheme {
 @Composable
 fun Chip(
     @StringRes title: Int,
-    initialChecked: Boolean,
+    checked: Boolean,
     onCheckedChanged: (checked: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selected by remember { mutableStateOf(initialChecked) }
     Surface(
         modifier = modifier
             .toggleable(
-                value = selected,
+                value = checked,
                 onValueChange = {
-                    selected = it
                     onCheckedChanged(it)
                 }
             ),
-        elevation = 8.dp,
+        elevation = 4.dp,
         shape = RoundedCornerShape(16.dp),
-        color = if (selected) {
+        color = if (checked) {
             MaterialTheme.colors.secondary
         } else {
             MaterialTheme.colors.surface
@@ -150,7 +148,7 @@ fun Chip(
         AppText(
             title,
             modifier = Modifier.padding(all = 8.dp),
-            color = if (selected) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
+            color = if (checked) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
             style = MaterialTheme.typography.body2
         )
     }
