@@ -389,7 +389,7 @@ class ExpensesFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         if (menuItem.itemId == R.id.settings) {
-            findNavController().navigate(ExpensesFragmentDirections.openSettingsFragment())
+            findNavController().navigate(ExpensesFragmentDirections.openPreferencesFragment())
             return true
         }
         return false

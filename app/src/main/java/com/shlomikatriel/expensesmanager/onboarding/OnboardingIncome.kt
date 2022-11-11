@@ -6,21 +6,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.shlomikatriel.expensesmanager.LocalizationManager
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.composables.IncomeInput
+import com.shlomikatriel.expensesmanager.preferences.components.IncomeInput
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
@@ -28,30 +23,18 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-data class OnboardingIncomeViewState(
-    val symbol: String,
-    val income: Float
-)
-
 @HiltViewModel
 class OnboardingIncomeViewModel @Inject constructor(
-    val sharedPreferences: SharedPreferences,
-    val localizationManager: LocalizationManager
+    val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
-    val defaultViewState = OnboardingIncomeViewState(
-        symbol = localizationManager.getCurrencySymbol(),
-        income = sharedPreferences.getFloat(FloatKey.INCOME)
-    )
+    fun getIncome() = sharedPreferences.getFloat(FloatKey.INCOME)
 
-    private val viewState = MutableLiveData(defaultViewState)
-
-    fun getViewState(): LiveData<OnboardingIncomeViewState> = viewState
-
-    fun onIncomeChanged(income: Float) {
+    fun onIncomeChanged(income: Float?) {
         logInfo("Income changed")
-        sharedPreferences.putFloat(FloatKey.INCOME, income)
-        viewState.value = viewState.value?.copy(income = income)
+        if (income != null) {
+            sharedPreferences.putFloat(FloatKey.INCOME, income)
+        }
     }
 
     override fun onCleared() {
@@ -66,22 +49,19 @@ class OnboardingIncomeViewModel @Inject constructor(
 )
 @Composable
 private fun OnboardingIncomeScreenPreview() = AppTheme {
-    OnboardingIncomeContent("₪", 3440.3f) {}
+    OnboardingIncomeContent(3440.3f) {}
 }
 
 @Composable
-fun OnboardingIncomeScreen(model: OnboardingIncomeViewModel = viewModel()) {
-    val state: OnboardingIncomeViewState by model.getViewState()
-        .observeAsState(model.defaultViewState)
-
-    OnboardingIncomeContent(state.symbol, state.income, model::onIncomeChanged)
+fun OnboardingIncomeScreen() {
+    val model: OnboardingIncomeViewModel = viewModel()
+    OnboardingIncomeContent(model.getIncome(), model::onIncomeChanged)
 }
 
 @Composable
 private fun OnboardingIncomeContent(
-    symbol: String,
     income: Float,
-    onIncomeChanged: (income: Float) -> Unit
+    onIncomeChanged: (income: Float?) -> Unit
 ) = Column(
     modifier = Modifier
         .padding(all = dimensionResource(R.dimen.fragment_padding))
@@ -92,7 +72,7 @@ private fun OnboardingIncomeContent(
         Alignment.CenterVertically
     )
 ) {
-    IncomeInput(true, symbol, income, onIncomeChanged)
+    IncomeInput(true, income, onIncomeChanged)
     AppInfoText(
         text = R.string.onboarding_income_input_info,
         colored = true,

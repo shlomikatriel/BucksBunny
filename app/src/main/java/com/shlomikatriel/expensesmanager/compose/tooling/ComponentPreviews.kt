@@ -3,6 +3,12 @@ package com.shlomikatriel.expensesmanager.compose.tooling
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview
 
+@Preview(
+    group = "Standard",
+    locale = "en",
+    showBackground = true
+)
+private annotation class StandardComponentPreview
 
 @Preview(
     name = "Light",
@@ -34,6 +40,7 @@ private annotation class AppearanceComponentPreviews
 )
 private annotation class LanguageComponentPreviews
 
+@StandardComponentPreview
 @AppearanceComponentPreviews
 @LanguageComponentPreviews
 annotation class ComponentPreviews

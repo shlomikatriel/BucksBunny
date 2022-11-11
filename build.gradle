@@ -24,27 +24,19 @@ buildscript {
 ext {
     def majorVersion = project.getProperty("majorVersion") as Integer
     def minorVersion = project.getProperty("minorVersion") as Integer
-    def internalVersion = project.getProperty("internalVersion") as Integer
     def build = project.getProperty("build") as Integer
     if (build < 0 || build > 999) {
-        throw new GradleException("Illegal build: $build")
-    }
-    if (internalVersion < 0 || internalVersion > 99) {
-        throw new GradleException("Illegal internal version: $internalVersion")
+        throw new GradleScriptException("Illegal internal version: $build")
     }
     if (minorVersion < 0 || minorVersion > 99) {
-        throw new GradleException("Illegal minor version: $minorVersion")
+        throw new GradleScriptException("Illegal minor version: $minorVersion")
     }
-    if (majorVersion < 0 || majorVersion > 9) {
-        throw new GradleException("Illegal major version: $majorVersion")
-    }
-    versionName = "$majorVersion.$minorVersion.$internalVersion.$build"
-    // Version structure - XYYZZWWW
-    versionCode = ((majorVersion * 100 + minorVersion) * 100 + internalVersion) * 1000 + build
+    versionName = "$majorVersion.$minorVersion.$build"
+    // Version structure - XYYZZZ
+    versionCode = (majorVersion * 100 + minorVersion) * 1000 + build
 
     println("Major version: $majorVersion")
     println("Minor version: $minorVersion")
-    println("Internal version: $internalVersion")
     println("Build: $build")
     println("Version name: $versionName")
     println("Version code: $versionCode")

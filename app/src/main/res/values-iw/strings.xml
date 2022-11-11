@@ -52,33 +52,37 @@
     <string name="choose_income_dialog_ok">בחירה</string>
 
     <!-- Hints -->
-    <string name="hint_income_can_be_changed_in_settings">ניתן לשנות את ההכנסה החודשית לאחר מכן בהגדרות</string>
+    <string name="hint_income_can_be_changed_later">ניתן לשנות את ההכנסה החודשית לאחר מכן</string>
 
     <!-- Settings -->
-    <string name="settings_title">הגדרות</string>
-    <string name="settings_system_default">ברירת המחדל של המערכת</string>
-    <string name="settings_appearance_title">מראה</string>
-    <string name="settings_dark_mode_title">מצב כהה</string>
-    <string name="settings_dark_mode_entry_always">תמיד</string>
-    <string name="settings_dark_mode_entry_never">לעולם לא</string>
-    <string name="settings_currency">מטבע</string>
-    <string name="settings_functionality_title">פונקציונליות</string>
-    <string name="settings_general_title">כללי</string>
-    <string name="settings_monthly_income">הכנסה חודשית</string>
-    <string name="settings_open_source_licenses">רשיונות קוד פתוח</string>
-    <string name="settings_bug_report">דיווח על באג</string>
-    <string name="settings_bug_report_subject">דיווח על באג</string>
-    <string name="settings_bug_report_content">תיאור הבאג:\n</string>
-    <string name="settings_application_info">פרטי יישום</string>
-    <string name="settings_anonymous_reports_category_title">דיווחים אנונימיים</string>
-    <string name="settings_anonymous_reports_category_summary">מידע אישי או רגיש לא מדווח</string>
-    <string name="settings_anonymous_crash_reports_title">דוחות קריסה אנונימיים</string>
-    <string name="settings_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
-    <string name="settings_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>
-    <string name="settings_anonymous_usage_data_reports_summary">נתוני שימוש משומשים לניתוח תבניות שימוש ושיפור חווית המשתמש</string>
-    <string name="settings_about_category_title">אודות האפליקציה</string>
-    <string name="settings_github_title">קוד המקור ב-GitHub</string>
-    <string name="settings_apache_license_title">רישיון Apache 2.0</string>
+    <string name="preferences_title">הגדרות</string>
+    <string name="preferences_system_default">ברירת המחדל של המערכת</string>
+    <string name="preferences_appearance_title">מראה</string>
+    <string name="preferences_dark_mode_title">מצב כהה</string>
+    <string name="preferences_dark_mode_always">תמיד</string>
+    <string name="preferences_dark_mode_never">לעולם לא</string>
+    <string name="preferences_language_and_currency">שפה ומטבע</string>
+    <string name="preferences_functionality_title">פונקציונליות</string>
+    <string name="preferences_monthly_income">הכנסה חודשית</string>
+    <string name="preferences_help_us_improve_title">עזרו לנו להשתפר</string>
+    <string name="preferences_help_us_improve_info">מידע אישי או רגיש לא מדווח</string>
+    <string name="preferences_help_us_improve_anonymous_data_reports_title">דיווחים אנונימיים</string>
+    <string name="preferences_help_us_improve_anonymous_data_reports_description">ניתוח דוחות קריסה ומידע על אופן השימוש באפליקציה עוזר לנו לספק חווית משתמש יותר טובה</string>
+    <string name="preferences_general_title">כללי</string>
+    <string name="preferences_open_source_licenses">רשיונות קוד פתוח</string>
+    <string name="preferences_bug_report">דיווח על באג</string>
+    <string name="preferences_bug_report_subject">דיווח על באג</string>
+    <string name="preferences_bug_report_preparing_report">מכין את הדיווח</string>
+    <string name="preferences_bug_report_content">תיאור הבאג:\n</string>
+    <string name="preferences_application_info">פרטי יישום</string>
+    <string name="preferences_anonymous_reports_category_title">דיווחים אנונימיים</string>
+    <string name="preferences_anonymous_crash_reports_title">דוחות קריסה אנונימיים</string>
+    <string name="preferences_anonymous_crash_reports_summary">דוחות קריסה עוזרים לנתח ולתקן קריסות שונות שעשויות להתרחש</string>
+    <string name="preferences_anonymous_usage_data_reports_title">נתוני שימוש אנונימיים</string>
+    <string name="preferences_anonymous_usage_data_reports_summary">נתוני שימוש משומשים לניתוח תבניות שימוש ושיפור חווית המשתמש</string>
+    <string name="preferences_about_category_title">אודות האפליקציה</string>
+    <string name="preferences_github_title">קוד המקור ב-GitHub</string>
+    <string name="preferences_apache_license_title">רישיון Apache 2.0</string>
 
     <!-- Onboarding -->
     <string name="onboarding_next">המשך</string>

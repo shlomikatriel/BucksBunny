@@ -1,7 +1,7 @@
-package com.shlomikatriel.expensesmanager.compose.composables
+package com.shlomikatriel.expensesmanager.preferences.components
 
-import android.content.res.Configuration
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,32 +12,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
+import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 
-@Preview(
-    "Normal",
-    showBackground = true,
-    locale = "en"
-)
-@Preview(
-    "Night",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    locale = "iw"
-)
+@ComponentPreviews
 @Composable
-private fun PermissionPreview() = AppTheme {
+private fun SwitchPreferencePreview() = AppTheme {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Permission(
-            title = R.string.settings_anonymous_crash_reports_title,
-            description = R.string.settings_anonymous_crash_reports_summary,
-            initialValue = false,
+        SwitchPreference(
+            title = R.string.preferences_anonymous_crash_reports_title,
+            description = R.string.preferences_anonymous_crash_reports_summary,
+            value = false,
             onValueChanged = { },
             modifier = Modifier.fillMaxWidth()
         )
@@ -46,19 +37,19 @@ private fun PermissionPreview() = AppTheme {
 
 
 @Composable
-fun Permission(
+fun SwitchPreference(
     @StringRes title: Int,
     @StringRes description: Int,
-    initialValue: Boolean,
+    value: Boolean,
     onValueChanged: (value: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) = Row(
-    modifier = modifier,
+    modifier = modifier.clickable { onValueChanged(!value) },
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(4.dp)
 ) {
     Column(
-        modifier = modifier.weight(1f, false),
+        modifier = modifier.weight(1f),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         AppText(
@@ -74,7 +65,7 @@ fun Permission(
         )
     }
     Switch(
-        checked = initialValue,
-        onCheckedChange = onValueChanged
+        checked = value,
+        onCheckedChange = null
     )
 }

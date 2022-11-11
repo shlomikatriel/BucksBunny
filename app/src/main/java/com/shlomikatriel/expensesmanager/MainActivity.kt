@@ -66,9 +66,7 @@ class MainActivity : AppCompatActivity() {
     private fun configureDarkMode() {
         val mode = sharedPreferences.getInt(IntKey.DARK_MODE)
         logInfo("Dark mode: $mode")
-        if (mode != AppCompatDelegate.MODE_NIGHT_UNSPECIFIED) {
-            AppCompatDelegate.setDefaultNightMode(mode)
-        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     fun showToolbar() {

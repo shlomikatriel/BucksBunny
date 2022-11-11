@@ -1,6 +1,5 @@
-package com.shlomikatriel.expensesmanager.compose.composables
+package com.shlomikatriel.expensesmanager.preferences.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,32 +7,25 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
+import com.shlomikatriel.expensesmanager.compose.composables.AppText
+import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
+import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
+import java.util.*
 
-@Preview(
-    "Normal",
-    showBackground = true,
-    locale = "en"
-)
-@Preview(
-    "Night",
-    showBackground = true,
-    locale = "iw",
-    uiMode = UI_MODE_NIGHT_YES
-)
+@ComponentPreviews
 @Composable
 private fun IncomeInputPreview() = AppTheme {
-    IncomeInput(true, "₪", 3004.4f) {}
+    IncomeInput(true, 3004.4f) {}
 }
 
 @Composable
 fun IncomeInput(
     isOnboarding: Boolean,
-    symbol: String,
     initialIncome: Float,
-    onIncomeChanged: (income: Float) -> Unit
+    onIncomeChanged: (income: Float?) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +44,7 @@ fun IncomeInput(
         )
 
         if (isOnboarding) {
-            AppInfoText(R.string.hint_income_can_be_changed_in_settings)
+            AppInfoText(R.string.hint_income_can_be_changed_later)
         }
 
         var input by remember { mutableStateOf(initialIncome.toString()) }
@@ -61,15 +53,13 @@ fun IncomeInput(
             label = R.string.choose_income_dialog_hint,
             onValueChange = { value ->
                 input = value
-                parseInput(value)?.let { income ->
-                    onIncomeChanged(income)
-                }
+                onIncomeChanged(value.toFloatOrNull())
             },
             valueValidator = {
                 val errorStringRes = validateInput(it)
                 errorStringRes
             },
-            trailingIcon = symbol
+            trailingIcon = Currency.getInstance(Locale.getDefault()).symbol
         )
     }
 
@@ -86,5 +76,3 @@ private fun validateInput(income: String): Int? {
         else -> null
     }
 }
-
-private fun parseInput(income: String) = income.toFloatOrNull()
