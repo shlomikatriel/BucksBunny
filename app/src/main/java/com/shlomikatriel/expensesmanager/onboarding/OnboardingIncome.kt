@@ -9,14 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
-import com.shlomikatriel.expensesmanager.preferences.components.IncomeInput
+import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.preferences.components.IncomeInput
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import com.shlomikatriel.expensesmanager.sharedpreferences.putFloat
@@ -43,10 +43,7 @@ class OnboardingIncomeViewModel @Inject constructor(
     }
 }
 
-@Preview(
-    showBackground = true,
-    locale = "en"
-)
+@ComponentPreviews
 @Composable
 private fun OnboardingIncomeScreenPreview() = AppTheme {
     OnboardingIncomeContent(3440.3f) {}
@@ -54,7 +51,7 @@ private fun OnboardingIncomeScreenPreview() = AppTheme {
 
 @Composable
 fun OnboardingIncomeScreen() {
-    val model: OnboardingIncomeViewModel = viewModel()
+    val model: OnboardingIncomeViewModel = hiltViewModel()
     OnboardingIncomeContent(model.getIncome(), model::onIncomeChanged)
 }
 

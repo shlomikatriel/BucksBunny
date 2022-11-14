@@ -10,8 +10,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.R
@@ -56,7 +56,7 @@ private fun AnonymousDataPreview() = AppTheme {
 
 @Composable
 fun AnonymousDataScreen() {
-    val model: OnboardingAnonymousDataViewModel = viewModel()
+    val model: OnboardingAnonymousDataViewModel = hiltViewModel()
     val value by remember { model.state }
     AnonymousDataContent(value, model::onValueChanged)
 }

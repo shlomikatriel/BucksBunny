@@ -5,6 +5,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.shlomikatriel.expensesmanager.R
 
 @Composable
 fun AppText(
@@ -59,11 +60,7 @@ fun AppInfoText(
     horizontalArrangement = Arrangement.spacedBy(4.dp)
 ) {
     val color = if (colored) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
-    AppImage(
-        image = R.drawable.info,
-        contentDescription = null,
-        color = color
-    )
+    Icon(Icons.Outlined.Info, contentDescription = null, tint = color)
     AppText(
         text = text,
         style = MaterialTheme.typography.body2,

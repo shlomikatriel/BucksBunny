@@ -11,7 +11,8 @@ import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.android.gms.common.internal.Objects
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
@@ -81,30 +83,29 @@ fun ExpenseList(
                     } else {
                         modifier
                     }
-                },
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.fragment_vertical_spacing))
+                }
         ) {
-
-            items(filteredExpenses, key = { it.databaseId ?: -1 }) {
+            itemsIndexed(filteredExpenses, key = { _, item -> Objects.hashCode(item.databaseId ?: -1, item.javaClass.kotlin.qualifiedName) }) { index, item ->
                 var updateDialogOpened by remember { mutableStateOf(false) }
                 var deleteDialogOpened by remember { mutableStateOf(false) }
                 val currencyInstance = DecimalFormat.getCurrencyInstance()
+                Divider()
                 ExpenseItem(
                     editable = expanded,
-                    name = it.name,
-                    cost = when (it) {
-                        is Expense.OneTime -> currencyInstance.format(it.cost)
+                    name = item.name,
+                    cost = when (item) {
+                        is Expense.OneTime -> currencyInstance.format(item.cost)
                         is Expense.Monthly -> stringResource(
                             R.string.expenses_page_recycler_item_monthly,
-                            currencyInstance.format(it.cost)
+                            currencyInstance.format(item.cost)
                         )
                         is Expense.Payments -> {
                             val totalMonths = year * 12 + month
                             stringResource(
                                 R.string.expenses_page_recycler_item_payments,
-                                currencyInstance.format(it.cost / it.payments),
-                                totalMonths - it.month + 1,
-                                it.payments
+                                currencyInstance.format(item.cost / item.payments),
+                                totalMonths - item.month + 1,
+                                item.payments
                             )
                         }
                     },
@@ -116,16 +117,19 @@ fun ExpenseList(
                     },
                     modifier = Modifier.animateItemPlacement()
                 )
+                if (index == filteredExpenses.lastIndex) {
+                    Divider()
+                }
                 if (updateDialogOpened) {
                     UpdateExpenseDialog(
-                        expense = it,
+                        expense = item,
                         onConfirm = onUpdateExpenseRequest,
                         onDismissRequest = { updateDialogOpened = false }
                     )
                 }
                 if (deleteDialogOpened) {
                     DeleteExpenseDialog(
-                        expense = it,
+                        expense = item,
                         onConfirm = onDeleteExpenseRequest,
                         onDismissRequest = { deleteDialogOpened = false }
                     )

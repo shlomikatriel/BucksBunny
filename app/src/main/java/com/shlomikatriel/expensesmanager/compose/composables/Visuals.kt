@@ -1,6 +1,5 @@
 package com.shlomikatriel.expensesmanager.compose.composables
 
-import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -18,27 +17,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 
-@Preview(
-    "Normal",
-    "Pager Indicator",
-    showBackground = true,
-    locale = "en"
-)
-@Preview(
-    "Custom",
-    "Pager Indicator",
-    showBackground = true,
-    locale = "iw",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@ComponentPreviews
 @ExperimentalPagerApi
 @Composable
 private fun AppPagerIndicatorPreview() = AppTheme {
@@ -74,19 +61,7 @@ fun AppImage(
     )
 }
 
-@Preview(
-    "Normal",
-    "Chip",
-    showBackground = true,
-    locale = "en"
-)
-@Preview(
-    "Custom",
-    "Chip",
-    showBackground = true,
-    locale = "iw",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
-)
+@ComponentPreviews
 @Composable
 private fun ChipPreview() = AppTheme {
     Column(
@@ -106,12 +81,7 @@ private fun ChipPreview() = AppTheme {
     }
 }
 
-@Preview(
-    "Single",
-    "Chip",
-    showBackground = true,
-    locale = "en"
-)
+@ComponentPreviews
 @Composable
 private fun SingleChipPreview() = AppTheme {
     Chip(

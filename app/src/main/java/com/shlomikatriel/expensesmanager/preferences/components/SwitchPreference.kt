@@ -2,10 +2,7 @@ package com.shlomikatriel.expensesmanager.preferences.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
@@ -29,8 +26,7 @@ private fun SwitchPreferencePreview() = AppTheme {
             title = R.string.preferences_anonymous_crash_reports_title,
             description = R.string.preferences_anonymous_crash_reports_summary,
             value = false,
-            onValueChanged = { },
-            modifier = Modifier.fillMaxWidth()
+            onValueChanged = { }
         )
     }
 }
@@ -41,15 +37,14 @@ fun SwitchPreference(
     @StringRes title: Int,
     @StringRes description: Int,
     value: Boolean,
-    onValueChanged: (value: Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    onValueChanged: (value: Boolean) -> Unit
 ) = Row(
-    modifier = modifier.clickable { onValueChanged(!value) },
+    modifier = Modifier.clickable { onValueChanged(!value) }.padding(8.dp).fillMaxWidth(),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(4.dp)
 ) {
     Column(
-        modifier = modifier.weight(1f),
+        modifier = Modifier.weight(1f),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         AppText(

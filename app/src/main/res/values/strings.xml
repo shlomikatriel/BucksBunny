@@ -30,6 +30,7 @@
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
     <string name="collapse_expenses_description">Collapse expense list</string>
+    <string name="back">Back</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -56,7 +57,7 @@
     <string name="hint_income_can_be_changed_later">Monthly income can be changed later</string>
 
     <!-- Preferences -->
-    <string name="preferences_title">Settings</string>
+    <string name="preferences_title">Preferences</string>
     <string name="preferences_system_default">System default</string>
     <string name="preferences_appearance_title">Appearance</string>
     <string name="preferences_dark_mode_title">Dark Mode</string>

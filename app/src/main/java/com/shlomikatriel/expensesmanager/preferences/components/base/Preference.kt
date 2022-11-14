@@ -1,7 +1,6 @@
 package com.shlomikatriel.expensesmanager.preferences.components.base
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,9 +26,8 @@ fun Preference(
     Column(
         modifier = Modifier
             .clickable { onClick() }
-            .fillMaxWidth()
-            .padding(4.dp)
-            .animateContentSize(),
+            .padding(8.dp)
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {

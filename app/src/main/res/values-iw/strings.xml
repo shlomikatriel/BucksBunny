@@ -29,6 +29,7 @@
     <!-- Content Descriptions -->
     <string name="add_button_description">הוספת הוצאה</string>
     <string name="collapse_expenses_description">מזעור רשימת ההוצאות</string>
+    <string name="back">חזרה</string>
 
     <!-- Errors -->
     <string name="error_empty_value">השדה ריק</string>
@@ -54,8 +55,8 @@
     <!-- Hints -->
     <string name="hint_income_can_be_changed_later">ניתן לשנות את ההכנסה החודשית לאחר מכן</string>
 
-    <!-- Settings -->
-    <string name="preferences_title">הגדרות</string>
+    <!-- Preferences -->
+    <string name="preferences_title">העדפות</string>
     <string name="preferences_system_default">ברירת המחדל של המערכת</string>
     <string name="preferences_appearance_title">מראה</string>
     <string name="preferences_dark_mode_title">מצב כהה</string>

@@ -7,16 +7,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
+import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 import java.util.*
 
-@Preview(
-    "Without Payments",
-    showBackground = true
-)
+@ComponentPreviews
 @Composable
 private fun ExpenseInputPreviewWithoutPayments() = AppTheme {
     ExpenseInput(
@@ -27,10 +24,7 @@ private fun ExpenseInputPreviewWithoutPayments() = AppTheme {
     )
 }
 
-@Preview(
-    "With Payments",
-    showBackground = true
-)
+@ComponentPreviews
 @Composable
 private fun ExpenseInputPreviewWithPayments() = AppTheme {
     ExpenseInput(

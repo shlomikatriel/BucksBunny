@@ -1,5 +1,6 @@
 package com.shlomikatriel.expensesmanager.expenses.composables
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -9,17 +10,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 import java.lang.Float.max
 import java.text.DecimalFormat
@@ -60,9 +63,9 @@ private fun ExpensesGraphSnapshot(income: Float, expenses: Float, modifier: Modi
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.Top
         ) {
-            AppText(R.string.expenses_main_graph_income, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-            AppText(R.string.expenses_main_graph_expenses, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-            AppText(R.string.expenses_main_graph_balance, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+            LabelText(R.string.expenses_main_graph_income)
+            LabelText(R.string.expenses_main_graph_expenses)
+            LabelText(R.string.expenses_main_graph_balance)
         }
     }
 }
@@ -76,7 +79,7 @@ private fun RowScope.Bar(numberText: String, color: Color, barHeightFraction: Fl
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Spacer(modifier = Modifier.fractured(this@Column, 1f - barHeightFraction))
-        AppText(numberText, color = color)
+        Text(numberText, color = color, fontWeight = FontWeight.Bold)
         Box(
             modifier = Modifier
                 .fractured(this@Column, barHeightFraction)
@@ -95,6 +98,11 @@ private fun Modifier.fractured(columnScope: ColumnScope, weight: Float): Modifie
     }
 }
 
+@Composable
+private fun RowScope.LabelText(@StringRes label: Int) {
+    Text(stringResource(label), modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+}
+
 @ComponentPreviews
 @Composable
 private fun ExpensesGraphPreview() = AppTheme {
@@ -109,17 +117,19 @@ private fun ExpensesGraphPreview() = AppTheme {
         var expensesState by remember { mutableStateOf(false) }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
             Button(onClick = { incomeState = !incomeState }) {
-                AppText(R.string.expenses_main_graph_income)
+                Text(stringResource(R.string.expenses_main_graph_income))
             }
             Button(onClick = { expensesState = !expensesState }) {
-                AppText(R.string.expenses_main_graph_expenses)
+                Text(stringResource(R.string.expenses_main_graph_expenses))
             }
         }
         Divider(modifier = Modifier.fillMaxWidth())
         ExpensesGraph(
             income = if (incomeState) 1000f else 2000f,
             expenses = if (expensesState) 721.2f else 1643.42f,
-            modifier = Modifier.height(300.dp).fillMaxWidth()
+            modifier = Modifier
+                .height(300.dp)
+                .fillMaxWidth()
         )
     }
 }

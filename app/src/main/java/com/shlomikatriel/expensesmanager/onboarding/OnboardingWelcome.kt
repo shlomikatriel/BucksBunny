@@ -1,6 +1,5 @@
 package com.shlomikatriel.expensesmanager.onboarding
 
-import android.content.res.Configuration
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
@@ -14,24 +13,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppImage
 import com.shlomikatriel.expensesmanager.compose.composables.AppText
+import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 
-@Preview(
-    name = "Normal",
-    showBackground = true,
-    locale = "en"
-)
-@Preview(
-    name = "Custom",
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    locale = "iw"
-)
+@ScreenPreviews
 @Composable
 fun OnboardingWelcomeScreenPreview() = AppTheme {
     OnboardingWelcomeScreen()

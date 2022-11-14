@@ -12,9 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.core.content.FileProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -85,13 +85,8 @@ class PreferencesViewModel @Inject constructor(
 
     override fun onLocaleSelected(locale: Locale?) {
         logInfo("Locale selected: $locale")
-        viewModelScope.launch {
-            state.value = state.value.copy(locale = locale)
-            withContext(Dispatchers.IO) {
-                Locales.setLocale(locale)
-            }
-        }
-
+        state.value = state.value.copy(locale = locale)
+        Locales.setLocale(locale)
     }
 
     override fun onIncomeChanged(income: Float) {
@@ -146,7 +141,7 @@ class PreferencesViewModel @Inject constructor(
 
 @Composable
 fun PreferenceScreen() {
-    val model: PreferencesViewModel = viewModel()
+    val model: PreferencesViewModel = hiltViewModel()
     val state by remember { model.state }
     PreferencesContent(state, model)
 }

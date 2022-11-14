@@ -47,11 +47,11 @@ fun PreferenceCategory(
             }
             AnimatedVisibility(expanded) {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Divider()
                     content()
+                    Divider()
                 }
             }
         }

@@ -1,8 +1,6 @@
-package com.shlomikatriel.expensesmanager.expenses.fragments
+package com.shlomikatriel.expensesmanager.expenses
 
 import android.content.SharedPreferences
-import android.os.Bundle
-import android.view.*
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -11,25 +9,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.core.view.MenuProvider
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.fragment.findNavController
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppImage
 import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
@@ -46,7 +40,6 @@ import com.shlomikatriel.expensesmanager.expenses.utils.getAddButtonText
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,15 +123,11 @@ class ExpensesViewModel @Inject constructor(
 }
 
 @Composable
-private fun ExpensesScreen() {
-
-    // TODO("Start hint animation")
-    // TODO("Create options menu with old logic")
-    // TODO("Apply onboarding of not shown")
+fun ExpensesScreen() {
     // TODO("Apply snack bar for in-app update")
     // TODO("Apply in-app review")
 
-    val model: ExpensesViewModel = viewModel()
+    val model: ExpensesViewModel = hiltViewModel()
     val mainState by remember { model.state }
 
     ExpensesContent(mainState, model::onAddExpenseRequest, model::onUpdateExpenseRequest, model::onDeleteExpenseRequest, model::onMonthChanged, model::onYearChanged)
@@ -291,7 +280,7 @@ private fun AddExpenseFab(
                 .size(56.dp)
                 .align(alignment)
         ) {
-            AppImage(image = R.drawable.add, color = MaterialTheme.colors.onSecondary, contentDescription = R.string.add_button_description)
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_button_description))
         }
         DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }, modifier = Modifier.align(Alignment.BottomStart)) {
             ExpenseType.values().forEach {
@@ -361,37 +350,4 @@ private fun ExpensesPreview() = AppTheme {
         onMonthChanged = { month = it },
         onYearChanged = { year = it }
     )
-}
-
-@AndroidEntryPoint
-class ExpensesFragment : Fragment(), MenuProvider {
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ) = ComposeView(requireContext()).apply {
-        setContent {
-            AppTheme {
-                ExpensesScreen()
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activity?.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
-    }
-
-    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.expenses_main_menu, menu)
-    }
-
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        if (menuItem.itemId == R.id.settings) {
-            findNavController().navigate(ExpensesFragmentDirections.openPreferencesFragment())
-            return true
-        }
-        return false
-    }
 }

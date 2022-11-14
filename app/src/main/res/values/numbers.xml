@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <fraction name="dialog_animation_scale">0.7</fraction>
-    <integer name="dialog_animation_duration">@android:integer/config_shortAnimTime</integer>
-    <integer name="fragment_animation_duration">@android:integer/config_shortAnimTime</integer>
-</resources>

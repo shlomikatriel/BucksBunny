@@ -49,9 +49,6 @@ object Locales {
     }
 
     fun getDisplayText(locale: Locale): String {
-        val displayLocale = Locale.getDefault()
-        val displayLanguage = locale.getDisplayLanguage(displayLocale)
-        val displayCountry = locale.getDisplayCountry(displayLocale)
-        return "$displayLanguage, $displayCountry (${Currency.getInstance(locale).getSymbol(displayLocale)})"
+        return "${locale.getDisplayLanguage(locale)}, ${locale.getDisplayCountry(locale)} (${Currency.getInstance(locale).getSymbol(locale)})"
     }
 }
