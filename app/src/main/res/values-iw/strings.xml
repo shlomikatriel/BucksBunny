@@ -69,7 +69,6 @@
     <string name="preferences_help_us_improve_info">מידע אישי או רגיש לא מדווח</string>
     <string name="preferences_help_us_improve_anonymous_data_reports_title">דיווחים אנונימיים</string>
     <string name="preferences_help_us_improve_anonymous_data_reports_description">ניתוח דוחות קריסה ומידע על אופן השימוש באפליקציה עוזר לנו לספק חווית משתמש יותר טובה</string>
-    <string name="preferences_general_title">כללי</string>
     <string name="preferences_open_source_licenses">רשיונות קוד פתוח</string>
     <string name="preferences_bug_report">דיווח על באג</string>
     <string name="preferences_bug_report_subject">דיווח על באג</string>

@@ -4,18 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
 import com.shlomikatriel.expensesmanager.expenses.utils.getUpdateDialogTitle
@@ -45,7 +43,7 @@ fun UpdateExpenseDialog(
                     OutlinedButton(
                         onClick = onDismissRequest
                     ) {
-                        AppText(R.string.dialog_cancel)
+                        Text(stringResource(R.string.dialog_cancel))
                     }
 
                     Button(
@@ -69,17 +67,17 @@ fun UpdateExpenseDialog(
                         },
                         enabled = ExpensesUtils.isInputValid(expense.getExpenseType(), name, cost, payments)
                     ) {
-                        AppText(R.string.update)
+                        Text(stringResource(R.string.update))
                     }
                 }
             }
         },
         modifier = modifier,
         title = {
-            AppText(
-                expense.getExpenseType().getUpdateDialogTitle(),
+            Text(
+                stringResource(expense.getExpenseType().getUpdateDialogTitle()),
                 style = MaterialTheme.typography.h6,
-                bold = true
+                fontWeight = FontWeight.Bold
             )
         },
         text = {

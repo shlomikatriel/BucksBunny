@@ -12,10 +12,7 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
@@ -27,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.android.gms.common.internal.Objects
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
 import com.shlomikatriel.expensesmanager.compose.composables.Chip
 import com.shlomikatriel.expensesmanager.database.Expense
@@ -54,7 +50,7 @@ fun ExpenseList(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.fragment_vertical_spacing)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppText(R.string.expenses_page_title, style = MaterialTheme.typography.h6)
+        Text(stringResource(R.string.expenses_page_title), style = MaterialTheme.typography.h6)
         var offset by remember { mutableStateOf(0f) }
         var selectedTypes by remember { mutableStateOf(emptySet<ExpenseType>()) }
         var searchText by remember { mutableStateOf("") }
@@ -146,7 +142,7 @@ fun ExpenseList(
                 val currencyInstance = DecimalFormat.getCurrencyInstance()
                 Box {
                     val animatedTotal by animateFloatAsState(filteredTotal, tween(500, easing = LinearOutSlowInEasing))
-                    AppText(
+                    Text(
                         text = stringResource(
                             R.string.expenses_page_total,
                             currencyInstance.format(animatedTotal)

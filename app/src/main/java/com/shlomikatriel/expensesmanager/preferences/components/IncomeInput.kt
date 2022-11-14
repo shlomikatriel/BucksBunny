@@ -4,13 +4,15 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
 import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 import java.util.*
@@ -31,15 +33,15 @@ fun IncomeInput(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.dialog_vertical_spacing))
     ) {
-        AppText(
-            text = R.string.choose_income_dialog_title,
+        Text(
+            text = stringResource(R.string.choose_income_dialog_title),
             style = MaterialTheme.typography.h5,
             color = if (isOnboarding) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
-            bold = true
+            fontWeight = FontWeight.Bold
         )
 
-        AppText(
-            text = R.string.choose_income_dialog_description,
+        Text(
+            text = stringResource(R.string.choose_income_dialog_description),
             style = MaterialTheme.typography.body1
         )
 

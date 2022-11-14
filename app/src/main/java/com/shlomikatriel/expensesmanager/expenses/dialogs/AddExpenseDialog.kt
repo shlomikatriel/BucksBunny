@@ -4,18 +4,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
 import com.shlomikatriel.expensesmanager.expenses.utils.getAddDialogTitle
@@ -44,7 +42,7 @@ fun AddExpenseDialog(
                     OutlinedButton(
                         onClick = onDismissRequest
                     ) {
-                        AppText(R.string.dialog_cancel)
+                        Text(stringResource(R.string.dialog_cancel))
                     }
                     Button(
                         onClick = {
@@ -55,16 +53,16 @@ fun AddExpenseDialog(
                         },
                         enabled = ExpensesUtils.isInputValid(expenseType, name, cost, payments)
                     ) {
-                        AppText(R.string.add_expense_dialog_add)
+                        Text(stringResource(R.string.add_expense_dialog_add))
                     }
                 }
             }
         },
         title = {
-            AppText(
-                expenseType.getAddDialogTitle(),
+            Text(
+                stringResource(expenseType.getAddDialogTitle()),
                 style = MaterialTheme.typography.h6,
-                bold = true
+                fontWeight = FontWeight.Bold
             )
         },
         text = {

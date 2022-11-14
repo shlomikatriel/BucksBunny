@@ -5,10 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.shlomikatriel.expensesmanager.R
@@ -72,8 +74,8 @@ private fun OnboardingIncomeContent(
     IncomeInput(true, income, onIncomeChanged)
     AppInfoText(
         text = R.string.onboarding_income_input_info,
-        colored = true,
-        bold = true
+        color = MaterialTheme.colors.primary,
+        fontWeight = FontWeight.Bold
     )
 }
 

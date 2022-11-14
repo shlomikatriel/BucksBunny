@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -17,7 +20,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.preferences.components.SwitchPreference
@@ -76,11 +78,11 @@ private fun AnonymousDataContent(
         ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppText(
-            text = R.string.preferences_help_us_improve_title,
+        Text(
+            text = stringResource(R.string.preferences_help_us_improve_title),
             style = MaterialTheme.typography.h5,
             color = MaterialTheme.colors.primary,
-            bold = true
+            fontWeight = FontWeight.Bold
         )
         AppInfoText(R.string.preferences_help_us_improve_info)
         SwitchPreference(

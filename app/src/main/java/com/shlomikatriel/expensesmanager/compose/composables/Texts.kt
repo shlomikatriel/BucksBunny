@@ -12,60 +12,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AppText(
-    @StringRes text: Int,
-    modifier: Modifier = Modifier,
-    style: TextStyle = LocalTextStyle.current,
-    bold: Boolean = false,
-    color: Color = MaterialTheme.colors.onBackground,
-    textAlign: TextAlign = TextAlign.Center
-) = AppText(
-    stringResource(text), modifier, style, bold, color, textAlign
-)
-
-@Composable
-fun AppText(
-    text: String,
-    modifier: Modifier = Modifier,
-    style: TextStyle = LocalTextStyle.current,
-    bold: Boolean = false,
-    color: Color = MaterialTheme.colors.onBackground,
-    textAlign: TextAlign = TextAlign.Center
-) = Text(
-    text = text,
-    style = style,
-    color = color,
-    fontWeight = if (bold) FontWeight.Bold else null,
-    modifier = modifier,
-    textAlign = textAlign
-)
-
-
-@Composable
 fun AppInfoText(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
-    bold: Boolean = false,
-    colored: Boolean = false
+    fontWeight: FontWeight? = null,
+    color: Color = LocalContentColor.current
 ) = Row(
     modifier = modifier,
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.spacedBy(4.dp)
 ) {
-    val color = if (colored) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
     Icon(Icons.Outlined.Info, contentDescription = null, tint = color)
-    AppText(
-        text = text,
+    Text(
+        text = stringResource(text),
         style = MaterialTheme.typography.body2,
         color = color,
-        bold = bold,
+        fontWeight = fontWeight,
         textAlign = TextAlign.Start
     )
 }
@@ -87,15 +55,15 @@ fun AppTextField(
     OutlinedTextField(
         value,
         onValueChange,
-        label = { AppText(label) },
+        label = { Text(stringResource(label)) },
         colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colors.onBackground),
         isError = errorStringRes != null,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        trailingIcon = { trailingIcon?.let { AppText(text = it) } },
+        trailingIcon = { trailingIcon?.let { Text(text = it) } },
         singleLine = true
     )
     val errorMessage = errorStringRes?.let { stringResource(it) } ?: ""
-    AppText(
+    Text(
         text = errorMessage,
         modifier = Modifier.padding(top = 4.dp)
             .animateContentSize()

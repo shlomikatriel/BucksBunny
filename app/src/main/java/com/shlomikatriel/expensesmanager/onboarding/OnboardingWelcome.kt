@@ -1,9 +1,11 @@
 package com.shlomikatriel.expensesmanager.onboarding
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -11,13 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppImage
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 
 @ScreenPreviews
@@ -40,35 +44,36 @@ fun OnboardingWelcomeScreen() = Column(
             .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {
-        AppImage(
-            image = R.drawable.launcher_foreground,
-            color = colorResource(R.color.launcher_background),
+        Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(400.dp)
                 .clip(AbsoluteCutCornerShape(50))
                 .alpha(0.4f)
-                .scale(1.3f)
+                .scale(1.3f),
+            painter = painterResource(R.drawable.launcher_foreground),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(colorResource(R.color.launcher_background))
         )
         Column(
             modifier = Modifier.wrapContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppText(
-                text = R.string.onboarding_welcome,
+            Text(
+                text = stringResource(R.string.onboarding_welcome),
                 style = MaterialTheme.typography.h5
             )
-            AppText(
-                text = R.string.app_name,
+            Text(
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.h4,
-                bold = true,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colors.primary
             )
             AnimatedSlogan()
         }
     }
-    AppText(
-        text = R.string.onboarding_welcome_instructions,
+    Text(
+        text = stringResource(R.string.onboarding_welcome_instructions),
         style = MaterialTheme.typography.body2
     )
 }
@@ -85,8 +90,8 @@ private fun AnimatedSlogan() {
 
             )
     )
-    AppText(
-        text = R.string.onboarding_expenses_slogan,
+    Text(
+        text = stringResource(R.string.onboarding_expenses_slogan),
         modifier = Modifier
             .wrapContentSize()
             .padding(top = 16.dp)

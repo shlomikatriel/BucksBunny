@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 
 @ComponentPreviews
@@ -44,7 +43,8 @@ fun ExpenseItem(
             }
         } else {
             modifier
-        }.padding(4.dp)
+        }
+            .padding(4.dp)
             .fillMaxWidth()
     ) {
         Row(
@@ -56,13 +56,12 @@ fun ExpenseItem(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                AppText(
+                Text(
                     text = name,
                     style = MaterialTheme.typography.body1,
-                    bold = true,
                     textAlign = TextAlign.Start
                 )
-                AppText(
+                Text(
                     text = cost,
                     style = MaterialTheme.typography.body2,
                     textAlign = TextAlign.Start
@@ -85,7 +84,7 @@ fun ExpenseItem(
             ) {
                 Icon(Icons.Filled.Edit, stringResource(R.string.expense_menu_update_description))
                 Spacer(modifier = Modifier.width(4.dp))
-                AppText(R.string.update)
+                Text(stringResource(R.string.update))
             }
             Divider()
             DropdownMenuItem(
@@ -96,7 +95,7 @@ fun ExpenseItem(
             ) {
                 Icon(Icons.Filled.Delete, stringResource(R.string.expense_menu_delete_description), tint = MaterialTheme.colors.error)
                 Spacer(modifier = Modifier.width(4.dp))
-                AppText(R.string.delete)
+                Text(stringResource(R.string.delete))
             }
         }
     }

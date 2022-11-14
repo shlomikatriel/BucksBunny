@@ -6,23 +6,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppPagerIndicator
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
@@ -81,11 +79,13 @@ fun OnboardingScreen(onOnboardingComplete: () -> Unit) = AppTheme {
             logDebug("Onboarding page $page selected")
             pageArray[page].Page()
         }
-        AppPagerIndicator(
+        HorizontalPagerIndicator(
             pagerState = pagerState,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .padding(16.dp)
+                .padding(16.dp),
+            activeColor = MaterialTheme.colors.primary,
+            inactiveColor = MaterialTheme.colors.primary.copy(alpha = 0.7f)
         )
 
         // Creates a coroutine scope, which is bound to the composable lifecycle.
@@ -110,7 +110,7 @@ fun OnboardingScreen(onOnboardingComplete: () -> Unit) = AppTheme {
             } else {
                 R.string.onboarding_next
             }
-            AppText(textRes)
+            Text(stringResource(textRes))
         }
     }
 }

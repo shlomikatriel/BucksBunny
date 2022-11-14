@@ -24,7 +24,6 @@ import androidx.lifecycle.viewModelScope
 import com.shlomikatriel.expensesmanager.BuildConfig
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
@@ -252,8 +251,8 @@ private fun MonthSelector(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    AppText(text = DateFormatSymbols().months[currentMonth], style = MaterialTheme.typography.h6)
-                    AppText(text = currentYear.toString(), style = MaterialTheme.typography.h6)
+                    Text(text = DateFormatSymbols().months[currentMonth], style = MaterialTheme.typography.h6)
+                    Text(text = currentYear.toString(), style = MaterialTheme.typography.h6)
                 }
             }
         }
@@ -290,7 +289,7 @@ private fun AddExpenseFab(
                         dialogOfType = it
                     }
                 ) {
-                    AppText(it.getAddButtonText())
+                    Text(stringResource(it.getAddButtonText()))
                 }
                 Divider()
             }

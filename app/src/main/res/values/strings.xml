@@ -70,7 +70,6 @@
     <string name="preferences_help_us_improve_info">Personal or sensitive data is not reported</string>
     <string name="preferences_help_us_improve_anonymous_data_reports_title">Anonymous Reports</string>
     <string name="preferences_help_us_improve_anonymous_data_reports_description">Analysing crash reports and app usage data helps us provide a better user experience</string>
-    <string name="preferences_general_title">General</string>
     <string name="preferences_open_source_licenses">Open Source Licenses</string>
     <string name="preferences_bug_report">Report A Bug</string>
     <string name="preferences_bug_report_subject">Bug Report</string>

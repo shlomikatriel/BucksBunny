@@ -7,14 +7,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.preferences.components.IncomeInput
 
 @Composable
@@ -39,7 +40,7 @@ fun ChooseIncomeDialog(
                     OutlinedButton(
                         onClick = onDismissRequest
                     ) {
-                        AppText(R.string.dialog_cancel)
+                        Text(stringResource(R.string.dialog_cancel))
                     }
                     Button(
                         onClick = {
@@ -50,7 +51,7 @@ fun ChooseIncomeDialog(
                         },
                         enabled = income != null
                     ) {
-                        AppText(R.string.choose_income_dialog_ok)
+                        Text(stringResource(R.string.choose_income_dialog_ok))
                     }
                 }
             }

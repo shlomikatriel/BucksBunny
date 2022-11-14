@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,11 +16,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
-import com.shlomikatriel.expensesmanager.compose.composables.AppText
 import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
 
 @Composable
@@ -41,7 +43,7 @@ fun PreferenceCategory(
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppText(text = title, bold = true, style = MaterialTheme.typography.h5)
+            Text(stringResource(title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h5)
             if (info != null) {
                 AppInfoText(text = info)
             }
@@ -73,12 +75,12 @@ private fun PreferenceCategoryPreview() = AppTheme {
             title = R.string.preferences_anonymous_reports_category_title,
             info = R.string.preferences_help_us_improve_info
         ) {
-            AppText(text = R.string.preferences_anonymous_usage_data_reports_title, bold = true, style = MaterialTheme.typography.h6)
-            AppText(text = R.string.preferences_anonymous_usage_data_reports_summary)
+            Text(stringResource(R.string.preferences_anonymous_usage_data_reports_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6)
+            Text(stringResource(R.string.preferences_anonymous_usage_data_reports_summary))
         }
         PreferenceCategory(title = R.string.preferences_appearance_title) {
-            AppText(text = R.string.preferences_dark_mode_title, bold = true, style = MaterialTheme.typography.h6)
-            AppText(text = R.string.preferences_dark_mode_always)
+            Text(stringResource(R.string.preferences_dark_mode_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6)
+            Text(stringResource(R.string.preferences_dark_mode_always))
         }
     }
 }
