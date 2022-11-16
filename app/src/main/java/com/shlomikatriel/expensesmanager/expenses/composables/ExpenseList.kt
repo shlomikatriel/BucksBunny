@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import com.google.android.gms.common.internal.Objects
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
@@ -51,16 +51,16 @@ fun ExpenseList(
     ) {
         Text(stringResource(R.string.expenses_page_title), style = MaterialTheme.typography.titleLarge)
         var offset by remember { mutableStateOf(0f) }
-        var selectedTypes by remember { mutableStateOf(emptySet<ExpenseType>()) }
+        var selectedType by remember { mutableStateOf(null as ExpenseType?) }
         var searchText by remember { mutableStateOf("") }
         val collapseHandler = {
             onCollapseRequest()
-            selectedTypes = emptySet()
+            selectedType = null
             searchText = ""
         }
 
         BackHandler(expanded, collapseHandler)
-        val filteredExpenses = expenses.filteredAndSorted(selectedTypes, searchText)
+        val filteredExpenses = expenses.filteredAndSorted(selectedType, searchText)
         val filteredTotal = filteredExpenses.calculateTotal()
         LazyColumn(
             modifier = Modifier
@@ -149,28 +149,16 @@ fun ExpenseList(
                     )
                 }
                 Row(
-                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     ExpenseType.values().forEach { type ->
-                        FilterChip(
-                            selected = selectedTypes.contains(type),
-                            onClick = {
-                                val newSelectedFilters = if (selectedTypes.contains(type)) {
-                                    selectedTypes - type
-                                } else {
-                                    selectedTypes + type
-                                }
-                                selectedTypes = newSelectedFilters
-                            },
-                            label = {
-                                Text(stringResource(type.displayText))
-                            }
-                        )
+                        FilterChip(type = type, selected = type == selectedType) {
+                            selectedType = it
+                        }
                     }
-                }
-                FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
-
                 }
                 OutlinedTextField(
                     value = searchText,
@@ -186,4 +174,35 @@ fun ExpenseList(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FilterChip(type: ExpenseType, selected: Boolean, onSelectionChanged: (ExpenseType?) -> Unit) {
+    FilterChip(
+        selected = selected,
+        onClick = {
+            if (selected) {
+                // Deselect
+                onSelectionChanged(null)
+            } else {
+                // Select
+                onSelectionChanged(type)
+            }
+        },
+        label = {
+            Text(stringResource(type.displayText))
+        },
+        leadingIcon = if (selected) {
+            {
+                Icon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = stringResource(type.filterContentDescription),
+                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                )
+            }
+        } else {
+            null
+        }
+    )
 }

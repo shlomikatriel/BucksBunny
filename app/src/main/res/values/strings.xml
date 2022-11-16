@@ -31,6 +31,9 @@
     <string name="add_button_description">Add expense</string>
     <string name="collapse_expenses_description">Collapse expense list</string>
     <string name="back">Back</string>
+    <string name="filter_one_time_expenses">Show one time expenses</string>
+    <string name="filter_monthly_expenses">Show monthly expenses</string>
+    <string name="filter_payments_expenses">Show Payments expenses</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
@@ -63,8 +66,6 @@
     <string name="preferences_dark_mode_title">Dark Mode</string>
     <string name="preferences_dark_mode_always">Always</string>
     <string name="preferences_dark_mode_never">Never</string>
-    <string name="preferences_dynamic_theme_title">Dynamic Theme</string>
-    <string name="preferences_dynamic_theme_description">Use system colors for app</string>
     <string name="preferences_language_and_currency">Language &amp; Currency</string>
     <string name="preferences_functionality_title">Functionality</string>
     <string name="preferences_monthly_income">Monthly Income</string>

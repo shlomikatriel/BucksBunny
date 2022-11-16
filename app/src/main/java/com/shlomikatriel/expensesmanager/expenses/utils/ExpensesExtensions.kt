@@ -5,9 +5,9 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 
-fun ArrayList<Expense>.filteredAndSorted(types: Set<ExpenseType>, text: String): ArrayList<Expense> {
+fun ArrayList<Expense>.filteredAndSorted(type: ExpenseType?, text: String): ArrayList<Expense> {
     val filtered = filter {
-        types.isEmpty() || types.contains(it.getExpenseType())
+        type == null || type == it.getExpenseType()
     }.filter {
         it.name.contains(text)
     }
