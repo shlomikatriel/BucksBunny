@@ -7,10 +7,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,12 +50,12 @@ private fun ExpensesGraphSnapshot(income: Float, expenses: Float, modifier: Modi
             val currencyFormat = DecimalFormat.getCurrencyInstance()
 
             // Income
-            Bar(currencyFormat.format(income), MaterialTheme.colors.secondary, income / maxValue)
-            Bar(currencyFormat.format(expenses), MaterialTheme.colors.onBackground, expenses / maxValue)
+            Bar(currencyFormat.format(income), MaterialTheme.colorScheme.secondary, income / maxValue)
+            Bar(currencyFormat.format(expenses), MaterialTheme.colorScheme.onBackground, expenses / maxValue)
             val balanceColor = colorResource(if (balance >= 0) R.color.green else R.color.red)
             Bar(currencyFormat.format(balance), balanceColor, abs(balance) / maxValue)
         }
-        Divider(modifier = Modifier.fillMaxWidth())
+        Divider()
         Row(
             modifier = Modifier
                 .padding(top = 4.dp)

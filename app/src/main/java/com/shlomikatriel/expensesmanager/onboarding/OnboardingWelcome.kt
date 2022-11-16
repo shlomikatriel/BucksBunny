@@ -4,8 +4,8 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteCutCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -61,20 +61,20 @@ fun OnboardingWelcomeScreen() = Column(
         ) {
             Text(
                 text = stringResource(R.string.onboarding_welcome),
-                style = MaterialTheme.typography.h5
+                style = MaterialTheme.typography.headlineSmall
             )
             Text(
                 text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.h4,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.primary
+                color = MaterialTheme.colorScheme.primary
             )
             AnimatedSlogan()
         }
     }
     Text(
         text = stringResource(R.string.onboarding_welcome_instructions),
-        style = MaterialTheme.typography.body2
+        style = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -96,7 +96,7 @@ private fun AnimatedSlogan() {
             .wrapContentSize()
             .padding(top = 16.dp)
             .scale(scale),
-        style = MaterialTheme.typography.h5,
-        color = MaterialTheme.colors.primary
+        style = MaterialTheme.typography.headlineSmall,
+        color = MaterialTheme.colorScheme.primary
     )
 }

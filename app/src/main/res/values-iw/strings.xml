@@ -62,6 +62,8 @@
     <string name="preferences_dark_mode_title">מצב כהה</string>
     <string name="preferences_dark_mode_always">תמיד</string>
     <string name="preferences_dark_mode_never">לעולם לא</string>
+    <string name="preferences_dynamic_theme_title">ערכת נושא דינאמית</string>
+    <string name="preferences_dynamic_theme_description">שימוש בצבעי המערכת לאפליקציה</string>
     <string name="preferences_language_and_currency">שפה ומטבע</string>
     <string name="preferences_functionality_title">פונקציונליות</string>
     <string name="preferences_monthly_income">הכנסה חודשית</string>

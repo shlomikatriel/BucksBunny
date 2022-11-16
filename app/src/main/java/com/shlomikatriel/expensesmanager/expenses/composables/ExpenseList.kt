@@ -12,9 +12,9 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,16 +24,15 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.android.gms.common.internal.Objects
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.compose.composables.AppTextField
-import com.shlomikatriel.expensesmanager.compose.composables.Chip
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
 import com.shlomikatriel.expensesmanager.expenses.dialogs.DeleteExpenseDialog
 import com.shlomikatriel.expensesmanager.expenses.dialogs.UpdateExpenseDialog
-import com.shlomikatriel.expensesmanager.expenses.utils.*
+import com.shlomikatriel.expensesmanager.expenses.utils.calculateTotal
+import com.shlomikatriel.expensesmanager.expenses.utils.filteredAndSorted
 import java.text.DecimalFormat
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ExpenseList(
     expanded: Boolean,
@@ -50,7 +49,7 @@ fun ExpenseList(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.fragment_vertical_spacing)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(stringResource(R.string.expenses_page_title), style = MaterialTheme.typography.h6)
+        Text(stringResource(R.string.expenses_page_title), style = MaterialTheme.typography.titleLarge)
         var offset by remember { mutableStateOf(0f) }
         var selectedTypes by remember { mutableStateOf(emptySet<ExpenseType>()) }
         var searchText by remember { mutableStateOf("") }
@@ -85,7 +84,6 @@ fun ExpenseList(
                 var updateDialogOpened by remember { mutableStateOf(false) }
                 var deleteDialogOpened by remember { mutableStateOf(false) }
                 val currencyInstance = DecimalFormat.getCurrencyInstance()
-                Divider()
                 ExpenseItem(
                     editable = expanded,
                     name = item.name,
@@ -113,7 +111,7 @@ fun ExpenseList(
                     },
                     modifier = Modifier.animateItemPlacement()
                 )
-                if (index == filteredExpenses.lastIndex) {
+                if (index != filteredExpenses.lastIndex) {
                     Divider()
                 }
                 if (updateDialogOpened) {
@@ -147,26 +145,39 @@ fun ExpenseList(
                             R.string.expenses_page_total,
                             currencyInstance.format(animatedTotal)
                         ),
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.titleLarge
                     )
                 }
-                FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
+                Row(
+                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
                     ExpenseType.values().forEach { type ->
-                        Chip(
-                            title = type.displayText,
-                            checked = selectedTypes.contains(type),
-                            onCheckedChanged = {
-                                val newSelectedFilters = if (it) {
-                                    selectedTypes + type
-                                } else {
+                        FilterChip(
+                            selected = selectedTypes.contains(type),
+                            onClick = {
+                                val newSelectedFilters = if (selectedTypes.contains(type)) {
                                     selectedTypes - type
+                                } else {
+                                    selectedTypes + type
                                 }
                                 selectedTypes = newSelectedFilters
+                            },
+                            label = {
+                                Text(stringResource(type.displayText))
                             }
                         )
                     }
                 }
-                AppTextField(searchText, R.string.expenses_page_search, { searchText = it }, Modifier.fillMaxWidth())
+                FlowRow(mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
+
+                }
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    label = { Text(stringResource(R.string.expenses_page_search)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
                 IconButton(onClick = {
                     collapseHandler()
                 }) {

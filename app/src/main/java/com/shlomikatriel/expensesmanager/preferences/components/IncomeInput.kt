@@ -3,8 +3,8 @@ package com.shlomikatriel.expensesmanager.preferences.components
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.dimensionResource
@@ -35,14 +35,13 @@ fun IncomeInput(
     ) {
         Text(
             text = stringResource(R.string.choose_income_dialog_title),
-            style = MaterialTheme.typography.h5,
-            color = if (isOnboarding) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
 
         Text(
             text = stringResource(R.string.choose_income_dialog_description),
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.bodyLarge
         )
 
         if (isOnboarding) {

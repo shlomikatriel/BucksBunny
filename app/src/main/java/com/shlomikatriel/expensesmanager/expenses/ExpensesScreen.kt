@@ -6,11 +6,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -162,13 +161,11 @@ private fun ExpensesContent(
                         .height(200.dp)
                 )
             }
-            Surface(
+            Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
-                    .let { modifier -> if (expandedExpenses) modifier else modifier.clickable { expandedExpenses = true } },
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
+                    .let { modifier -> if (expandedExpenses) modifier else modifier.clickable { expandedExpenses = true } }
             ) {
                 ExpenseList(
                     expandedExpenses,
@@ -207,11 +204,7 @@ private fun MonthSelector(
     BackHandler(editMode) {
         editMode = false
     }
-    Surface(
-        modifier = modifier.clickable { editMode = !editMode },
-        shape = RoundedCornerShape(8.dp),
-        elevation = 4.dp
-    ) {
+    Card(modifier = modifier.clickable { editMode = !editMode }) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -231,7 +224,7 @@ private fun MonthSelector(
                             minValue = 0,
                             maxValue = BuildConfig.MONTHS_COUNT - 1,
                             initialValue = currentMonth,
-                            displayValues = DateFormatSymbols().months.take(BuildConfig.MONTHS_COUNT).toTypedArray(),
+                            displayValues = DateFormatSymbols(Locale.getDefault()).months.take(BuildConfig.MONTHS_COUNT).toTypedArray(),
                             onValueChange = onMonthChanged
                         )
                         NumberPicker(
@@ -251,8 +244,8 @@ private fun MonthSelector(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text(text = DateFormatSymbols().months[currentMonth], style = MaterialTheme.typography.h6)
-                    Text(text = currentYear.toString(), style = MaterialTheme.typography.h6)
+                    Text(text = DateFormatSymbols().months[currentMonth], style = MaterialTheme.typography.titleLarge)
+                    Text(text = currentYear.toString(), style = MaterialTheme.typography.titleLarge)
                 }
             }
         }
@@ -287,11 +280,11 @@ private fun AddExpenseFab(
                     onClick = {
                         menuExpanded = false
                         dialogOfType = it
+                    },
+                    text = {
+                        Text(stringResource(it.getAddButtonText()))
                     }
-                ) {
-                    Text(stringResource(it.getAddButtonText()))
-                }
-                Divider()
+                )
             }
         }
         dialogOfType?.let {

@@ -2,9 +2,9 @@ package com.shlomikatriel.expensesmanager.preferences.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,19 +30,25 @@ fun LocalePreference(
             menuExpanded = true
         }
         DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
-            DropdownMenuItem(onClick = {
-                menuExpanded = false
-                onSelected(null)
-            }) {
-                Text(stringResource(R.string.preferences_system_default))
-            }
-            Locales.getAvailableLocales().forEach {
-                DropdownMenuItem(onClick = {
+            DropdownMenuItem(
+                onClick = {
                     menuExpanded = false
-                    onSelected(it)
-                }) {
-                    Text(Locales.getDisplayText(it))
+                    onSelected(null)
+                },
+                text = {
+                    Text(stringResource(R.string.preferences_system_default))
                 }
+            )
+            Locales.getAvailableLocales().forEach {
+                DropdownMenuItem(
+                    onClick = {
+                        menuExpanded = false
+                        onSelected(it)
+                    },
+                    text = {
+                        Text(Locales.getDisplayText(it))
+                    }
+                )
             }
         }
     }

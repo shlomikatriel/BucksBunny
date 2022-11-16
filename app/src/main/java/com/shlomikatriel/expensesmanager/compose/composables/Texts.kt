@@ -1,12 +1,11 @@
 package com.shlomikatriel.expensesmanager.compose.composables
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,13 +30,14 @@ fun AppInfoText(
     Icon(Icons.Outlined.Info, contentDescription = null, tint = color)
     Text(
         text = stringResource(text),
-        style = MaterialTheme.typography.body2,
+        style = MaterialTheme.typography.bodyMedium,
         color = color,
         fontWeight = fontWeight,
         textAlign = TextAlign.Start
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTextField(
     value: String,
@@ -56,24 +56,14 @@ fun AppTextField(
         value,
         onValueChange,
         label = { Text(stringResource(label)) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colors.onBackground),
         isError = errorStringRes != null,
+        supportingText = errorStringRes?.let {
+            {
+                Text(stringResource(it))
+            }
+        },
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         trailingIcon = { trailingIcon?.let { Text(text = it) } },
         singleLine = true
-    )
-    val errorMessage = errorStringRes?.let { stringResource(it) } ?: ""
-    Text(
-        text = errorMessage,
-        modifier = Modifier.padding(top = 4.dp)
-            .animateContentSize()
-            .run {
-                if (errorStringRes != null) {
-                    wrapContentHeight()
-                } else {
-                    height(0.dp)
-                }
-            },
-        color = MaterialTheme.colors.error
     )
 }

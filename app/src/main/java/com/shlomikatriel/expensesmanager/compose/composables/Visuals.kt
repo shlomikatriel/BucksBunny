@@ -6,9 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,19 +64,19 @@ fun Chip(
                     onCheckedChanged(it)
                 }
             ),
-        elevation = 4.dp,
+        shadowElevation = 4.dp,
         shape = RoundedCornerShape(16.dp),
         color = if (checked) {
-            MaterialTheme.colors.secondary
+            MaterialTheme.colorScheme.secondary
         } else {
-            MaterialTheme.colors.surface
+            MaterialTheme.colorScheme.surface
         }
     ) {
         Text(
             stringResource(title),
             modifier = Modifier.padding(all = 8.dp),
-            color = if (checked) MaterialTheme.colors.onSecondary else MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.body2
+            color = if (checked) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

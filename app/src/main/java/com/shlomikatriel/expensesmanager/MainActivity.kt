@@ -9,10 +9,10 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -30,7 +30,7 @@ import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.navigation.*
 import com.shlomikatriel.expensesmanager.onboarding.OnboardingScreen
-import com.shlomikatriel.expensesmanager.preferences.PreferenceScreen
+import com.shlomikatriel.expensesmanager.preferences.PreferencesScreen
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
@@ -38,7 +38,7 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(shouldShowOnboarding: Boolean, onDestinationChangedListener: NavController.OnDestinationChangedListener) {
     val startDestination = if (shouldShowOnboarding) Destination.ONBOARDING else Destination.EXPENSES
@@ -68,13 +68,14 @@ fun MainScreen(shouldShowOnboarding: Boolean, onDestinationChangedListener: NavC
                     ExpensesScreen()
                 }
                 composable(topBarDetailsState, Destination.PREFERENCES) {
-                    PreferenceScreen()
+                    PreferencesScreen()
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopAppBar(topBarDetails: TopBarDetails, navController: NavController) {
     TopAppBar(

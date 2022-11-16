@@ -2,9 +2,9 @@ package com.shlomikatriel.expensesmanager.preferences.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,12 +25,15 @@ fun DarkModePreference(darkMode: DarkMode, onSelected: (darkMode: DarkMode) -> U
         }
         DropdownMenu(expanded = menuExpanded, onDismissRequest = { menuExpanded = false }) {
             DarkMode.values().forEach {
-                DropdownMenuItem(onClick = {
-                    menuExpanded = false
-                    onSelected(it)
-                }) {
-                    Text(stringResource(it.text))
-                }
+                DropdownMenuItem(
+                    onClick = {
+                        menuExpanded = false
+                        onSelected(it)
+                    },
+                    text = {
+                        Text(stringResource(it.text))
+                    }
+                )
             }
         }
     }

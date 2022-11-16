@@ -4,11 +4,9 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,30 +29,24 @@ fun PreferenceCategory(
     content: @Composable ColumnScope.() -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { expanded = !expanded },
-        elevation = 4.dp,
-        shape = RoundedCornerShape(8.dp)
+    Card(
+        modifier = Modifier.clickable { expanded = !expanded }
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+            modifier = Modifier.padding(8.dp)
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(stringResource(title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h5)
+            Text(stringResource(title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.headlineSmall)
             if (info != null) {
                 AppInfoText(text = info)
             }
-            AnimatedVisibility(expanded) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Divider()
-                    content()
-                    Divider()
-                }
+        }
+        AnimatedVisibility(expanded) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
             }
         }
     }
@@ -75,11 +67,11 @@ private fun PreferenceCategoryPreview() = AppTheme {
             title = R.string.preferences_anonymous_reports_category_title,
             info = R.string.preferences_help_us_improve_info
         ) {
-            Text(stringResource(R.string.preferences_anonymous_usage_data_reports_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6)
+            Text(stringResource(R.string.preferences_anonymous_usage_data_reports_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
             Text(stringResource(R.string.preferences_anonymous_usage_data_reports_summary))
         }
         PreferenceCategory(title = R.string.preferences_appearance_title) {
-            Text(stringResource(R.string.preferences_dark_mode_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.h6)
+            Text(stringResource(R.string.preferences_dark_mode_title), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleLarge)
             Text(stringResource(R.string.preferences_dark_mode_always))
         }
     }

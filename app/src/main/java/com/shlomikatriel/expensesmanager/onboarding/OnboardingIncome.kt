@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -74,7 +74,7 @@ private fun OnboardingIncomeContent(
     IncomeInput(true, income, onIncomeChanged)
     AppInfoText(
         text = R.string.onboarding_income_input_info,
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colorScheme.primary,
         fontWeight = FontWeight.Bold
     )
 }

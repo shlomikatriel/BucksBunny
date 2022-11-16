@@ -2,12 +2,12 @@ package com.shlomikatriel.expensesmanager.expenses.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,12 +58,12 @@ fun ExpenseItem(
             ) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.body1,
+                    style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Start
                 )
                 Text(
                     text = cost,
-                    style = MaterialTheme.typography.body2,
+                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
             }
@@ -80,23 +80,27 @@ fun ExpenseItem(
                 onClick = {
                     menuExpanded = false
                     onUpdate()
+                },
+                trailingIcon = {
+                    Icon(Icons.Filled.Edit, stringResource(R.string.expense_menu_update_description))
+                },
+                text = {
+                    Text(stringResource(R.string.update))
                 }
-            ) {
-                Icon(Icons.Filled.Edit, stringResource(R.string.expense_menu_update_description))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(stringResource(R.string.update))
-            }
+            )
             Divider()
             DropdownMenuItem(
                 onClick = {
                     menuExpanded = false
                     onDelete()
+                },
+                trailingIcon = {
+                    Icon(Icons.Filled.Delete, stringResource(R.string.expense_menu_delete_description), tint = MaterialTheme.colorScheme.error)
+                },
+                text = {
+                    Text(stringResource(R.string.delete))
                 }
-            ) {
-                Icon(Icons.Filled.Delete, stringResource(R.string.expense_menu_delete_description), tint = MaterialTheme.colors.error)
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(stringResource(R.string.delete))
-            }
+            )
         }
     }
 }

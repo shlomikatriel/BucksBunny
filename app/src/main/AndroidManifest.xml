@@ -10,7 +10,7 @@
         android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar"
         tools:ignore="AllowBackup"
         tools:targetApi="tiramisu">
         <provider

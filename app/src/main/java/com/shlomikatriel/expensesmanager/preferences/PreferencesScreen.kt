@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -107,6 +107,7 @@ class PreferencesViewModel @Inject constructor(
         logInfo("Report a bug clicked")
         viewModelScope.launch {
             state.value = state.value.copy(preparingBugReport = true)
+            delay(2000)
             withContext(Dispatchers.IO) {
                 try {
                     val file = logManager.collectLogs()
@@ -140,7 +141,7 @@ class PreferencesViewModel @Inject constructor(
 }
 
 @Composable
-fun PreferenceScreen() {
+fun PreferencesScreen() {
     val model: PreferencesViewModel = hiltViewModel()
     val state by remember { model.state }
     PreferencesContent(state, model)

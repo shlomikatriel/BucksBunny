@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#009688</color>
-    <color name="colorPrimary">#0288d1</color>
-    <color name="colorPrimaryDark">#005b9f</color>
-    <color name="colorAccent">#5eb8ff</color>
+    <!-- Colors for pre-Android 12 devices -->
+    <color name="primary">#00658f</color>
+    <color name="on_primary">#ffffff</color>
+    <color name="primary_dark">#87ceff</color>
+    <color name="on_primary_dark">#00344c</color>
+    <color name="tertiary">#63597c</color>
 
     <color name="green">#388e3c</color>
     <color name="red">#d32f2f</color>
 
     <color name="launcher_background">@color/primary</color>
-    <color name="launcher_foreground">@android:color/white</color>
+    <color name="launcher_foreground">@color/on_primary</color>
 </resources>
