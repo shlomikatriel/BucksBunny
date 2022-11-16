@@ -1,19 +1,20 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = "1.5.21"
-    ext.hilt_version = '2.38.1'
+    ext.kotlin_version = "1.7.20"
+    ext.hilt_version = '2.40.1'
+    ext.accompanist_version = '0.20.0'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0'
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath "com.google.dagger:hilt-android-gradle-plugin:2.44"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
-        classpath "com.google.android.gms:oss-licenses-plugin:0.10.4"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
-        classpath "com.google.gms:google-services:4.3.8"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
+        classpath "com.google.android.gms:oss-licenses-plugin:0.10.5"
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath "com.google.gms:google-services:4.3.14"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,32 +24,22 @@ buildscript {
 ext {
     def majorVersion = project.getProperty("majorVersion") as Integer
     def minorVersion = project.getProperty("minorVersion") as Integer
-    def internalVersion = project.getProperty("internalVersion") as Integer
     def build = project.getProperty("build") as Integer
     if (build < 0 || build > 999) {
-        throw new GradleException("Illegal build: $build")
-    }
-    if (internalVersion < 0 || internalVersion > 99) {
-        throw new GradleException("Illegal internal version: $internalVersion")
+        throw new GradleScriptException("Illegal internal version: $build")
     }
     if (minorVersion < 0 || minorVersion > 99) {
-        throw new GradleException("Illegal minor version: $minorVersion")
+        throw new GradleScriptException("Illegal minor version: $minorVersion")
     }
-    if (majorVersion < 0 || majorVersion > 9) {
-        throw new GradleException("Illegal major version: $majorVersion")
-    }
-    versionName = "$majorVersion.$minorVersion.$internalVersion.$build"
-    // Version structure - XYYZZWWW
-    versionCode = ((majorVersion * 100 + minorVersion) * 100 + internalVersion) * 1000 + build
+    versionName = "$majorVersion.$minorVersion.$build"
+    // Version structure - XYYZZZ
+    versionCode = (majorVersion * 100 + minorVersion) * 1000 + build
 
     println("Major version: $majorVersion")
     println("Minor version: $minorVersion")
-    println("Internal version: $internalVersion")
     println("Build: $build")
     println("Version name: $versionName")
     println("Version code: $versionCode")
-
-    maxMonthsOffset = project.getProperty("maxMonthsOffset") as Integer
 
     Properties properties = new Properties()
     properties.load(rootProject.file('local.properties').newDataInputStream())

@@ -34,19 +34,20 @@ class BucksBunnyApp : Application() {
 
         logInfo("Creating Application")
 
-        initializeFirebaseServices()
+        handleUpdate()
 
-        checkForUpdate()
+        initializeFirebaseServices()
 
         logInfo("Application created")
     }
 
     private fun initializeFirebaseServices() {
-        firebaseAnalytics.setAnalyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_ANALYTICS_ENABLED))
-        firebaseCrashlytics.setCrashlyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED))
+        val anonymousReports = sharedPreferences.getBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(anonymousReports)
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(anonymousReports)
     }
 
-    private fun checkForUpdate() {
+    private fun handleUpdate() {
         val latestVersionCode = sharedPreferences.getInt(IntKey.LATEST_VERSION_CODE)
         when {
             latestVersionCode == IntKey.LATEST_VERSION_CODE.getDefault() -> {
@@ -56,11 +57,26 @@ class BucksBunnyApp : Application() {
             BuildConfig.VERSION_CODE > latestVersionCode -> {
                 val latestVersionName = sharedPreferences.getString(StringKey.LATEST_VERSION_NAME)
                 logDebug("Version update: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
+                runMigration(latestVersionCode)
                 updateVersion()
             }
             BuildConfig.VERSION_CODE == latestVersionCode -> {
                 logVerbose("No update")
             }
+        }
+    }
+
+    private fun runMigration(lastVersionCode: Int) {
+        logDebug("Running migrations [lastVersionCode=$lastVersionCode]")
+        if (lastVersionCode <= 103005) {
+            val analyticsEnabled = sharedPreferences.getBoolean("firebase_analytics_enabled", false)
+            val crashlyticsEnabled = sharedPreferences.getBoolean("firebase_crashlytics_enabled", false)
+            sharedPreferences.putBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED, analyticsEnabled && crashlyticsEnabled)
+            sharedPreferences.edit()
+                .remove("firebase_analytics_enabled")
+                .remove("firebase_crashlytics_enabled")
+                .remove("currency")
+                .apply()
         }
     }
 

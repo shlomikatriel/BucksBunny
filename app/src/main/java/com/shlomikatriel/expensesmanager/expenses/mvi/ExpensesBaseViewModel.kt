@@ -12,54 +12,42 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 
 abstract class ExpensesBaseViewModel(
-    private val databaseManager: DatabaseManager,
+    protected val databaseManager: DatabaseManager,
     protected val sharedPreferences: SharedPreferences
-) : ViewModel(), Observer<ArrayList<Expense>>, SharedPreferences.OnSharedPreferenceChangeListener {
+) : ViewModel() {
 
-    private var expenseItemsLiveData: LiveData<ArrayList<Expense>>? = null
+    private var expensesLiveData: LiveData<ArrayList<Expense>>? = null
 
-    fun observeChanges(month: Int) {
-        expenseItemsLiveData?.removeObserver(this)
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        expenseItemsLiveData = databaseManager.getExpensesOfMonth(month).apply {
-            observeForever(this@ExpensesBaseViewModel)
-        }
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    private val expensesObserver = Observer<ArrayList<Expense>> {
+        it?.let { onExpensesChanged(it) }
     }
 
-    override fun onChanged(expenses: ArrayList<Expense>?) {
-        logInfo("Expenses changed")
-        expenses?.let { onExpensesChanged(it.transformToArrayList()) }
+    private val sharedPreferencesObserver = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == FloatKey.INCOME.getKey()) {
+                onIncomeChanged(sharedPreferences.getFloat(FloatKey.INCOME))
+            }
+        }
+
+    init {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesObserver)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == FloatKey.INCOME.getKey()) {
-            logInfo("Income changed")
-            onIncomeChanged(this.sharedPreferences.getFloat(FloatKey.INCOME))
-        }
+    fun observeExpenses(month: Int, year: Int) {
+        logInfo("Observing expenses [month=$month, year=$year]")
+        expensesLiveData?.removeObserver(expensesObserver)
+        expensesLiveData = databaseManager.getExpensesOfMonth(year * 12 + month)
+        expensesLiveData?.observeForever(expensesObserver)
     }
 
     abstract fun onIncomeChanged(income: Float)
 
     abstract fun onExpensesChanged(expenses: ArrayList<Expense>)
 
-    protected fun getExpenses() = expenseItemsLiveData?.value?.transformToArrayList() ?: arrayListOf()
-
-    private fun List<Expense>.transformToArrayList() = arrayListOf(*(toTypedArray()))
-
-    protected fun calculateTotal(expenses: ArrayList<Expense>) = expenses.sumOf {
-        when (it) {
-            is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
-            is Expense.Payments -> (it.cost / it.payments).toDouble()
-        }
-    }
-
     @CallSuper
     override fun onCleared() {
         logInfo("View model cleared")
-        expenseItemsLiveData?.removeObserver(this)
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        expensesLiveData?.removeObserver(expensesObserver)
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesObserver)
     }
-
 
 }

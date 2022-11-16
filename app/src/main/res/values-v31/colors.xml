@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_background">@color/m3_sys_color_dynamic_light_primary</color>
+    <color name="launcher_foreground">@color/m3_sys_color_dynamic_light_on_primary</color>
+</resources>

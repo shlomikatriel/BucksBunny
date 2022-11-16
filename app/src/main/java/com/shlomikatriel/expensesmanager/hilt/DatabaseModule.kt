@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -22,11 +23,14 @@ class DatabaseModule {
         .build()
 
     @Provides
+    @Singleton
     fun provideOneTimeExpenseDao(appDatabase: AppDatabase) = appDatabase.oneTimeExpenseDao()
 
     @Provides
+    @Singleton
     fun provideMonthlyExpenseDao(appDatabase: AppDatabase) = appDatabase.monthlyExpenseDao()
 
     @Provides
+    @Singleton
     fun providePaymentsExpenseDao(appDatabase: AppDatabase) = appDatabase.paymentsExpenseDao()
 }

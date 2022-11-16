@@ -4,24 +4,102 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.View
-import androidx.annotation.StringRes
+import android.view.WindowManager
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.databinding.DataBindingUtil
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.shlomikatriel.expensesmanager.databinding.MainActivityBinding
+import com.shlomikatriel.expensesmanager.compose.AppTheme
+import com.shlomikatriel.expensesmanager.expenses.ExpensesScreen
 import com.shlomikatriel.expensesmanager.firebase.logEvent
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.navigation.findNavController
+import com.shlomikatriel.expensesmanager.navigation.*
+import com.shlomikatriel.expensesmanager.onboarding.OnboardingScreen
+import com.shlomikatriel.expensesmanager.preferences.PreferencesScreen
+import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.IntKey
+import com.shlomikatriel.expensesmanager.sharedpreferences.getBoolean
 import com.shlomikatriel.expensesmanager.sharedpreferences.getInt
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen(shouldShowOnboarding: Boolean, onDestinationChangedListener: NavController.OnDestinationChangedListener) {
+    val startDestination = if (shouldShowOnboarding) Destination.ONBOARDING else Destination.EXPENSES
+    val navController = rememberNavController().apply {
+        removeOnDestinationChangedListener(onDestinationChangedListener)
+        addOnDestinationChangedListener(onDestinationChangedListener)
+    }
+    val topBarDetailsState = remember { mutableStateOf(startDestination.topBarDetails) }
+
+    Scaffold(
+        topBar = {
+            topBarDetailsState.value?.let {
+                TopAppBar(it, navController)
+            }
+        }
+    ) {
+        Box(modifier = Modifier.padding(it)) {
+            NavHost(navController, startDestination) {
+                composable(topBarDetailsState, Destination.ONBOARDING) {
+                    OnboardingScreen {
+                        navController.navigate(Destination.EXPENSES) {
+                            popupTo(Destination.ONBOARDING, true)
+                        }
+                    }
+                }
+                composable(topBarDetailsState, Destination.EXPENSES) {
+                    ExpensesScreen()
+                }
+                composable(topBarDetailsState, Destination.PREFERENCES) {
+                    PreferencesScreen()
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopAppBar(topBarDetails: TopBarDetails, navController: NavController) {
+    TopAppBar(
+        title = { Text(text = stringResource(topBarDetails.title)) },
+        navigationIcon = {
+            if (topBarDetails.hasBackNavigation) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    val icon = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Icons.Filled.ArrowBack else Icons.Filled.ArrowForward
+                    Icon(icon, tint = LocalContentColor.current, contentDescription = stringResource(R.string.back))
+                }
+            }
+        },
+        actions = {
+            topBarDetails.actions?.forEach { action ->
+                IconButton(onClick = { navController.navigate(action.destination) }) {
+                    Icon(action.icon, tint = LocalContentColor.current, contentDescription = stringResource(action.contentDescription))
+                }
+            }
+        }
+    )
+}
+
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -29,21 +107,19 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    lateinit var binding: MainActivityBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
 
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.main_activity
-        )
-
-        setSupportActionBar(binding.appBar)
-
-        attachDestinationChangedListener()
         toggleOrientationLock()
         configureDarkMode()
+
+        val shouldShowOnboarding = sharedPreferences.getBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING)
+        setContent {
+            AppTheme {
+                MainScreen(shouldShowOnboarding, this)
+            }
+        }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -54,37 +130,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun attachDestinationChangedListener() = findNavController()
-        .addOnDestinationChangedListener { _, destination, _ ->
-            logInfo("User navigated to ${destination.label}")
-            firebaseAnalytics.logEvent("${destination.label}_opened")
-        }
-
     private fun configureDarkMode() {
         val mode = sharedPreferences.getInt(IntKey.DARK_MODE)
         logInfo("Dark mode: $mode")
-        if (mode != AppCompatDelegate.MODE_NIGHT_UNSPECIFIED) {
-            AppCompatDelegate.setDefaultNightMode(mode)
-        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    fun configureToolbar(
-        @StringRes title: Int,
-        navigateUpEnabled: Boolean
-    ) {
-        binding.appBar.visibility = View.VISIBLE
-        supportActionBar!!.title = getString(title)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(navigateUpEnabled)
-        if (navigateUpEnabled) {
-            binding.appBar.setNavigationOnClickListener {
-                findNavController().popBackStack()
-            }
-        } else {
-            binding.appBar.setNavigationOnClickListener(null)
-        }
-    }
-
-    fun hideToolbar() {
-        binding.appBar.visibility = View.GONE
+    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+        logInfo("Destination changed: ${destination.route}")
+        firebaseAnalytics.logEvent("${destination.route}_opened")
     }
 }

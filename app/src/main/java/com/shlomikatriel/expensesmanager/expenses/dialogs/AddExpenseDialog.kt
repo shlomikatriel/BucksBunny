@@ -1,103 +1,67 @@
 package com.shlomikatriel.expensesmanager.expenses.dialogs
 
-import android.content.Context
-import android.view.View
-import androidx.annotation.StringRes
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.*
-import com.shlomikatriel.expensesmanager.database.DatabaseManager
-import com.shlomikatriel.expensesmanager.database.Expense
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
-import com.shlomikatriel.expensesmanager.databinding.AddExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.logDebug
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.*
-import javax.inject.Inject
-import kotlin.concurrent.thread
+import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
+import com.shlomikatriel.expensesmanager.expenses.utils.getAddDialogTitle
 
-@AndroidEntryPoint
-class AddExpenseDialog : BaseDialog() {
-
-    @ApplicationContext
-    @Inject
-    lateinit var appContext: Context
-
-    @Inject
-    lateinit var databaseManager: DatabaseManager
-
-    @Inject
-    lateinit var localizationManager: LocalizationManager
-
-    lateinit var binding: AddExpenseDialogBinding
-
-    private val args: AddExpenseDialogArgs by navArgs()
-
-    override fun layout() = R.layout.add_expense_dialog
-
-    override fun bind(view: View) {
-        binding = DataBindingUtil.bind<AddExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(localizationManager.getCurrencySymbol(), args.type)
-            title.setText(getDialogTitle())
-            dialog = this@AddExpenseDialog
-        }
-    }
-
-    @StringRes
-    private fun getDialogTitle() = when (args.type) {
-        ExpenseType.ONE_TIME -> R.string.add_one_time_expense_dialog_title
-        ExpenseType.MONTHLY -> R.string.add_monthly_expense_dialog_title
-        ExpenseType.PAYMENTS -> R.string.add_payments_expense_dialog_title
-    }
-
-    fun addClicked() {
-        val name = binding.inputsLayout.name.text.toString()
-        val costAsString = binding.inputsLayout.cost.text.toString()
-        val cost = costAsString.toFloatOrNull()
-        val paymentsAsString = binding.inputsLayout.payments.text.toString()
-        val payments = paymentsAsString.toIntOrNull()
-        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsAsString=$paymentsAsString, type=${args.type}]")
-
-        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
-            addExpense(name, cost!!, payments, args.type)
-        }
-    }
-
-    private fun addExpense(name: String, cost: Float, payments: Int?, type: ExpenseType) {
-        thread(name = "AddExpenseThread") {
-            val expense = when (type) {
-                ExpenseType.ONE_TIME -> Expense.OneTime(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost,
-                    month = args.month
-                )
-                ExpenseType.MONTHLY -> Expense.Monthly(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost
-                )
-                ExpenseType.PAYMENTS -> Expense.Payments(
-                    databaseId = null,
-                    timeStamp = System.currentTimeMillis(),
-                    name = name,
-                    cost = cost,
-                    month = args.month,
-                    payments = payments!!
-                )
+@Composable
+fun AddExpenseDialog(
+    expenseType: ExpenseType,
+    onConfirm: (expenseType: ExpenseType, name: String, cost: Float, payments: Int?) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    var name by remember { mutableStateOf(null as String?) }
+    var cost by remember { mutableStateOf(null as Float?) }
+    var payments by remember { mutableStateOf(null as Int?) }
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (ExpensesUtils.isInputValid(expenseType, name, cost, payments)) {
+                        onDismissRequest()
+                        onConfirm(expenseType, name!!, cost!!, payments)
+                    }
+                },
+                enabled = ExpensesUtils.isInputValid(expenseType, name, cost, payments)
+            ) {
+                Text(stringResource(R.string.add_expense_dialog_add))
             }
-            databaseManager.insert(expense)
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = onDismissRequest
+            ) {
+                Text(stringResource(R.string.dialog_cancel))
+            }
+        },
+        title = {
+            Text(
+                stringResource(expenseType.getAddDialogTitle()),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            ExpenseInput(
+                showPayments = expenseType == ExpenseType.PAYMENTS,
+                onNameChanged = {
+                    name = it
+                },
+                onCostChanged = {
+                    cost = it
+                },
+                onPaymentsChanged = {
+                    if (expenseType == ExpenseType.PAYMENTS) {
+                        payments = it
+                    }
+                }
+            )
         }
-        findNavController().popBackStack()
-    }
-
-    fun cancelClicked() {
-        logInfo("Canceling add expense")
-        findNavController().popBackStack()
-    }
+    )
 }
