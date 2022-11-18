@@ -5,11 +5,15 @@ import android.content.SharedPreferences
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.logs.LogManager
+import com.shlomikatriel.expensesmanager.logs.dispatching.LogDispatcher
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
+import com.shlomikatriel.expensesmanager.logs.loggers.files.FileLogger
+import com.shlomikatriel.expensesmanager.logs.loggers.logcat.LogcatLogger
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
 import dagger.hilt.android.HiltAndroidApp
+import java.io.File
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -27,10 +31,16 @@ class BucksBunnyApp : Application() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
+    @Inject
+    lateinit var logcatLogger: LogcatLogger
+
+    @Inject
+    lateinit var fileLogger: FileLogger
+
     override fun onCreate() {
         super.onCreate()
 
-        logManager.initialize()
+        initializeLoggers()
 
         logInfo("Creating Application")
 
@@ -39,6 +49,14 @@ class BucksBunnyApp : Application() {
         initializeFirebaseServices()
 
         logInfo("Application created")
+    }
+
+    private fun initializeLoggers() {
+        if (BuildConfig.DEBUG) {
+            LogDispatcher.initializeLoggers(logcatLogger, fileLogger)
+        } else {
+            LogDispatcher.initializeLoggers(fileLogger)
+        }
     }
 
     private fun initializeFirebaseServices() {
@@ -77,6 +95,9 @@ class BucksBunnyApp : Application() {
                 .remove("firebase_crashlytics_enabled")
                 .remove("currency")
                 .apply()
+            File(filesDir, LogManager.LOG_FOLDER_NAME)
+                .listFiles { file -> file.name.startsWith("Logs") && file.name.endsWith(".log") }
+                ?.forEach { it.delete() }
         }
     }
 

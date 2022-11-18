@@ -104,7 +104,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
     // Logging
-    implementation 'com.github.bosphere.android-filelogger:filelogger:1.0.7'
     implementation 'net.lingala.zip4j:zip4j:2.9.0'
 
     // Room
@@ -151,5 +150,4 @@ dependencies {
     // View Pager
     implementation "com.google.accompanist:accompanist-pager:0.25.1"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.25.1"
-    implementation "com.google.accompanist:accompanist-flowlayout:0.25.1"
 }
