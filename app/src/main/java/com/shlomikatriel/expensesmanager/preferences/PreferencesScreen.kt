@@ -77,26 +77,26 @@ class PreferencesViewModel @Inject constructor(
     }
 
     override fun onDarkModeSelected(darkMode: DarkMode) {
-        logInfo("Dark mode setting selected: $darkMode")
+        logInfo(Tag.PREFERENCES, "Dark mode setting selected: $darkMode")
         state.value = state.value.copy(darkMode = darkMode)
         sharedPreferences.putInt(IntKey.DARK_MODE, darkMode.mode)
         AppCompatDelegate.setDefaultNightMode(darkMode.mode)
     }
 
     override fun onLocaleSelected(locale: Locale?) {
-        logInfo("Locale selected: $locale")
+        logInfo(Tag.PREFERENCES, "Locale selected: $locale")
         state.value = state.value.copy(locale = locale)
         Locales.setLocale(locale)
     }
 
     override fun onIncomeChanged(income: Float) {
-        logInfo("Income changed")
+        logInfo(Tag.PREFERENCES, "Income changed")
         sharedPreferences.putFloat(FloatKey.INCOME, income)
         state.value = state.value.copy(income = income)
     }
 
     override fun onAnonymousReportsChanged(value: Boolean) {
-        logInfo("Anonymous reports changed: $value")
+        logInfo(Tag.PREFERENCES, "Anonymous reports changed: $value")
         sharedPreferences.putBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED, value)
         firebaseAnalytics.setAnalyticsCollectionEnabled(value)
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(value)
@@ -104,7 +104,7 @@ class PreferencesViewModel @Inject constructor(
     }
 
     override fun onBugReportClicked() {
-        logInfo("Report a bug clicked")
+        logInfo(Tag.PREFERENCES, "Report a bug clicked")
         viewModelScope.launch {
             state.value = state.value.copy(preparingBugReport = true)
             delay(2000)
@@ -126,9 +126,9 @@ class PreferencesViewModel @Inject constructor(
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                     context.startActivity(chooserIntent)
-                    logInfo("Bug report prepared")
+                    logInfo(Tag.PREFERENCES, "Bug report prepared")
                 } catch (e: Exception) {
-                    logError("Failed to prepare bug report", e)
+                    logError(Tag.PREFERENCES, "Failed to prepare bug report", e)
                 }
             }
             state.value = state.value.copy(preparingBugReport = false)
@@ -136,7 +136,7 @@ class PreferencesViewModel @Inject constructor(
     }
 
     override fun onCleared() {
-        logDebug("Clearing settings view model")
+        logDebug(Tag.PREFERENCES, "Clearing settings view model")
     }
 }
 

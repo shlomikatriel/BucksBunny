@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.LongKey
@@ -29,7 +30,7 @@ class AppReviewManager
         val lastReview = sharedPreferences.getLong(LongKey.LAST_IN_APP_REVIEW_TIME)
         val currentTime = System.currentTimeMillis()
         val daysSinceLastReview = TimeUnit.MILLISECONDS.toDays(currentTime - lastReview)
-        logDebug("Checking if Play In-App Review dialog needed [expensesCount=$expensesCount, daysSinceLastReview=$daysSinceLastReview]")
+        logDebug(Tag.IN_APP_REVIEW, "Checking if Play In-App Review dialog needed [expensesCount=$expensesCount, daysSinceLastReview=$daysSinceLastReview]")
         return expensesCount >= EXPENSES_NEEDED_FOR_IN_APP_REVIEW && daysSinceLastReview > IN_APP_REVIEW_GRACE_DAYS
     }
 
@@ -38,17 +39,17 @@ class AppReviewManager
             sharedPreferences.putLong(LongKey.LAST_IN_APP_REVIEW_TIME, System.currentTimeMillis())
             val manager = ReviewManagerFactory.create(activity)
             val reviewFlowRequest = manager.requestReviewFlow()
-            logInfo("Requesting In-App Review flow")
+            logInfo(Tag.IN_APP_REVIEW, "Requesting In-App Review flow")
             reviewFlowRequest.addOnCompleteListener { request ->
                 if (request.isSuccessful) {
                     val reviewInfo = request.result
-                    logInfo("Starting In-App Review flow")
+                    logInfo(Tag.IN_APP_REVIEW, "Starting In-App Review flow")
                     val flow = manager.launchReviewFlow(activity, reviewInfo)
                     flow.addOnCompleteListener {
-                        logInfo("In-App Review completed")
+                        logInfo(Tag.IN_APP_REVIEW, "In-App Review completed")
                     }
                 } else {
-                    logDebug("Review flow request unsuccessful")
+                    logDebug(Tag.IN_APP_REVIEW, "Review flow request unsuccessful")
                 }
             }
         }

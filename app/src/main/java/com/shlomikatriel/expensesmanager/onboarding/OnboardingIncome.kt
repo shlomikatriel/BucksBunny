@@ -17,6 +17,7 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
 import com.shlomikatriel.expensesmanager.compose.tooling.ComponentPreviews
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.preferences.components.IncomeInput
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
@@ -33,7 +34,7 @@ class OnboardingIncomeViewModel @Inject constructor(
     fun getIncome() = sharedPreferences.getFloat(FloatKey.INCOME)
 
     fun onIncomeChanged(income: Float?) {
-        logInfo("Income changed")
+        logInfo(Tag.ONBOARDING, "Income changed")
         if (income != null) {
             sharedPreferences.putFloat(FloatKey.INCOME, income)
         }
@@ -41,7 +42,7 @@ class OnboardingIncomeViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        logInfo("Onboarding income view model cleared")
+        logInfo(Tag.ONBOARDING, "Onboarding income view model cleared")
     }
 }
 

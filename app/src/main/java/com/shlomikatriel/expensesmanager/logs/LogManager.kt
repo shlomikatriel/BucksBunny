@@ -33,7 +33,7 @@ class LogManager
         val logFolder = context.getLogFolder()
         val file = File(logFolder, LOG_ZIP_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing logs zip file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing logs zip file [deleted=${file.delete()}]")
         }
 
         createPropertiesFile()
@@ -61,9 +61,9 @@ class LogManager
     private fun createPropertiesFile() {
         val file = File(context.getLogFolder(), SYSTEM_PROPERTIES_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing system properties file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing system properties file [deleted=${file.delete()}]")
         }
-        logInfo("Collecting properties")
+        logInfo(Tag.LOGS, "Collecting properties")
 
         val builder = StringBuilder()
         var process: Process? = null
@@ -84,9 +84,9 @@ class LogManager
     private fun createLogcatFile() {
         val file = File(context.getLogFolder(), LOGCAT_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing logcat file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing logcat file [deleted=${file.delete()}]")
         }
-        logInfo("Collecting logcat")
+        logInfo(Tag.LOGS, "Collecting logcat")
 
         val builder = StringBuilder()
         var process: Process? = null

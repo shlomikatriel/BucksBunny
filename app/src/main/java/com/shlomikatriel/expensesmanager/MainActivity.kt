@@ -26,6 +26,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.expenses.ExpensesScreen
 import com.shlomikatriel.expensesmanager.firebase.logEvent
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.navigation.*
@@ -125,19 +126,19 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     @SuppressLint("SourceLockedOrientationActivity")
     private fun toggleOrientationLock() {
         if (!resources.getBoolean(R.bool.is_tablet)) {
-            logDebug("Locking orientation")
+            logDebug(Tag.APPLICATION, "Locking orientation")
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 
     private fun configureDarkMode() {
         val mode = sharedPreferences.getInt(IntKey.DARK_MODE)
-        logInfo("Dark mode: $mode")
+        logInfo(Tag.APPLICATION, "Dark mode: $mode")
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
-        logInfo("Destination changed: ${destination.route}")
+        logInfo(Tag.NAVIGATION, "Destination changed: ${destination.route}")
         firebaseAnalytics.logEvent("${destination.route}_opened")
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
@@ -33,7 +34,7 @@ abstract class ExpensesBaseViewModel(
     }
 
     fun observeExpenses(month: Int, year: Int) {
-        logInfo("Observing expenses [month=$month, year=$year]")
+        logInfo(Tag.EXPENSES, "Observing expenses [month=$month, year=$year]")
         expensesLiveData?.removeObserver(expensesObserver)
         expensesLiveData = databaseManager.getExpensesOfMonth(year * 12 + month)
         expensesLiveData?.observeForever(expensesObserver)
@@ -45,7 +46,7 @@ abstract class ExpensesBaseViewModel(
 
     @CallSuper
     override fun onCleared() {
-        logInfo("View model cleared")
+        logInfo(Tag.EXPENSES, "View model cleared")
         expensesLiveData?.removeObserver(expensesObserver)
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesObserver)
     }

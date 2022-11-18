@@ -14,6 +14,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.startUpdateFlowForResult
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.shlomikatriel.expensesmanager.R
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logError
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logWarning
@@ -39,27 +40,27 @@ class UpdateManager
     ) {
         val appUpdateManager = AppUpdateManagerFactory.create(context)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-        logInfo("Checking if update available")
+        logInfo(Tag.IN_APP_UPDATE, "Checking if update available")
 
         appUpdateInfoTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val appUpdateInfo = task.result
                 val availability = appUpdateInfo.updateAvailability()
-                logInfo("Got result [availability=$availability, availableVersionCode=${appUpdateInfo.availableVersionCode()}]")
+                logInfo(Tag.IN_APP_UPDATE, "Got result [availability=$availability, availableVersionCode=${appUpdateInfo.availableVersionCode()}]")
                 if (availability == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
                 ) {
                     onUpdateAvailable(appUpdateManager, appUpdateInfo)
                 }
             } else {
-                logWarning("Failed to check for version availability", task.exception)
+                logWarning(Tag.IN_APP_UPDATE, "Failed to check for version availability", task.exception)
             }
         }
     }
 
     fun showUpdateSnackbarIfNeeded(fragment: Fragment, view: View) = try {
         checkIfUpdateAvailable { appUpdateManager, appUpdateInfo ->
-            logInfo("Update available, showing app update snackbar")
+            logInfo(Tag.IN_APP_UPDATE, "Update available, showing app update snackbar")
             snackbar = Snackbar.make(
                 view,
                 R.string.app_update_instructions,
@@ -70,7 +71,7 @@ class UpdateManager
             snackbar?.takeUnless { it.isShown }?.show()
         }
     } catch (e: Exception) {
-        logError("Failed to show check up update is available", e)
+        logError(Tag.IN_APP_UPDATE, "Failed to show check up update is available", e)
         firebaseCrashlytics.recordException(e)
     }
 
@@ -79,7 +80,7 @@ class UpdateManager
         appUpdateInfo: AppUpdateInfo,
         fragment: Fragment
     ) = try {
-        logInfo("Starting update process")
+        logInfo(Tag.IN_APP_UPDATE, "Starting update process")
         appUpdateManager.startUpdateFlowForResult(
             appUpdateInfo,
             AppUpdateType.IMMEDIATE,
@@ -87,7 +88,7 @@ class UpdateManager
             UPDATE_REQUEST_CODE
         )
     } catch (e: Exception) {
-        logError("Failed to start in app update flow", e)
+        logError(Tag.IN_APP_UPDATE, "Failed to start in app update flow", e)
         firebaseCrashlytics.recordException(e)
     }
 
@@ -95,13 +96,13 @@ class UpdateManager
         if (requestCode == UPDATE_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
-                    logInfo("App updated successfully")
+                    logInfo(Tag.IN_APP_UPDATE, "App updated successfully")
                 }
                 Activity.RESULT_CANCELED -> {
-                    logInfo("The user has denied or cancelled the update")
+                    logInfo(Tag.IN_APP_UPDATE, "The user has denied or cancelled the update")
                 }
                 ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
-                    logInfo("Failed to update the app, showing snackbar again")
+                    logInfo(Tag.IN_APP_UPDATE, "Failed to update the app, showing snackbar again")
                     snackbar?.takeUnless { it.isShown }?.show()
                 }
             }
