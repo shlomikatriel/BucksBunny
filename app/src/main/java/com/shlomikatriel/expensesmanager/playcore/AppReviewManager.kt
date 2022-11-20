@@ -2,6 +2,8 @@ package com.shlomikatriel.expensesmanager.playcore
 
 import android.app.Activity
 import android.content.SharedPreferences
+import com.google.android.play.core.ktx.launchReview
+import com.google.android.play.core.ktx.requestReview
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.logs.Tag
@@ -12,7 +14,6 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.getLong
 import com.shlomikatriel.expensesmanager.sharedpreferences.putLong
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.concurrent.thread
 
 class AppReviewManager
 @Inject constructor(
@@ -34,24 +35,15 @@ class AppReviewManager
         return expensesCount >= EXPENSES_NEEDED_FOR_IN_APP_REVIEW && daysSinceLastReview > IN_APP_REVIEW_GRACE_DAYS
     }
 
-    fun showAppReviewDialogIfNeeded(activity: Activity) = thread(name = "AppReview") {
+    suspend fun showAppReviewDialogIfNeeded(activity: Activity) {
         if (isAppReviewNeeded()) {
             sharedPreferences.putLong(LongKey.LAST_IN_APP_REVIEW_TIME, System.currentTimeMillis())
             val manager = ReviewManagerFactory.create(activity)
-            val reviewFlowRequest = manager.requestReviewFlow()
-            logInfo(Tag.IN_APP_REVIEW, "Requesting In-App Review flow")
-            reviewFlowRequest.addOnCompleteListener { request ->
-                if (request.isSuccessful) {
-                    val reviewInfo = request.result
-                    logInfo(Tag.IN_APP_REVIEW, "Starting In-App Review flow")
-                    val flow = manager.launchReviewFlow(activity, reviewInfo)
-                    flow.addOnCompleteListener {
-                        logInfo(Tag.IN_APP_REVIEW, "In-App Review completed")
-                    }
-                } else {
-                    logDebug(Tag.IN_APP_REVIEW, "Review flow request unsuccessful")
-                }
-            }
+            logInfo(Tag.IN_APP_REVIEW, "Requesting In-App Review info")
+            val reviewInfo = manager.requestReview()
+            logInfo(Tag.IN_APP_REVIEW, "Got review info, launching review")
+            manager.launchReview(activity, reviewInfo)
+            logInfo(Tag.IN_APP_REVIEW, "Review process complete")
         }
     }
 }

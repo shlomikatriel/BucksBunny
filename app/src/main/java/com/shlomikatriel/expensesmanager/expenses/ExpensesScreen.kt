@@ -1,5 +1,7 @@
 package com.shlomikatriel.expensesmanager.expenses
 
+import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
@@ -13,6 +15,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +40,8 @@ import com.shlomikatriel.expensesmanager.expenses.utils.calculateTotal
 import com.shlomikatriel.expensesmanager.expenses.utils.getAddButtonText
 import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
+import com.shlomikatriel.expensesmanager.logs.logWarning
+import com.shlomikatriel.expensesmanager.playcore.AppReviewManager
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,6 +61,7 @@ data class ExpensesState(
 
 @HiltViewModel
 class ExpensesViewModel @Inject constructor(
+    private val appReviewManager: AppReviewManager,
     databaseManager: DatabaseManager,
     sharedPreferences: SharedPreferences
 ) : ExpensesBaseViewModel(databaseManager, sharedPreferences) {
@@ -80,6 +86,16 @@ class ExpensesViewModel @Inject constructor(
             total = expenses.calculateTotal(),
             expenses = expenses
         )
+    }
+
+    fun onInAppReviewRequest(context: Context) {
+        if (context !is Activity) {
+            logWarning(Tag.IN_APP_REVIEW, "Context is not activity, canceling in-app review checkup")
+            return
+        }
+        viewModelScope.launch(context = Dispatchers.IO) {
+            appReviewManager.showAppReviewDialogIfNeeded(context)
+        }
     }
 
     fun onMonthChanged(month: Int) {
@@ -124,10 +140,14 @@ class ExpensesViewModel @Inject constructor(
 @Composable
 fun ExpensesScreen() {
     // TODO("Apply snack bar for in-app update")
-    // TODO("Apply in-app review")
 
     val model: ExpensesViewModel = hiltViewModel()
     val mainState by remember { model.state }
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        model.onInAppReviewRequest(context)
+    }
 
     ExpensesContent(mainState, model::onAddExpenseRequest, model::onUpdateExpenseRequest, model::onDeleteExpenseRequest, model::onMonthChanged, model::onYearChanged)
 }
