@@ -22,4 +22,4 @@ fun logError(tag: Tag, message: String, t: Throwable? = null) {
     LogDispatcher.error(tag, message.addPrefix(), t)
 }
 
-private fun String.addPrefix() = "[${android.os.Process.myPid()}${Thread.currentThread().id}] $this"
+private fun String.addPrefix() = "[${Thread.currentThread().id}] $this"

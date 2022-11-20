@@ -1,7 +1,6 @@
 package com.shlomikatriel.expensesmanager.logs.loggers.files
 
 import android.content.Context
-import android.text.format.DateFormat
 import android.util.Log
 import com.shlomikatriel.expensesmanager.logs.LogManager
 import com.shlomikatriel.expensesmanager.logs.Tag
@@ -12,6 +11,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class FileLogger @Inject constructor(
 ) : Logger() {
 
     private val queue = LinkedBlockingDeque<LogMessage>()
-
+    private val timeFormat = SimpleDateFormat(TIME_FORMAT, Locale.ENGLISH)
     private var isConsumerThreadRunning = false
 
     override fun info(tag: Tag, message: String, t: Throwable?) {
@@ -99,7 +100,7 @@ class FileLogger @Inject constructor(
 
     private fun OutputStreamWriter.write(logMessage: LogMessage) {
         val fullMessage = buildString {
-            append(DateFormat.format(TIME_FORMAT, logMessage.timeStamp))
+            append(timeFormat.format(logMessage.timeStamp))
             append(' ')
             append(logMessage.logLevel)
             append('/')

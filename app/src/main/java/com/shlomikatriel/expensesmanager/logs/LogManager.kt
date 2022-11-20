@@ -20,7 +20,7 @@ class LogManager
 ) {
 
     companion object {
-        const val LOG_ZIP_FILE_NAME = "ExpensesManagerLogs.zip"
+        const val LOG_ZIP_FILE_NAME = "BucksBunnyLogs.zip"
         const val SYSTEM_PROPERTIES_FILE_NAME = "system_properties.log"
         const val LOGCAT_FILE_NAME = "logcat.log"
         const val LOG_FILE_NAME = "BucksBunny.log"

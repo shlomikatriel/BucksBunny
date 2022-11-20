@@ -93,12 +93,10 @@ class BucksBunnyApp : Application() {
                 .remove("currency")
                 .apply()
             logInfo(Tag.LOGS, "Deleting old logs")
-            File(filesDir, LogManager.LOG_FOLDER_NAME)
-                .listFiles { file -> file.name.startsWith("Logs") && file.name.endsWith(".log") }
-                ?.forEach {
-                    val deleted = it.delete()
-                    logDebug(Tag.LOGS, "Old log file ${it.name} deleted: $deleted")
-                }
+            File(filesDir, LogManager.LOG_FOLDER_NAME).listFiles()?.forEach {
+                val deleted = it.delete()
+                logDebug(Tag.LOGS, "Old log file ${it.name} deleted: $deleted")
+            }
         }
     }
 
