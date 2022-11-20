@@ -2,10 +2,6 @@ package com.shlomikatriel.expensesmanager.logs
 
 import android.content.Context
 import androidx.annotation.WorkerThread
-import com.bosphere.filelogger.FL
-import com.bosphere.filelogger.FLConfig
-import com.bosphere.filelogger.FLConst
-import com.shlomikatriel.expensesmanager.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.model.ZipParameters
@@ -20,34 +16,16 @@ import javax.inject.Inject
 
 class LogManager
 @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val emptyLogger: EmptyLogger,
-    private val logFileFormatter: LogFileFormatter
+    @ApplicationContext private val context: Context
 ) {
 
     companion object {
-        const val LOG_ZIP_FILE_NAME = "ExpensesManagerLogs.zip"
+        const val LOG_ZIP_FILE_NAME = "BucksBunnyLogs.zip"
         const val SYSTEM_PROPERTIES_FILE_NAME = "system_properties.log"
         const val LOGCAT_FILE_NAME = "logcat.log"
-    }
-
-    fun initialize() = FLConfig.Builder(context).run {
-        defaultTag(BuildConfig.LOG_TAG)
-        if (BuildConfig.DEBUG) {
-            minLevel(FLConst.Level.V)
-        } else {
-            minLevel(FLConst.Level.I)
-            logger(emptyLogger)
-        }
-        logToFile(true)
-        formatter(logFileFormatter)
-        dir(context.getLogFolder())
-        retentionPolicy(FLConst.RetentionPolicy.FILE_COUNT)
-        maxFileCount(7)
-        build()
-    }.let {
-        FL.init(it)
-        FL.setEnabled(true)
+        const val LOG_FILE_NAME = "BucksBunny.log"
+        const val LOG_FILE_NAME_OLD = "BucksBunny.log.old"
+        const val LOG_FOLDER_NAME = "logs"
     }
 
     @WorkerThread
@@ -55,7 +33,7 @@ class LogManager
         val logFolder = context.getLogFolder()
         val file = File(logFolder, LOG_ZIP_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing logs zip file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing logs zip file [deleted=${file.delete()}]")
         }
 
         createPropertiesFile()
@@ -83,9 +61,9 @@ class LogManager
     private fun createPropertiesFile() {
         val file = File(context.getLogFolder(), SYSTEM_PROPERTIES_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing system properties file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing system properties file [deleted=${file.delete()}]")
         }
-        logInfo("Collecting properties")
+        logInfo(Tag.LOGS, "Collecting properties")
 
         val builder = StringBuilder()
         var process: Process? = null
@@ -106,9 +84,9 @@ class LogManager
     private fun createLogcatFile() {
         val file = File(context.getLogFolder(), LOGCAT_FILE_NAME)
         if (file.exists()) {
-            logInfo("Deleting existing logcat file [deleted=${file.delete()}]")
+            logInfo(Tag.LOGS, "Deleting existing logcat file [deleted=${file.delete()}]")
         }
-        logInfo("Collecting logcat")
+        logInfo(Tag.LOGS, "Collecting logcat")
 
         val builder = StringBuilder()
         var process: Process? = null
@@ -139,5 +117,5 @@ class LogManager
         return this
     }
 
-    private fun Context.getLogFolder() = File("${filesDir.absolutePath}${File.separator}logs")
+    private fun Context.getLogFolder() = File("${filesDir.absolutePath}${File.separator}$LOG_FOLDER_NAME")
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 
 @Composable
@@ -20,12 +21,12 @@ fun NavGraphBuilder.composable(topBarDetailsState: MutableState<TopBarDetails?>,
 }
 
 fun NavController.navigate(destination: Destination) {
-    logInfo("User navigated to destination: ${destination.route}")
+    logInfo(Tag.NAVIGATION, "User navigated to destination: ${destination.route}")
     navigate(destination.route)
 }
 
 fun NavController.navigate(destination: Destination, builder: NavOptionsBuilder.() -> Unit) {
-    logInfo("User navigated to destination: ${destination.route}")
+    logInfo(Tag.NAVIGATION, "User navigated to destination: ${destination.route}")
     navigate(destination.route, builder)
 }
 

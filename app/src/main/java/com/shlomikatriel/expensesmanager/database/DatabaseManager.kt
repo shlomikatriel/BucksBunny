@@ -11,6 +11,7 @@ import com.shlomikatriel.expensesmanager.database.dao.PaymentsExpenseDao
 import com.shlomikatriel.expensesmanager.database.model.MonthlyExpenseModel
 import com.shlomikatriel.expensesmanager.database.model.OneTimeExpenseModel
 import com.shlomikatriel.expensesmanager.database.model.PaymentsExpenseModel
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logWarning
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class DatabaseManager
 
     @WorkerThread
     fun insert(expense: Expense) {
-        logDebug("Inserting expense: $expense")
+        logDebug(Tag.DATABASE, "Inserting expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.insert(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.insert(expense.toModel())
@@ -40,10 +41,10 @@ class DatabaseManager
     @WorkerThread
     fun update(expense: Expense) {
         if (expense.databaseId == null) {
-            logWarning("Can't update expense with no id")
+            logWarning(Tag.DATABASE, "Can't update expense with no id")
             return
         }
-        logDebug("Updating expense: $expense")
+        logDebug(Tag.DATABASE, "Updating expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.update(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.update(expense.toModel())
@@ -52,7 +53,7 @@ class DatabaseManager
     }
 
     fun delete(expense: Expense) {
-        logDebug("Deleting expense: $expense")
+        logDebug(Tag.DATABASE, "Deleting expense: $expense")
         when (expense) {
             is Expense.OneTime -> oneTimeExpenseDao.delete(expense.toModel())
             is Expense.Monthly -> monthlyExpenseDao.delete(expense.toModel())
@@ -83,7 +84,7 @@ class DatabaseManager
         val oneTime = oneTimeExpenseDao.count()
         val monthly = monthlyExpenseDao.count()
         val payments = paymentsExpenseDao.count()
-        logDebug("Counting expenses [oneTime=$oneTime, monthly=$monthly, payments=$payments]")
+        logDebug(Tag.DATABASE, "Counting expenses [oneTime=$oneTime, monthly=$monthly, payments=$payments]")
         return oneTime + monthly + payments
     }
 

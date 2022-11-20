@@ -21,6 +21,7 @@ import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.composables.AppInfoText
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.preferences.components.SwitchPreference
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
@@ -39,7 +40,7 @@ class OnboardingAnonymousDataViewModel @Inject constructor(
     val state = mutableStateOf(sharedPreferences.getBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED))
 
     fun onValueChanged(value: Boolean) {
-        logInfo("Crashlytics changed: $value")
+        logInfo(Tag.ONBOARDING, "Crashlytics changed: $value")
         sharedPreferences.putBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED, value)
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(value)
         firebaseAnalytics.setAnalyticsCollectionEnabled(value)

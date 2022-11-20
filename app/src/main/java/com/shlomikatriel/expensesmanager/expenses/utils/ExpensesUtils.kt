@@ -2,6 +2,7 @@ package com.shlomikatriel.expensesmanager.expenses.utils
 
 import com.shlomikatriel.expensesmanager.database.Expense
 import com.shlomikatriel.expensesmanager.database.model.ExpenseType
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 
 object ExpensesUtils {
@@ -17,7 +18,7 @@ object ExpensesUtils {
     }
 
     fun create(expenseType: ExpenseType, name: String, cost: Float, payments: Int?, month: Int, year: Int): Expense {
-        logVerbose("Creating expense [expenseType=$expenseType, name=$name, cost=$cost, payments=$payments, month=$month, year=$year]")
+        logVerbose(Tag.EXPENSES, "Creating expense [expenseType=$expenseType, name=$name, cost=$cost, payments=$payments, month=$month, year=$year]")
         return when (expenseType) {
             ExpenseType.ONE_TIME -> Expense.OneTime(
                 databaseId = null,

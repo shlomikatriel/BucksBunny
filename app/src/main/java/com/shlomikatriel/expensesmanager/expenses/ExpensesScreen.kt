@@ -35,6 +35,7 @@ import com.shlomikatriel.expensesmanager.expenses.mvi.ExpensesBaseViewModel
 import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
 import com.shlomikatriel.expensesmanager.expenses.utils.calculateTotal
 import com.shlomikatriel.expensesmanager.expenses.utils.getAddButtonText
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
@@ -69,12 +70,12 @@ class ExpensesViewModel @Inject constructor(
     }
 
     override fun onIncomeChanged(income: Float) {
-        logInfo("Income changed: ${income.hashCode()}")
+        logInfo(Tag.EXPENSES, "Income changed: ${income.hashCode()}")
         state.value = state.value.copy(income = income)
     }
 
     override fun onExpensesChanged(expenses: ArrayList<Expense>) {
-        logInfo("Expenses changed")
+        logInfo(Tag.EXPENSES, "Expenses changed")
         state.value = state.value.copy(
             total = expenses.calculateTotal(),
             expenses = expenses
@@ -82,21 +83,21 @@ class ExpensesViewModel @Inject constructor(
     }
 
     fun onMonthChanged(month: Int) {
-        logInfo("Month changed: $month]")
+        logInfo(Tag.EXPENSES, "Month changed: $month]")
         this.month = month
         state.value = state.value.copy(month = month)
         observeExpenses(month, year)
     }
 
     fun onYearChanged(year: Int) {
-        logInfo("Year changed: $year")
+        logInfo(Tag.EXPENSES, "Year changed: $year")
         this.year = year
         state.value = state.value.copy(year = year)
         observeExpenses(month, year)
     }
 
     fun onAddExpenseRequest(expenseType: ExpenseType, name: String, cost: Float, payments: Int?) {
-        logInfo("Adding expense [expenseType=$expenseType]")
+        logInfo(Tag.EXPENSES, "Adding expense [expenseType=$expenseType]")
         viewModelScope.launch(context = Dispatchers.IO) {
             if (ExpensesUtils.isInputValid(expenseType, name, cost, payments)) {
                 val expense = ExpensesUtils.create(expenseType, name, cost, payments, month, year)
@@ -106,14 +107,14 @@ class ExpensesViewModel @Inject constructor(
     }
 
     fun onUpdateExpenseRequest(expense: Expense) {
-        logInfo("Updating expense of id: ${expense.databaseId}")
+        logInfo(Tag.EXPENSES, "Updating expense of id: ${expense.databaseId}")
         viewModelScope.launch(context = Dispatchers.IO) {
             databaseManager.update(expense)
         }
     }
 
     fun onDeleteExpenseRequest(expense: Expense) {
-        logInfo("Deleting expense of id: ${expense.databaseId}")
+        logInfo(Tag.EXPENSES, "Deleting expense of id: ${expense.databaseId}")
         viewModelScope.launch(context = Dispatchers.IO) {
             databaseManager.delete(expense)
         }

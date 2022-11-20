@@ -3,13 +3,14 @@ package com.shlomikatriel.expensesmanager.preferences.utils
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.shlomikatriel.expensesmanager.BuildConfig
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.logs.logVerbose
 import java.util.*
 
 object Locales {
     fun setLocale(locale: Locale?) {
-        logInfo("Setting locale: $locale")
+        logInfo(Tag.PREFERENCES, "Setting locale: $locale")
         val localeList = if (locale != null) {
             LocaleListCompat.forLanguageTags(locale.toLanguageTag())
         } else {
@@ -25,7 +26,7 @@ object Locales {
         } else {
             localeList.get(0)
         }
-        logInfo("Getting locale: $locale")
+        logInfo(Tag.PREFERENCES, "Getting locale: $locale")
         return locale
     }
 
@@ -33,7 +34,7 @@ object Locales {
         val locales = Locale.getAvailableLocales().filter {
             it.isSupported() && it.hasCurrency()
         }
-        logVerbose("Available locales: $locales")
+        logVerbose(Tag.PREFERENCES, "Available locales: $locales")
         return locales
     }
 

@@ -22,6 +22,7 @@ import com.google.accompanist.pager.*
 import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.compose.AppTheme
 import com.shlomikatriel.expensesmanager.compose.tooling.ScreenPreviews
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logDebug
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.BooleanKey
@@ -53,7 +54,7 @@ class OnboardingViewModel @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ViewModel() {
     fun onOnboardingComplete() {
-        logInfo("Onboarding complete")
+        logInfo(Tag.ONBOARDING, "Onboarding complete")
         sharedPreferences.putBoolean(BooleanKey.SHOULD_SHOW_ONBOARDING, false)
     }
 }
@@ -76,7 +77,7 @@ fun OnboardingScreen(onOnboardingComplete: () -> Unit) = AppTheme {
 
         val pagerState = rememberPagerState()
         HorizontalPager(totalPages, state = pagerState, modifier = Modifier.weight(1f, true)) { page ->
-            logDebug("Onboarding page $page selected")
+            logDebug(Tag.NAVIGATION, "Onboarding page $page selected")
             pageArray[page].Page()
         }
         HorizontalPagerIndicator(
@@ -94,7 +95,7 @@ fun OnboardingScreen(onOnboardingComplete: () -> Unit) = AppTheme {
         OutlinedButton(
             modifier = Modifier.animateContentSize(),
             onClick = {
-                logInfo("User clicked Next [currentPage=${pagerState.currentPage}]")
+                logInfo(Tag.NAVIGATION, "User clicked Next [currentPage=${pagerState.currentPage}]")
                 if (pagerState.isLast()) {
                     model.onOnboardingComplete()
                     onOnboardingComplete()
