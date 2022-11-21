@@ -123,9 +123,6 @@ class ExpensesViewModel @Inject constructor(
 
 @Composable
 fun ExpensesScreen() {
-    // TODO("Apply snack bar for in-app update")
-    // TODO("Apply in-app review")
-
     val model: ExpensesViewModel = hiltViewModel()
     val mainState by remember { model.state }
 
