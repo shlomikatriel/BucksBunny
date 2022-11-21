@@ -42,6 +42,14 @@ android {
         }
     }
 
+    // Disalbe archiving until stable - app small anyway
+    // https://android-developers.googleblog.com/2022/03/freeing-up-60-of-storage-for-apps.html
+    bundle {
+        storeArchive {
+            enable = false
+        }
+    }
+
     sourceSets {
         // Adds exported schema location as test app assets.
         androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
