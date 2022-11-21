@@ -1,4 +1,4 @@
-package com.shlomikatriel.expensesmanager.playcore
+package com.shlomikatriel.expensesmanager.play
 
 import android.app.Activity
 import android.content.SharedPreferences
@@ -14,7 +14,9 @@ import com.shlomikatriel.expensesmanager.sharedpreferences.getLong
 import com.shlomikatriel.expensesmanager.sharedpreferences.putLong
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AppReviewManager
 @Inject constructor(
     private val databaseManager: DatabaseManager,
