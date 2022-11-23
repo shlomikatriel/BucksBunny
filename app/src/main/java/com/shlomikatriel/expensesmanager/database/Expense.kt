@@ -36,6 +36,7 @@ sealed class Expense {
         val payments: Int
     ) : Expense() {
         fun toModel() = PaymentsExpenseModel(databaseId, toDetails(), month, payments)
+        fun copyPayments(payments: Int) = copy(payments = payments)
     }
 
     fun toDetails() = ExpenseDetails(timeStamp, name, cost)
@@ -44,5 +45,17 @@ sealed class Expense {
         is OneTime -> ExpenseType.ONE_TIME
         is Monthly -> ExpenseType.MONTHLY
         is Payments -> ExpenseType.PAYMENTS
+    }
+
+    fun copyName(name: String) = when (this) {
+        is OneTime -> copy(name = name)
+        is Monthly -> copy(name = name)
+        is Payments -> copy(name = name)
+    }
+
+    fun copyCost(cost: Float) = when (this) {
+        is OneTime -> copy(cost = cost)
+        is Monthly -> copy(cost = cost)
+        is Payments -> copy(cost = cost)
     }
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="ExpensesGraph">
-        <attr name="incomeLabel" format="string" />
-        <attr name="expensesLabel" format="string" />
-        <attr name="balanceLabel" format="string" />
-    </declare-styleable>
-</resources>

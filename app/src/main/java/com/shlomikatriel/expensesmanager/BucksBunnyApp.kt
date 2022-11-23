@@ -4,19 +4,17 @@ import android.app.Application
 import android.content.SharedPreferences
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.shlomikatriel.expensesmanager.dagger.components.AppComponent
-import com.shlomikatriel.expensesmanager.dagger.components.DaggerAppComponent
-import com.shlomikatriel.expensesmanager.dagger.modules.ContextModule
-import com.shlomikatriel.expensesmanager.logs.LogManager
-import com.shlomikatriel.expensesmanager.logs.logDebug
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import com.shlomikatriel.expensesmanager.logs.logVerbose
+import com.shlomikatriel.expensesmanager.logs.*
+import com.shlomikatriel.expensesmanager.logs.dispatching.LogDispatcher
+import com.shlomikatriel.expensesmanager.logs.loggers.files.FileLogger
+import com.shlomikatriel.expensesmanager.logs.loggers.logcat.LogcatLogger
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
+import dagger.hilt.android.HiltAndroidApp
+import java.io.File
 import javax.inject.Inject
 
+@HiltAndroidApp
 class BucksBunnyApp : Application() {
-
-    lateinit var appComponent: AppComponent
 
     @Inject
     lateinit var logManager: LogManager
@@ -30,47 +28,74 @@ class BucksBunnyApp : Application() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
+    @Inject
+    lateinit var logcatLogger: LogcatLogger
+
+    @Inject
+    lateinit var fileLogger: FileLogger
+
     override fun onCreate() {
         super.onCreate()
 
-        createObjectGraph()
-        appComponent.inject(this)
-        logManager.initialize()
+        initializeLoggers()
 
-        logInfo("Creating Application")
+        logInfo(Tag.APPLICATION, "Creating Application")
+
+        handleUpdate()
 
         initializeFirebaseServices()
 
-        checkForUpdate()
-
-        logInfo("Application created")
+        logInfo(Tag.APPLICATION, "Application created")
     }
 
-    private fun createObjectGraph() {
-        appComponent = DaggerAppComponent.builder()
-            .contextModule(ContextModule(this))
-            .build()
+    private fun initializeLoggers() {
+        if (BuildConfig.DEBUG) {
+            LogDispatcher.initializeLoggers(logcatLogger, fileLogger)
+        } else {
+            LogDispatcher.initializeLoggers(fileLogger)
+        }
     }
 
     private fun initializeFirebaseServices() {
-        firebaseAnalytics.setAnalyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_ANALYTICS_ENABLED))
-        firebaseCrashlytics.setCrashlyticsCollectionEnabled(sharedPreferences.getBoolean(BooleanKey.FIREBASE_CRASHLYTICS_ENABLED))
+        val anonymousReports = sharedPreferences.getBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(anonymousReports)
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(anonymousReports)
     }
 
-    private fun checkForUpdate() {
+    private fun handleUpdate() {
         val latestVersionCode = sharedPreferences.getInt(IntKey.LATEST_VERSION_CODE)
         when {
             latestVersionCode == IntKey.LATEST_VERSION_CODE.getDefault() -> {
-                logDebug("Initial version: ${BuildConfig.VERSION_NAME}")
+                logInfo(Tag.APPLICATION, "Initial version: ${BuildConfig.VERSION_NAME}")
                 updateVersion()
             }
             BuildConfig.VERSION_CODE > latestVersionCode -> {
                 val latestVersionName = sharedPreferences.getString(StringKey.LATEST_VERSION_NAME)
-                logDebug("Version update: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
+                logInfo(Tag.APPLICATION, "Version update: $latestVersionName -> ${BuildConfig.VERSION_NAME}")
+                runMigration(latestVersionCode)
                 updateVersion()
             }
             BuildConfig.VERSION_CODE == latestVersionCode -> {
-                logVerbose("No update")
+                logVerbose(Tag.APPLICATION, "No update")
+            }
+        }
+    }
+
+    private fun runMigration(lastVersionCode: Int) {
+        logInfo(Tag.APPLICATION, "Running migrations [lastVersionCode=$lastVersionCode]")
+        if (lastVersionCode <= 103005) {
+            val analyticsEnabled = sharedPreferences.getBoolean("firebase_analytics_enabled", false)
+            val crashlyticsEnabled = sharedPreferences.getBoolean("firebase_crashlytics_enabled", false)
+            sharedPreferences.putBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED, analyticsEnabled && crashlyticsEnabled)
+            sharedPreferences.edit()
+                .remove("firebase_analytics_enabled")
+                .remove("firebase_crashlytics_enabled")
+                .remove("currency")
+                .apply()
+            logInfo(Tag.LOGS, "Deleting old logs")
+            File(filesDir, LogManager.LOG_FOLDER_NAME).listFiles()?.forEach {
+                val deleted = it.delete()
+                logDebug(Tag.LOGS, "Old log file ${it.name} deleted: $deleted")
             }
         }
     }
@@ -82,6 +107,6 @@ class BucksBunnyApp : Application() {
 
     override fun onLowMemory() {
         super.onLowMemory()
-        logInfo("Low memory")
+        logInfo(Tag.APPLICATION, "Low memory")
     }
 }

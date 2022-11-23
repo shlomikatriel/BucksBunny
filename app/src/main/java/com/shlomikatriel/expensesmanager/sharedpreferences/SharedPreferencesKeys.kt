@@ -42,8 +42,7 @@ enum class FloatKey(private val key: String, private val default: Float) : BaseK
 enum class BooleanKey(private val key: String, private val default: Boolean) : BaseKey<Boolean> {
 
     SHOULD_SHOW_ONBOARDING("should_show_onboarding", true),
-    FIREBASE_ANALYTICS_ENABLED("firebase_analytics_enabled", false),
-    FIREBASE_CRASHLYTICS_ENABLED("firebase_crashlytics_enabled", false);
+    ANONYMOUS_REPORTS_ENABLED("anonymous_reports_enabled", false);
 
     override fun getKey() = key
 
@@ -53,8 +52,7 @@ enum class BooleanKey(private val key: String, private val default: Boolean) : B
 
 enum class StringKey(private val key: String, private val default: String?) : BaseKey<String> {
 
-    LATEST_VERSION_NAME("latest_version_name", null),
-    CURRENCY("currency", null);
+    LATEST_VERSION_NAME("latest_version_name", null);
 
     override fun getKey() = key
 

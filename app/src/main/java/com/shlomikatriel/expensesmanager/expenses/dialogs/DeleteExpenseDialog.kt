@@ -1,57 +1,49 @@
 package com.shlomikatriel.expensesmanager.expenses.dialogs
 
-import android.os.Bundle
-import android.view.View
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.BaseDialog
-import com.shlomikatriel.expensesmanager.BucksBunnyApp
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.shlomikatriel.expensesmanager.R
-import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.database.model.ExpenseType
-import com.shlomikatriel.expensesmanager.databinding.DeleteExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import javax.inject.Inject
-import kotlin.concurrent.thread
 
-class DeleteExpenseDialog : BaseDialog() {
-
-    @Inject
-    lateinit var databaseManager: DatabaseManager
-
-    lateinit var binding: DeleteExpenseDialogBinding
-
-    private val args: DeleteExpenseDialogArgs by navArgs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-    }
-
-    override fun layout() = R.layout.delete_expense_dialog
-
-    override fun bind(view: View) {
-        binding = DataBindingUtil.bind<DeleteExpenseDialogBinding>(view)!!.apply {
-            dialog = this@DeleteExpenseDialog
-        }
-    }
-
-    fun cancelClicked() {
-        logInfo("Canceling delete expense")
-        findNavController().popBackStack()
-    }
-
-    fun deleteClicked() {
-        thread(name = "DeleteExpenseThread") {
-            val expense = when (args.type) {
-                ExpenseType.ONE_TIME -> Expense.OneTime(args.id, 0L, "", 0f, 0)
-                ExpenseType.MONTHLY -> Expense.Monthly(args.id, 0L, "", 0f)
-                ExpenseType.PAYMENTS -> Expense.Payments(args.id, 0L, "", 0f, 0, 0)
+@Composable
+fun DeleteExpenseDialog(
+    expense: Expense,
+    onConfirm: (expense: Expense) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        dismissButton = {
+            OutlinedButton(
+                onClick = onDismissRequest
+            ) {
+                Text(stringResource(R.string.dialog_cancel))
             }
-            databaseManager.delete(expense)
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm(expense)
+                    onDismissRequest()
+                }
+            ) {
+                Text(stringResource(R.string.delete))
+            }
+        },
+        title = {
+            Text(
+                stringResource(R.string.delete_expense_dialog_title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                stringResource(R.string.delete_expense_dialog_confirmation_text),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
-        findNavController().popBackStack()
-    }
+    )
 }

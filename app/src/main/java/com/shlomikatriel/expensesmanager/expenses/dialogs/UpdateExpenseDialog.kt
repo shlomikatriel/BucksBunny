@@ -1,126 +1,89 @@
 package com.shlomikatriel.expensesmanager.expenses.dialogs
 
-import android.content.Context
-import android.os.Bundle
-import android.view.View
-import androidx.annotation.StringRes
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.shlomikatriel.expensesmanager.*
-import com.shlomikatriel.expensesmanager.database.DatabaseManager
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.shlomikatriel.expensesmanager.R
 import com.shlomikatriel.expensesmanager.database.Expense
-import com.shlomikatriel.expensesmanager.database.model.ExpenseType
-import com.shlomikatriel.expensesmanager.databinding.UpdateExpenseDialogBinding
-import com.shlomikatriel.expensesmanager.logs.logDebug
-import com.shlomikatriel.expensesmanager.logs.logInfo
-import java.util.*
-import javax.inject.Inject
-import kotlin.concurrent.thread
+import com.shlomikatriel.expensesmanager.expenses.utils.ExpensesUtils
+import com.shlomikatriel.expensesmanager.expenses.utils.getUpdateDialogTitle
 
-class UpdateExpenseDialog : BaseDialog() {
-
-    @Inject
-    lateinit var appContext: Context
-
-    @Inject
-    lateinit var databaseManager: DatabaseManager
-
-    @Inject
-    lateinit var localizationManager: LocalizationManager
-
-    lateinit var binding: UpdateExpenseDialogBinding
-
-    private val args: UpdateExpenseDialogArgs by navArgs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (requireContext().applicationContext as BucksBunnyApp).appComponent.inject(this)
-    }
-
-    override fun layout() = R.layout.update_expense_dialog
-
-    override fun bind(view: View) {
-        binding = DataBindingUtil.bind<UpdateExpenseDialogBinding>(view)!!.apply {
-            inputsLayout.initialize(localizationManager.getCurrencySymbol(), args.type)
-            title.setText(getDialogTitle())
-            dialog = this@UpdateExpenseDialog
-        }
-        populateFields()
-    }
-
-    @StringRes
-    private fun getDialogTitle() = when (args.type) {
-        ExpenseType.ONE_TIME -> R.string.update_one_time_expense_dialog_title
-        ExpenseType.MONTHLY -> R.string.update_monthly_expense_dialog_title
-        ExpenseType.PAYMENTS -> R.string.update_payments_expense_dialog_title
-    }
-
-
-    private fun populateFields() = thread(name = "PopulateUpdateExpenseDialogFields") {
-        logDebug("Fetching expense to populate fields [$args]")
-        val expense = databaseManager.getExpense(args.id, args.type)
-        activity?.runOnUiThread {
-            logDebug("Populating fields: $expense")
-            binding.inputsLayout.apply {
-                when (expense) {
-                    is Expense.OneTime -> {
-                        cost.setText(expense.cost.toString())
-                        name.setText(expense.name)
+@Composable
+fun UpdateExpenseDialog(
+    expense: Expense,
+    onConfirm: (expense: Expense) -> Unit,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var name by remember { mutableStateOf(expense.name as String?) }
+    var cost by remember { mutableStateOf(expense.cost as Float?) }
+    var payments by remember { mutableStateOf(if (expense is Expense.Payments) expense.payments else null) }
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            Button(
+                onClick = {
+                    if (ExpensesUtils.isInputValid(expense.getExpenseType(), name, cost, payments)) {
+                        onDismissRequest()
+                        var updatedExpense = expense
+                        name?.let {
+                            updatedExpense = updatedExpense.copyName(it)
+                        }
+                        cost?.let {
+                            updatedExpense = updatedExpense.copyCost(it)
+                        }
+                        if (updatedExpense is Expense.Payments) {
+                            payments?.let {
+                                updatedExpense = (updatedExpense as Expense.Payments).copyPayments(it)
+                            }
+                        }
+                        onConfirm(updatedExpense)
                     }
-                    is Expense.Monthly -> {
-                        cost.setText(expense.cost.toString())
-                        name.setText(expense.name)
+                },
+                enabled = ExpensesUtils.isInputValid(expense.getExpenseType(), name, cost, payments)
+            ) {
+                Text(stringResource(R.string.update))
+            }
+        },
+        dismissButton = {
+            OutlinedButton(
+                onClick = onDismissRequest
+            ) {
+                Text(stringResource(R.string.dialog_cancel))
+            }
+        },
+        modifier = modifier,
+        title = {
+            Text(
+                stringResource(expense.getExpenseType().getUpdateDialogTitle()),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            ExpenseInput(
+                showPayments = expense is Expense.Payments,
+                onNameChanged = {
+                    name = it
+                },
+                onCostChanged = {
+                    cost = it
+                },
+                onPaymentsChanged = {
+                    if (expense is Expense.Payments) {
+                        payments = it
                     }
-                    is Expense.Payments -> {
-                        cost.setText(expense.cost.toString())
-                        name.setText(expense.name)
-                        paymentsLayout.visibility = View.VISIBLE
-                        payments.setText(expense.payments.toString())
-                    }
+                },
+                initialName = expense.name,
+                initialCost = expense.cost,
+                initialPayments = if (expense is Expense.Payments) {
+                    expense.payments
+                } else {
+                    null
                 }
-            }
+            )
         }
-    }
-
-    fun updateClicked() {
-        val name = binding.inputsLayout.name.text.toString()
-        val costAsString = binding.inputsLayout.cost.text.toString()
-        val cost = costAsString.toFloatOrNull()
-        val paymentsString = binding.inputsLayout.payments.text.toString()
-        val payments = paymentsString.toIntOrNull()
-        logDebug("Trying to update expense [name=$name, costAsString=$costAsString, paymentsString=$paymentsString, type=${args.type}]")
-
-        if (binding.inputsLayout.isInputValid(args.type, appContext)) {
-            updateExpense(name, cost!!, payments)
-        }
-    }
-
-    private fun updateExpense(name: String, cost: Float, payments: Int?) {
-        thread(name = "UpdateExpenseThread") {
-            when (val oldExpense = databaseManager.getExpense(args.id, args.type)) {
-                is Expense.OneTime -> oldExpense.copy(
-                    name = name,
-                    cost = cost
-                )
-                is Expense.Monthly -> oldExpense.copy(
-                    name = name,
-                    cost = cost
-                )
-                is Expense.Payments -> oldExpense.copy(
-                    name = name,
-                    cost = cost,
-                    payments = payments!!
-                )
-            }.let { newExpense ->
-                databaseManager.update(newExpense)
-            }
-        }
-        findNavController().popBackStack()
-    }
-
-    fun cancelClicked() {
-        logInfo("Canceling update expense")
-        findNavController().popBackStack()
-    }
+    )
 }

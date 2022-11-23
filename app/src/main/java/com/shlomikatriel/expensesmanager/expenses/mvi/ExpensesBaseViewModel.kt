@@ -1,72 +1,54 @@
 package com.shlomikatriel.expensesmanager.expenses.mvi
 
-import android.app.Application
 import android.content.SharedPreferences
 import androidx.annotation.CallSuper
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.shlomikatriel.expensesmanager.database.DatabaseManager
 import com.shlomikatriel.expensesmanager.database.Expense
+import com.shlomikatriel.expensesmanager.logs.Tag
 import com.shlomikatriel.expensesmanager.logs.logInfo
 import com.shlomikatriel.expensesmanager.sharedpreferences.FloatKey
 import com.shlomikatriel.expensesmanager.sharedpreferences.getFloat
-import javax.inject.Inject
 
 abstract class ExpensesBaseViewModel(
-        application: Application
-) : AndroidViewModel(application), Observer<ArrayList<Expense>>, SharedPreferences.OnSharedPreferenceChangeListener {
+    protected val databaseManager: DatabaseManager,
+    protected val sharedPreferences: SharedPreferences
+) : ViewModel() {
 
-    @Inject
-    lateinit var databaseManager: DatabaseManager
+    private var expensesLiveData: LiveData<ArrayList<Expense>>? = null
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
-
-    private var expenseItemsLiveData: LiveData<ArrayList<Expense>>? = null
-
-    fun observeChanges(month: Int) {
-        expenseItemsLiveData?.removeObserver(this)
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-        expenseItemsLiveData = databaseManager.getExpensesOfMonth(month).apply {
-            observeForever(this@ExpensesBaseViewModel)
-        }
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    private val expensesObserver = Observer<ArrayList<Expense>> {
+        it?.let { onExpensesChanged(it) }
     }
 
-    override fun onChanged(expenses: ArrayList<Expense>?) {
-        logInfo("Expenses changed")
-        expenses?.let { onExpensesChanged(it.transformToArrayList()) }
+    private val sharedPreferencesObserver = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == FloatKey.INCOME.getKey()) {
+                onIncomeChanged(sharedPreferences.getFloat(FloatKey.INCOME))
+            }
+        }
+
+    init {
+        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesObserver)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == FloatKey.INCOME.getKey()) {
-            logInfo("Income changed")
-            onIncomeChanged(this.sharedPreferences.getFloat(FloatKey.INCOME))
-        }
+    fun observeExpenses(month: Int, year: Int) {
+        logInfo(Tag.EXPENSES, "Observing expenses [month=$month, year=$year]")
+        expensesLiveData?.removeObserver(expensesObserver)
+        expensesLiveData = databaseManager.getExpensesOfMonth(year * 12 + month)
+        expensesLiveData?.observeForever(expensesObserver)
     }
 
     abstract fun onIncomeChanged(income: Float)
 
     abstract fun onExpensesChanged(expenses: ArrayList<Expense>)
 
-    protected fun getExpenses() = expenseItemsLiveData?.value?.transformToArrayList() ?: arrayListOf()
-
-    private fun List<Expense>.transformToArrayList() = arrayListOf(*(toTypedArray()))
-
-    protected fun calculateTotal(expenses: ArrayList<Expense>) = expenses.sumByDouble {
-        when (it) {
-            is Expense.OneTime, is Expense.Monthly -> it.cost.toDouble()
-            is Expense.Payments -> (it.cost / it.payments).toDouble()
-        }
-    }
-
     @CallSuper
     override fun onCleared() {
-        logInfo("View model cleared")
-        expenseItemsLiveData?.removeObserver(this)
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        logInfo(Tag.EXPENSES, "View model cleared")
+        expensesLiveData?.removeObserver(expensesObserver)
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferencesObserver)
     }
-
 
 }

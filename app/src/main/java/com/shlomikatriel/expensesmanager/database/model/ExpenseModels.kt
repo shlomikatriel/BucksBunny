@@ -14,7 +14,13 @@ data class OneTimeExpenseModel(
     @Embedded val details: ExpenseDetails,
     val month: Int // This value is the months that passed since year 0
 ) {
-    fun toExpense() = Expense.OneTime(id!!, details.timeStamp, details.name, details.cost, month)
+    fun toExpense() = Expense.OneTime(
+        id!!,
+        details.timeStamp,
+        details.name,
+        details.cost,
+        month
+    )
 }
 
 @Keep
@@ -23,7 +29,12 @@ data class MonthlyExpenseModel(
     @PrimaryKey(autoGenerate = true) var id: Long? = null,
     @Embedded val details: ExpenseDetails
 ) {
-    fun toExpense() = Expense.Monthly(id!!, details.timeStamp, details.name, details.cost)
+    fun toExpense() = Expense.Monthly(
+        id!!,
+        details.timeStamp,
+        details.name,
+        details.cost
+    )
 }
 
 @Keep
@@ -34,8 +45,14 @@ data class PaymentsExpenseModel(
     val month: Int, // This value is the months that passed since year 0
     val payments: Int
 ) {
-    fun toExpense() =
-        Expense.Payments(id!!, details.timeStamp, details.name, details.cost, month, payments)
+    fun toExpense() = Expense.Payments(
+            id!!,
+            details.timeStamp,
+            details.name,
+            details.cost,
+            month,
+            payments
+        )
 }
 
 @Keep

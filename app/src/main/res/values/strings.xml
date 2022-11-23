@@ -8,10 +8,14 @@
     <string name="expense_cost">Expense Cost</string>
     <string name="payments_count">Payments Count</string>
 
-    <!-- Fragments -->
+    <!-- Expenses -->
+    <string name="expense_menu_update_description">Expense update</string>
+    <string name="expense_menu_delete_description">Expense delete</string>
     <string name="expenses_main_graph_income">Income</string>
     <string name="expenses_main_graph_expenses">Expenses</string>
     <string name="expenses_main_graph_balance">Balance</string>
+    <string name="expenses_page_title">Expenses</string>
+    <string name="expenses_page_search">Search</string>
     <string name="expenses_page_chip_one_time">One Time</string>
     <string name="expenses_page_chip_monthly">Monthly</string>
     <string name="expenses_page_chip_payments">Payments</string>
@@ -25,13 +29,16 @@
 
     <!-- Content Descriptions -->
     <string name="add_button_description">Add expense</string>
-    <string name="add_one_time_button_description">Add one time expense</string>
-    <string name="add_monthly_button_description">Add monthly expense</string>
-    <string name="add_payments_button_description">Add payments expense</string>
+    <string name="collapse_expenses_description">Collapse expense list</string>
+    <string name="back">Back</string>
+    <string name="filter_one_time_expenses">Show one time expenses</string>
+    <string name="filter_monthly_expenses">Show monthly expenses</string>
+    <string name="filter_payments_expenses">Show Payments expenses</string>
 
     <!-- Errors -->
     <string name="error_empty_value">Value is empty</string>
     <string name="error_number_illegal">Illegal number</string>
+    <string name="error_must_be_positive">Value must be positive</string>
 
     <!-- Dialogs -->
     <string name="dialog_cancel">Cancel</string>
@@ -50,30 +57,36 @@
     <string name="choose_income_dialog_ok">Choose</string>
 
     <!-- Hints -->
-    <string name="hint_income_can_be_changed_in_settings">Monthly income can be changed later in settings</string>
+    <string name="hint_income_can_be_changed_later">Monthly income can be changed later</string>
 
-    <!-- Settings -->
-    <string name="settings_title">Settings</string>
-    <string name="settings_system_default">System default</string>
-    <string name="settings_appearance_title">Appearance</string>
-    <string name="settings_dark_mode_title">Dark Mode</string>
-    <string name="settings_dark_mode_entry_always">Always</string>
-    <string name="settings_dark_mode_entry_never">Never</string>
-    <string name="settings_currency">Currency</string>
-    <string name="settings_functionality_title">Functionality</string>
-    <string name="settings_general_title">General</string>
-    <string name="settings_monthly_income">Monthly Income</string>
-    <string name="settings_open_source_licenses">Open Source Licenses</string>
-    <string name="settings_bug_report">Report A Bug</string>
-    <string name="settings_bug_report_subject">Bug Report</string>
-    <string name="settings_bug_report_content">Describe the bug:\n</string>
-    <string name="settings_application_info">App Info</string>
-    <string name="settings_anonymous_reports_category_title">Anonymous Reports</string>
-    <string name="settings_anonymous_reports_category_summary">Personal or sensitive data is not reported</string>
-    <string name="settings_anonymous_crash_reports_title">Anonymous Crash Reports</string>
-    <string name="settings_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
-    <string name="settings_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
-    <string name="settings_anonymous_usage_data_reports_summary">Usage data reports are used to analyse usage patterns and improves user experience</string>
+    <!-- Preferences -->
+    <string name="preferences_title">Preferences</string>
+    <string name="preferences_system_default">System default</string>
+    <string name="preferences_appearance_title">Appearance</string>
+    <string name="preferences_dark_mode_title">Dark Mode</string>
+    <string name="preferences_dark_mode_always">Always</string>
+    <string name="preferences_dark_mode_never">Never</string>
+    <string name="preferences_language_and_currency">Language &amp; Currency</string>
+    <string name="preferences_functionality_title">Functionality</string>
+    <string name="preferences_monthly_income">Monthly Income</string>
+    <string name="preferences_help_us_improve_title">Help Us Improve</string>
+    <string name="preferences_help_us_improve_info">Personal or sensitive data is not reported</string>
+    <string name="preferences_help_us_improve_anonymous_data_reports_title">Anonymous Reports</string>
+    <string name="preferences_help_us_improve_anonymous_data_reports_description">Analysing crash reports and app usage data helps us provide a better user experience</string>
+    <string name="preferences_open_source_licenses">Open Source Licenses</string>
+    <string name="preferences_bug_report">Report A Bug</string>
+    <string name="preferences_bug_report_subject">Bug Report</string>
+    <string name="preferences_bug_report_preparing_report">Preparing report</string>
+    <string name="preferences_bug_report_content">Describe the bug:\n</string>
+    <string name="preferences_application_info">App Info</string>
+    <string name="preferences_anonymous_reports_category_title">Anonymous Reports</string>
+    <string name="preferences_anonymous_crash_reports_title">Anonymous Crash Reports</string>
+    <string name="preferences_anonymous_crash_reports_summary">Crash reports helps analysing and fixing various crashes that might occur</string>
+    <string name="preferences_anonymous_usage_data_reports_title">Anonymous Usage Data Reports</string>
+    <string name="preferences_anonymous_usage_data_reports_summary">Usage data reports are used to analyse usage patterns and improves user experience</string>
+    <string name="preferences_about_category_title">About This App</string>
+    <string name="preferences_github_title">Source code in GitHub</string>
+    <string name="preferences_apache_license_title">Apache 2.0 License</string>
 
     <!-- Onboarding -->
     <string name="onboarding_next">Next</string>
