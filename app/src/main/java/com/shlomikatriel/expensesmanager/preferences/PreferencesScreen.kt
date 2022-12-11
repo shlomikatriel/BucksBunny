@@ -28,7 +28,6 @@ import com.shlomikatriel.expensesmanager.preferences.components.base.Preference
 import com.shlomikatriel.expensesmanager.preferences.components.base.PreferenceCategory
 import com.shlomikatriel.expensesmanager.preferences.utils.DarkMode
 import com.shlomikatriel.expensesmanager.preferences.utils.Intents
-import com.shlomikatriel.expensesmanager.preferences.utils.Locales
 import com.shlomikatriel.expensesmanager.sharedpreferences.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,7 +40,6 @@ import javax.inject.Inject
 
 data class PreferencesState(
     val darkMode: DarkMode,
-    val locale: Locale?,
     val income: Float,
     val anonymousReportsEnabled: Boolean,
     val preparingBugReport: Boolean = false
@@ -49,7 +47,6 @@ data class PreferencesState(
 
 interface PreferencesEventHandler {
     fun onDarkModeSelected(darkMode: DarkMode)
-    fun onLocaleSelected(locale: Locale?)
     fun onIncomeChanged(income: Float)
     fun onAnonymousReportsChanged(value: Boolean)
     fun onBugReportClicked()
@@ -73,7 +70,7 @@ class PreferencesViewModel @Inject constructor(
         }
         val income = sharedPreferences.getFloat(FloatKey.INCOME)
         val anonymousReportsEnabled = sharedPreferences.getBoolean(BooleanKey.ANONYMOUS_REPORTS_ENABLED)
-        state = mutableStateOf(PreferencesState(darkMode, Locales.getLocale(), income, anonymousReportsEnabled))
+        state = mutableStateOf(PreferencesState(darkMode, income, anonymousReportsEnabled))
     }
 
     override fun onDarkModeSelected(darkMode: DarkMode) {
@@ -81,12 +78,6 @@ class PreferencesViewModel @Inject constructor(
         state.value = state.value.copy(darkMode = darkMode)
         sharedPreferences.putInt(IntKey.DARK_MODE, darkMode.mode)
         AppCompatDelegate.setDefaultNightMode(darkMode.mode)
-    }
-
-    override fun onLocaleSelected(locale: Locale?) {
-        logInfo(Tag.PREFERENCES, "Locale selected: $locale")
-        state.value = state.value.copy(locale = locale)
-        Locales.setLocale(locale)
     }
 
     override fun onIncomeChanged(income: Float) {
@@ -159,7 +150,7 @@ private fun PreferencesContent(state: PreferencesState, eventHandler: Preference
         PreferenceCategory(title = R.string.preferences_appearance_title) {
             DarkModePreference(state.darkMode, eventHandler::onDarkModeSelected)
             Divider()
-            LocalePreference(state.locale, eventHandler::onLocaleSelected)
+            LocalePreference()
         }
         PreferenceCategory(title = R.string.preferences_functionality_title) {
             IncomePreference(state.income, eventHandler::onIncomeChanged)
@@ -216,7 +207,6 @@ private fun BugReportPreference(preparing: Boolean, onClick: () -> Unit) = if (p
 private fun PreferencesPreview() = AppTheme {
     val initialState = PreferencesState(
         darkMode = DarkMode.SYSTEM_DEFAULT,
-        locale = null,
         15000f,
         anonymousReportsEnabled = false
     )
@@ -225,10 +215,6 @@ private fun PreferencesPreview() = AppTheme {
     val eventHandler = object : PreferencesEventHandler {
         override fun onDarkModeSelected(darkMode: DarkMode) {
             state = state.copy(darkMode = darkMode)
-        }
-
-        override fun onLocaleSelected(locale: Locale?) {
-            state = state.copy(locale = locale)
         }
 
         override fun onIncomeChanged(income: Float) {

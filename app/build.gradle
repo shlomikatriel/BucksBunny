@@ -101,9 +101,7 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.9.0'
-    // TODO move to 1.6.0 when stable
-    //noinspection GradleDependency
-    implementation 'androidx.appcompat:appcompat:1.6.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation "androidx.room:room-testing:2.4.3"

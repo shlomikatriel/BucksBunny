@@ -65,7 +65,8 @@
     <string name="preferences_dark_mode_title">מצב כהה</string>
     <string name="preferences_dark_mode_always">תמיד</string>
     <string name="preferences_dark_mode_never">לעולם לא</string>
-    <string name="preferences_language_and_currency">שפה ומטבע</string>
+    <string name="preferences_device_language">שפת הטלפון</string>
+    <string name="preferences_app_language">שפת האפליקיצה</string>
     <string name="preferences_functionality_title">פונקציונליות</string>
     <string name="preferences_monthly_income">הכנסה חודשית</string>
     <string name="preferences_help_us_improve_title">עזרו לנו להשתפר</string>

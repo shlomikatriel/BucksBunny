@@ -66,7 +66,8 @@
     <string name="preferences_dark_mode_title">Dark Mode</string>
     <string name="preferences_dark_mode_always">Always</string>
     <string name="preferences_dark_mode_never">Never</string>
-    <string name="preferences_language_and_currency">Language &amp; Currency</string>
+    <string name="preferences_device_language">Device Language</string>
+    <string name="preferences_app_language">App Language</string>
     <string name="preferences_functionality_title">Functionality</string>
     <string name="preferences_monthly_income">Monthly Income</string>
     <string name="preferences_help_us_improve_title">Help Us Improve</string>

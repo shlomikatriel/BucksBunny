@@ -2,7 +2,10 @@ package com.shlomikatriel.expensesmanager.preferences.utils
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
 import com.shlomikatriel.expensesmanager.BuildConfig
 
 object Intents {
@@ -14,9 +17,16 @@ object Intents {
         putExtra(Intent.EXTRA_STREAM, fileUri)
     }
 
-    fun view(url: String) = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    fun view(url: String) = Intent(Intent.ACTION_VIEW, url.toUri())
 
     fun appInfo() = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-        data = Uri.parse("package:${BuildConfig.APPLICATION_ID}")
+        data = "package:${BuildConfig.APPLICATION_ID}".toUri()
+    }
+
+    fun localeSettings() = Intent(Settings.ACTION_LOCALE_SETTINGS)
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun appLocaleSettings() = Intent(Settings.ACTION_APP_LOCALE_SETTINGS).apply {
+        data = "package:${BuildConfig.APPLICATION_ID}".toUri()
     }
 }
