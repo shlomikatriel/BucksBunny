@@ -8,13 +8,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.1'
+        classpath 'com.android.tools.build:gradle:7.4.1'
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.44"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.3"
-        classpath "com.google.android.gms:oss-licenses-plugin:0.10.5"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
-        classpath "com.google.gms:google-services:4.3.14"
+        classpath "com.google.android.gms:oss-licenses-plugin:0.10.6"
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.4'
+        classpath "com.google.gms:google-services:4.3.15"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -26,10 +26,10 @@ ext {
     def minorVersion = project.getProperty("minorVersion") as Integer
     def build = project.getProperty("build") as Integer
     if (build < 0 || build > 999) {
-        throw new GradleScriptException("Illegal internal version: $build")
+        throw new IllegalArgumentException("Illegal internal version: $build")
     }
     if (minorVersion < 0 || minorVersion > 99) {
-        throw new GradleScriptException("Illegal minor version: $minorVersion")
+        throw new IllegalArgumentException("Illegal minor version: $minorVersion")
     }
     versionName = "$majorVersion.$minorVersion.$build"
     // Version structure - XYYZZZ

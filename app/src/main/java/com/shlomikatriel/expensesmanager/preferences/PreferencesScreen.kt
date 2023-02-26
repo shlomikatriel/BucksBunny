@@ -197,11 +197,6 @@ private fun BugReportPreference(preparing: Boolean, onClick: () -> Unit) = if (p
     Preference(title = R.string.preferences_bug_report, onClick = onClick)
 }
 
-//private fun Locale.getDisplayText(): String {
-////    return "${Currency.getInstance(this).symbol} ($displayLanguage, $displayCountry)"
-//    return "$displayLanguage, $displayCountry"
-//}
-
 @ScreenPreviews
 @Composable
 private fun PreferencesPreview() = AppTheme {
